@@ -21,7 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     if: >-
       !cancelled()
-      && !contains(needs.*.result, 'failure') 
       && inputs.use_existing_tag == 'false'
     steps:
       - name: Validation of version format
