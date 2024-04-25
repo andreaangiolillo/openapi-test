@@ -19,8 +19,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/andreaangiolillo/openapi-test/tools/cli/internal/pointer"
 	"github.com/getkin/kin-openapi/openapi3"
-	"github.com/mongodb/openapi/tools/cli/internal/pointer"
 	"github.com/tufin/oasdiff/diff"
 	"github.com/tufin/oasdiff/load"
 )

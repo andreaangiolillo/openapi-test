@@ -18,9 +18,9 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/andreaangiolillo/openapi-test/tools/cli/internal/cli/flag"
+	"github.com/andreaangiolillo/openapi-test/tools/cli/internal/openapi"
 	"github.com/getkin/kin-openapi/openapi3"
-	"github.com/mongodb/openapi/tools/cli/internal/cli/flag"
-	"github.com/mongodb/openapi/tools/cli/internal/openapi"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/require"
 	"github.com/tufin/oasdiff/load"

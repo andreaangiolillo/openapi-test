@@ -18,9 +18,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/mongodb/openapi/tools/cli/internal/cli/flag"
-	"github.com/mongodb/openapi/tools/cli/internal/cli/usage"
-	"github.com/mongodb/openapi/tools/cli/internal/openapi"
+	"github.com/andreaangiolillo/openapi-test/tools/cli/internal/cli/flag"
+	"github.com/andreaangiolillo/openapi-test/tools/cli/internal/cli/usage"
+	"github.com/andreaangiolillo/openapi-test/tools/cli/internal/openapi"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 )

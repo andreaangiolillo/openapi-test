@@ -1,4 +1,4 @@
-module github.com/mongodb/openapi/tools/cli
+module github.com/andreaangiolillo/openapi-test/tools/cli
 
 go 1.22.1
 
