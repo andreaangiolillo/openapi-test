@@ -10,7 +10,7 @@ builds:
       env:
         - CGO_ENABLED=0
       binary: bin/openapicli
-      main: ./cmd/openapicli
+      main: ./cmd/openapicli.go
       ldflags:
          - -s -w -X github.com/andreaangiolillo/openapi-test/tools/cli/internal/version.Version={{.Version}} -X github.com/andreaangiolillo/openapi-test/tools/cli/internal/version.GitCommit={{.FullCommit}}
     id: linux
