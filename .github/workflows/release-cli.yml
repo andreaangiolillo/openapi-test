@@ -9,7 +9,7 @@ on:
         description: 'Version number (e.g., v1.0.0, v1.0.0-pre, v1.0.0-pre1)'
         required: true
       skip_tests:
-        description: 'Set value to `true` to skip QA acceptance tests, default is `false`'
+        description: 'Set value to `true` to skip tests, default is `false`'
         default: 'false'
       use_existing_tag:
         description: 'Set value to `true` to use an existing tag for the release process, default is `false`'
@@ -96,7 +96,6 @@ jobs:
           args: release --rm-dist
         env:
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Issue
         if: ${{ failure() }}
         uses: imjohnbo/issue-bot@572eed14422c4d6ca37e870f97e7da209422f5bd
