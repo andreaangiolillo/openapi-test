@@ -95,7 +95,7 @@ jobs:
           version: latest
           args: release --rm-dist
         env:
-          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Issue
         if: ${{ failure() }}
         uses: imjohnbo/issue-bot@572eed14422c4d6ca37e870f97e7da209422f5bd
