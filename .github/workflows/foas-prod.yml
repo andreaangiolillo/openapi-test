@@ -18,5 +18,5 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
           aws-region: ${{ secrets.AWS_REGION }}
         run: |
-          run: aws s3 cp s3://${{ secrets.APIX_DEV_S3_BUCKET_NAME }}/openapi/foas-metadata.json foas-metadata.json
+          aws s3 cp s3://${{ secrets.APIX_DEV_S3_BUCKET_NAME }}/openapi/foas-metadata.json foas-metadata.json
           cat foas-metadata.json
