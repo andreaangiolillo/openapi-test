@@ -1,6 +1,9 @@
 name: 'Optional Spec Validations'
 on:
   workflow_call:
+    secrets: # all secrets are passed explicitly in this workflow
+      api_bot_pat:
+        required: true
 
 jobs:  
   run-optional-validations:
@@ -21,4 +24,4 @@ jobs:
           labels: failed-release
           title: "(PROD) Optional Postman validation failed :scream_cat:"
           body: See https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          token: ${{ secrets.API_BOT_PAT }}
+          token: ${{ secrets.api_bot_pat }}
