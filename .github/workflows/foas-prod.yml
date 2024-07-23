@@ -6,14 +6,19 @@ on:
 permissions:
   contents: write
 jobs:
-  validations:
+  run-validations:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
-      - name: Run Spectral
-        uses: stoplightio/spectral-action@2ad0b9302e32a77c1caccf474a9b2191a8060d83
+      - name: Setup Node.js
+        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b
         with:
-          file_glob: 'tools/cli/test/data/*.{json,yml,yaml}'
+          node-version: 20
+          cache: 'npm'
+      - name: Install Spectral
+        run: npm install -g @stoplight/spectral@v6.11.1
+      - name: Run Spectral
+        run: spectral lint ./tools/cli/test/data/**/*.{json,yml,yaml} --ruleset=.spectral.yaml
 
       
