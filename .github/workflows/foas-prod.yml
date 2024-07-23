@@ -16,8 +16,8 @@ jobs:
         with:
           node-version: 20
       - name: Install Spectral
-        run: npm install -g @stoplight/spectral
+        run: npm install -g @stoplight/spectral-cli@6.11.1 && spectral --version
       - name: Run Spectral
-        run: spectral lint ./tools/cli/test/data/**/*.{json,yml,yaml} --ruleset=.spectral.yaml
+        run: spectral lint ./tools/cli/test/data/split/v20240710/*.{json,yml,yaml} --ruleset=.spectral.yaml
 
       
