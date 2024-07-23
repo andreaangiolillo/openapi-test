@@ -10,7 +10,7 @@ on:
       api_bot_pat:
         required: true
 jobs:  
-  run-required-validations:
+  required-validations:
       runs-on: ubuntu-latest
       steps:
         - name: Checkout repository

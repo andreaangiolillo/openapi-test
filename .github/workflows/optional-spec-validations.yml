@@ -6,7 +6,7 @@ on:
         required: true
 
 jobs:  
-  run-optional-validations:
+  optional-validations:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
