@@ -1,22 +1,19 @@
-name: 'Federated Open API Specifiction Release Process (PROD)'
+name: '(PROD) Release FOAS'
 on:
   workflow_dispatch: {}
   schedule:
     - cron: '0 9 * * *'
-
 permissions:
   contents: write
-
-
 jobs:
-  retrieve-oases:
+  validations:
     runs-on: ubuntu-latest
     steps:
-      - name: Retrieve OASes from S3 bucket
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_DEV }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-        run: |
-          aws s3 cp s3://${{ secrets.APIX_DEV_S3_BUCKET_NAME }}/openapi/foas-metadata.json foas-metadata.json
-          cat foas-metadata.json
+      - name: Checkout repository
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
+      - name: Run Spectral
+        uses: stoplightio/spectral-action@2ad0b9302e32a77c1caccf474a9b2191a8060d83
+        with:
+          file_glob: 'tools/cli/test/data/*.{json,yml,yaml}'
+
+      
