@@ -34,4 +34,4 @@ jobs:
           pushd tools/cli
           make build
           popd
-          ./tools/cli/bin/foascli split -s ./test/data/openapi-foas-dev.yaml --env prod
+          ./tools/cli/bin/foascli split -s ./tools/cli/test/data/openapi-foas-dev.yaml --env prod
