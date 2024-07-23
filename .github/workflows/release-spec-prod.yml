@@ -1,4 +1,4 @@
-name: '(PROD) Release OpenAPI Specification'
+name: '(PROD) Release OpenAPI Spec'
 on:
   workflow_dispatch: {}
   schedule:
@@ -18,6 +18,6 @@ jobs:
       - name: Install Spectral
         run: npm install -g @stoplight/spectral-cli@6.11.1 && spectral --version
       - name: Run Spectral
-        run: spectral lint ./tools/cli/test/data/split/v20240710/openapi-v2.{json,yml,yaml} --ruleset=.spectral.yaml
+        run: spectral lint ./tools/cli/test/data/apiregistry_spec.{json,yml,yaml} --ruleset=.spectral.yaml
 
       
