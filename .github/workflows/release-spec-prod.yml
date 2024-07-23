@@ -35,12 +35,16 @@ jobs:
           pushd tools/cli
           make build
           popd
-          ./tools/cli/bin/foascli split -s ./tools/cli/test/data/openapi-foas-dev.yaml --env prod
+          cp -rf "./tools/cli/test/data/openapi-foas-dev.yaml" "openapi/v2.yaml"
+          cp -rf "./tools/cli/test/data/openapi-foas-dev.json" "openapi/v2.json"
+          ./tools/cli/bin/foascli split -s ./tools/cli/test/data/openapi-foas-dev.yaml --env prod -o /openapi/v2
+          ./tools/cli/bin/foascli split -s ./tools/cli/test/data/openapi-foas-dev.json --env prod -o /openapi/v2
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          title: "APIBot: SDK update based on recent changes in Atlas API"
+          title: "release: (PROD) Release OpenAPI Spec :rocket:"
           commit-message: "release: (PROD) Release OpenAPI Spec :rocket:"
           delete-branch: true
           branch: api-bot-update
