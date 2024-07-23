@@ -20,7 +20,7 @@ jobs:
         if: ${{ failure() }}
         uses: imjohnbo/issue-bot@572eed14422c4d6ca37e870f97e7da209422f5bd
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           labels: failed-release
           title: "(PROD) Required Spectal validation failed :scream_cat:"
@@ -45,7 +45,7 @@ jobs:
         if: ${{ failure() }}
         uses: imjohnbo/issue-bot@572eed14422c4d6ca37e870f97e7da209422f5bd
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           labels: failed-release
           title: "(PROD) Required GO SDK validation failed :scream_cat:"
@@ -67,7 +67,7 @@ jobs:
         if: ${{ failure() }}
         uses: imjohnbo/issue-bot@572eed14422c4d6ca37e870f97e7da209422f5bd
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           labels: failed-release
           title: "(PROD) Optional Postman validation failed :scream_cat:"
