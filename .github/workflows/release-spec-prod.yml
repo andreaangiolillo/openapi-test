@@ -2,7 +2,7 @@ name: '(PROD) Release OpenAPI Spec'
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '0 9 * * *' # Run at 9AM UTC
 permissions:
   contents: write
 jobs:
@@ -16,8 +16,8 @@ jobs:
         with:
           node-version: 20
       - name: Install Spectral
-        run: npm install -g @stoplight/spectral-cli@6.11.1 && spectral --version
+        run: npm install -g @stoplight/spectral-cli@${SPECTRAL_VERSION} && spectral --version
+        env:
+          SPECTRAL_VERSION: ${{ vars.SPECTRAL_VERSION }}
       - name: Run Spectral
-        run: spectral lint ./tools/cli/test/data/apiregistry_spec.{json,yml,yaml} --ruleset=.spectral.yaml
-
-      
+        run: spectral lint ./tools/cli/test/data/openapi_foas*.{yml,yaml} --ruleset=.spectral.yaml # we will update this to lint the FOAS in CLOUDP-263186
