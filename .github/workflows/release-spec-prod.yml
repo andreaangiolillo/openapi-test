@@ -18,5 +18,5 @@ jobs:
       - name: Validate the FOAS can be used with the Go SDK
         run: |
           ls -al
-          source /.github/scripts/validate-foas.sh
+          source .github/scripts/sdk_validator.sh
           sdk_validate "./tools/cli/test/data/openapi_foas-dev.yaml"
