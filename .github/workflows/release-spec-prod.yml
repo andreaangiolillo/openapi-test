@@ -17,5 +17,5 @@ jobs:
           SPECTRAL_VERSION: ${{ vars.SPECTRAL_VERSION }}
       - name: Validate the FOAS can be used with the Go SDK
         run: |
-          source ./.github/scripts/validate-foas.sh
+          source .github/scripts/validate-foas.sh
           sdk_validate "./tools/cli/test/data/openapi_foas-dev.yaml"
