@@ -37,9 +37,8 @@ jobs:
           ./tools/cli/bin/foascli split -s ./tools/cli/test/data/openapi-foas-dev.yaml --env prod
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
-        env:
-            GITHUB_TOKEN: ${{ secrets.PT }}
         with:
+          git-token: ${{ secrets.PT }}
           title: "APIBot: SDK update based on recent changes in Atlas API"
           commit-message: "release: (PROD) Release OpenAPI Spec :rocket:"
           delete-branch: true
