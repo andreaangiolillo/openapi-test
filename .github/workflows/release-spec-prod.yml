@@ -9,6 +9,8 @@ jobs:
   # Required validations will stop the release if they fail
   run-required-validations:
     uses: ./.github/workflows/required-spec-validations.yml
+    secrets:
+      API_BOT_PAT: ${{ secrets.API_BOT_PAT }}
   # Optional validations won't stop the release but only open a GH issue if they fail
   run-optional-validations:
     uses: ./.github/workflows/optional-spec-validations.yml
