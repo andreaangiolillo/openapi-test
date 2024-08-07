@@ -81,7 +81,7 @@ jobs:
           working-directory: openapi
           env:
             target_env: "prod"
-          run: .github/scripts/branded_preview.sh
+          run: ../.github/scripts/branded_preview.sh
         - name: Create Pull Request
           uses: peter-evans/create-pull-request@c5a7806660adbe173f04e3e038b0ccdcd758773c
           id: create-pr
