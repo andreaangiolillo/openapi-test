@@ -58,7 +58,7 @@ jobs:
         - name: Download openapi-foas
           uses: actions/download-artifact@v4
           with:
-            name: openapi-foas
+            name: openapi-foas-prod
             github-token: ${{ secrets.api_bot_pat }}
             run-id: ${{ github.run_id }}
         - name: Build CLI

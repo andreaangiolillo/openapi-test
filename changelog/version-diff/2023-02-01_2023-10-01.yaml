@@ -1,0 +1,22 @@
+- changes:
+  - backwardCompatible: true
+    change: the response properties 'authorizedUserFirstName, authorizedUserLastName'
+      became required
+    changeCode: response-property-became-required
+  httpMethod: GET
+  operationId: getDataProtectionSettings
+  path: /api/atlas/v2/groups/{groupId}/backupCompliancePolicy
+  tag: Cloud Backups
+- changes:
+  - backwardCompatible: true
+    change: the response properties 'authorizedUserFirstName, authorizedUserLastName'
+      became required
+    changeCode: response-property-became-required
+  - backwardCompatible: false
+    change: the request properties 'authorizedUserFirstName, authorizedUserLastName'
+      became required
+    changeCode: request-property-became-required
+  httpMethod: PUT
+  operationId: updateDataProtectionSettings
+  path: /api/atlas/v2/groups/{groupId}/backupCompliancePolicy
+  tag: Cloud Backups

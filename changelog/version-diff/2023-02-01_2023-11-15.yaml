@@ -1,0 +1,165 @@
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: POST
+  operationId: createIdentityProvider
+  path: /api/atlas/v2/federationSettings/{federationSettingsId}/identityProviders
+  tag: Federated Authentication
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: DELETE
+  operationId: deleteIdentityProvider
+  path: /api/atlas/v2/federationSettings/{federationSettingsId}/identityProviders/{identityProviderId}
+  tag: Federated Authentication
+- changes:
+  - backwardCompatible: true
+    change: 'added ''#/components/schemas/FederationSamlIdentityProvider, #/components/schemas/FederationOidcWorkforceIdentityProvider,
+      #/components/schemas/FederationOidcWorkloadIdentityProvider'' to the response
+      body ''oneOf'' list for the response'
+    changeCode: response-body-one-of-added
+  - backwardCompatible: true
+    change: removed the optional properties 'acsUrl, associatedDomains, audienceUri,
+      pemFileInfo, requestBinding, responseSignatureAlgorithm, slug, ssoDebugEnabled,
+      ssoUrl, status' from the response
+    changeCode: response-optional-property-removed
+  httpMethod: GET
+  operationId: getIdentityProvider
+  path: /api/atlas/v2/federationSettings/{federationSettingsId}/identityProviders/{identityProviderId}
+  tag: Federated Authentication
+- changes:
+  - backwardCompatible: true
+    change: 'added ''#/components/schemas/FederationSamlIdentityProviderUpdate, #/components/schemas/FederationOidcWorkforceIdentityProviderUpdate,
+      #/components/schemas/FederationOidcWorkloadIdentityProviderUpdate'' to the request
+      body ''oneOf'' list'
+    changeCode: request-body-one-of-added
+  - backwardCompatible: true
+    change: 'added ''#/components/schemas/FederationSamlIdentityProvider, #/components/schemas/FederationOidcWorkforceIdentityProvider,
+      #/components/schemas/FederationOidcWorkloadIdentityProvider'' to the response
+      body ''oneOf'' list for the response'
+    changeCode: response-body-one-of-added
+  - backwardCompatible: true
+    change: removed the optional properties 'acsUrl, associatedDomains, audienceUri,
+      pemFileInfo, requestBinding, responseSignatureAlgorithm, slug, ssoDebugEnabled,
+      ssoUrl, status' from the response
+    changeCode: response-optional-property-removed
+  - backwardCompatible: true
+    change: removed the request properties 'associatedDomains, pemFileInfo, requestBinding,
+      responseSignatureAlgorithm, slug, ssoDebugEnabled, ssoUrl, status'
+    changeCode: request-property-removed
+  httpMethod: PATCH
+  operationId: updateIdentityProvider
+  path: /api/atlas/v2/federationSettings/{federationSettingsId}/identityProviders/{identityProviderId}
+  tag: Federated Authentication
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: DELETE
+  operationId: revokeJwksFromIdentityProvider
+  path: /api/atlas/v2/federationSettings/{federationSettingsId}/identityProviders/{identityProviderId}/jwks
+  tag: Federated Authentication
+- changes:
+  - backwardCompatible: true
+    change: the response properties 'authorizedUserFirstName, authorizedUserLastName'
+      became required
+    changeCode: response-property-became-required
+  httpMethod: GET
+  operationId: getDataProtectionSettings
+  path: /api/atlas/v2/groups/{groupId}/backupCompliancePolicy
+  tag: Cloud Backups
+- changes:
+  - backwardCompatible: true
+    change: the response properties 'authorizedUserFirstName, authorizedUserLastName'
+      became required
+    changeCode: response-property-became-required
+  - backwardCompatible: false
+    change: the request properties 'authorizedUserFirstName, authorizedUserLastName'
+      became required
+    changeCode: request-property-became-required
+  httpMethod: PUT
+  operationId: updateDataProtectionSettings
+  path: /api/atlas/v2/groups/{groupId}/backupCompliancePolicy
+  tag: Cloud Backups
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: getPinnedNamespaces
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/collStats/pinned
+  tag: Collection Level Metrics
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: PATCH
+  operationId: pinNamespacesPatch
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/collStats/pinned
+  tag: Collection Level Metrics
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: PUT
+  operationId: pinNamespacesPut
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/collStats/pinned
+  tag: Collection Level Metrics
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: PATCH
+  operationId: unpinNamespaces
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/collStats/unpin
+  tag: Collection Level Metrics
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: getCollStatsLatencyNamespacesForCluster
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/{clusterView}/collStats/namespaces
+  tag: Collection Level Metrics
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: getCollStatsLatencyNamespaceClusterMeasurements
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/{clusterView}/{databaseName}/{collectionName}/collStats/measurements
+  tag: Collection Level Metrics
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: getCollStatsLatencyNamespaceMetrics
+  path: /api/atlas/v2/groups/{groupId}/collStats/metrics
+  tag: Collection Level Metrics
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: getCollStatsLatencyNamespacesForHost
+  path: /api/atlas/v2/groups/{groupId}/processes/{processId}/collStats/namespaces
+  tag: Collection Level Metrics
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: getCollStatsLatencyNamespaceHostMeasurements
+  path: /api/atlas/v2/groups/{groupId}/processes/{processId}/{databaseName}/{collectionName}/collStats/measurements
+  tag: Collection Level Metrics
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: returnAllControlPlaneIPAddresses
+  path: /api/atlas/v2/unauth/controlPlaneIPAddresses
+  tag: Root

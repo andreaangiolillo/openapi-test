@@ -1,0 +1,237 @@
+- changes:
+  - backwardCompatible: true
+    change: added the new optional request property 'unacknowledgeAlert'
+    changeCode: new-optional-request-property
+  httpMethod: PATCH
+  operationId: acknowledgeAlert
+  path: /api/atlas/v2/groups/{groupId}/alerts/{alertId}
+  tag: Alerts
+- changes:
+  - backwardCompatible: true
+    change: added discriminator to 'results/items/' response property
+    changeCode: response-property-discriminator-added
+  - backwardCompatible: true
+    change: 'added ''#/components/schemas/DiskBackupSnapshotAWSExportBucket, #/components/schemas/DiskBackupSnapshotAzureExportBucket''
+      to the ''results/items/'' response property ''oneOf'' list for the response'
+    changeCode: response-property-one-of-added
+  - backwardCompatible: false
+    change: removed the required property 'results/items/iamRoleId' from the response
+    changeCode: response-required-property-removed
+  httpMethod: GET
+  operationId: listExportBuckets
+  path: /api/atlas/v2/groups/{groupId}/backup/exportBuckets
+  tag: Cloud Backups
+- changes:
+  - backwardCompatible: true
+    change: added request discriminator
+    changeCode: request-body-discriminator-added
+  - backwardCompatible: true
+    change: 'added ''#/components/schemas/DiskBackupSnapshotAWSExportBucket, #/components/schemas/DiskBackupSnapshotAzureExportBucket''
+      to the request body ''oneOf'' list'
+    changeCode: request-body-one-of-added
+  - backwardCompatible: true
+    change: added response discriminator for the response status '200'
+    changeCode: response-body-discriminator-added
+  - backwardCompatible: true
+    change: 'added ''#/components/schemas/DiskBackupSnapshotAWSExportBucket, #/components/schemas/DiskBackupSnapshotAzureExportBucket''
+      to the response body ''oneOf'' list for the response'
+    changeCode: response-body-one-of-added
+  - backwardCompatible: false
+    change: removed the required property 'iamRoleId' from the response
+    changeCode: response-required-property-removed
+  - backwardCompatible: true
+    change: removed the request property 'iamRoleId'
+    changeCode: request-property-removed
+  httpMethod: POST
+  operationId: createExportBucket
+  path: /api/atlas/v2/groups/{groupId}/backup/exportBuckets
+  tag: Cloud Backups
+- changes:
+  - backwardCompatible: true
+    change: added response discriminator for the response status '200'
+    changeCode: response-body-discriminator-added
+  - backwardCompatible: true
+    change: 'added ''#/components/schemas/DiskBackupSnapshotAWSExportBucket, #/components/schemas/DiskBackupSnapshotAzureExportBucket''
+      to the response body ''oneOf'' list for the response'
+    changeCode: response-body-one-of-added
+  - backwardCompatible: false
+    change: removed the required property 'iamRoleId' from the response
+    changeCode: response-required-property-removed
+  httpMethod: GET
+  operationId: getExportBucket
+  path: /api/atlas/v2/groups/{groupId}/backup/exportBuckets/{exportBucketId}
+  tag: Cloud Backups
+- changes:
+  - backwardCompatible: false
+    change: removed the success response with the status '200'
+    changeCode: response-success-status-removed
+  - backwardCompatible: true
+    change: added the success response with the status '204'
+    changeCode: response-success-status-added
+  httpMethod: DELETE
+  operationId: deleteAtlasSearchDeployment
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/deployment
+  tag: Atlas Search
+- changes:
+  - backwardCompatible: false
+    change: removed the success response with the status '200'
+    changeCode: response-success-status-removed
+  - backwardCompatible: true
+    change: added the success response with the status '201'
+    changeCode: response-success-status-added
+  httpMethod: POST
+  operationId: createAtlasSearchDeployment
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/deployment
+  tag: Atlas Search
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: listAtlasSearchIndexesCluster
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes
+  tag: Atlas Search
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: POST
+  operationId: createAtlasSearchIndex
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes
+  tag: Atlas Search
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: listAtlasSearchIndexes
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes/{databaseName}/{collectionName}
+  tag: Atlas Search
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: DELETE
+  operationId: deleteAtlasSearchIndexByName
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes/{databaseName}/{collectionName}/{indexName}
+  tag: Atlas Search
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: getAtlasSearchIndexByName
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes/{databaseName}/{collectionName}/{indexName}
+  tag: Atlas Search
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: PATCH
+  operationId: updateAtlasSearchIndexByName
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes/{databaseName}/{collectionName}/{indexName}
+  tag: Atlas Search
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: DELETE
+  operationId: deleteAtlasSearchIndex
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes/{indexId}
+  tag: Atlas Search
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: getAtlasSearchIndex
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes/{indexId}
+  tag: Atlas Search
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: PATCH
+  operationId: updateAtlasSearchIndex
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes/{indexId}
+  tag: Atlas Search
+- changes:
+  - backwardCompatible: true
+    change: added the new optional request property 'dropDestinationData'
+    changeCode: new-optional-request-property
+  - backwardCompatible: true
+    change: removed the request property 'dropEnabled'
+    changeCode: request-property-removed
+    hideFromChangelog: true
+  httpMethod: POST
+  operationId: createPushMigration
+  path: /api/atlas/v2/groups/{groupId}/liveMigrations
+  tag: Cloud Migration Service
+- changes:
+  - backwardCompatible: true
+    change: added the new optional request property 'dropDestinationData'
+    changeCode: new-optional-request-property
+  - backwardCompatible: true
+    change: removed the request property 'dropEnabled'
+    changeCode: request-property-removed
+    hideFromChangelog: true
+  httpMethod: POST
+  operationId: validateMigration
+  path: /api/atlas/v2/groups/{groupId}/liveMigrations/validate
+  tag: Cloud Migration Service
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: POST
+  operationId: createStreamProcessor
+  path: /api/atlas/v2/groups/{groupId}/streams/{tenantName}/processor
+  tag: Streams
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: DELETE
+  operationId: deleteStreamProcessor
+  path: /api/atlas/v2/groups/{groupId}/streams/{tenantName}/processor/{processorName}
+  tag: Streams
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: getStreamProcessor
+  path: /api/atlas/v2/groups/{groupId}/streams/{tenantName}/processor/{processorName}
+  tag: Streams
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: POST
+  operationId: startStreamProcessor
+  path: /api/atlas/v2/groups/{groupId}/streams/{tenantName}/processor/{processorName}:start
+  tag: Streams
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: POST
+  operationId: stopStreamProcessor
+  path: /api/atlas/v2/groups/{groupId}/streams/{tenantName}/processor/{processorName}:stop
+  tag: Streams
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: listStreamProcessors
+  path: /api/atlas/v2/groups/{groupId}/streams/{tenantName}/processors
+  tag: Streams
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: POST
+  operationId: migrateProjectToAnotherOrg
+  path: /api/atlas/v2/groups/{groupId}:migrate
+  tag: Projects

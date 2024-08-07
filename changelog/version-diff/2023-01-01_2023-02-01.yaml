@@ -1,0 +1,247 @@
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: POST
+  operationId: addUserToProject
+  path: /api/atlas/v2/groups/{groupId}/access
+  tag: Projects
+- changes:
+  - backwardCompatible: true
+    change: the 'backupEnabled' response's property default value 'false' was added
+    changeCode: response-property-default-value-added
+  - backwardCompatible: true
+    change: the 'numShards' response's property default value '1.00' was removed
+    changeCode: response-property-default-value-removed
+  - backwardCompatible: true
+    change: added the optional property 'results/items/replicationSpecs/items/regionConfigs'
+      to the response
+    changeCode: response-optional-property-added
+  - backwardCompatible: true
+    change: removed the optional properties 'results/items/autoScaling, results/items/mongoURI,
+      results/items/mongoURIUpdated, results/items/mongoURIWithOptions, results/items/numShards,
+      results/items/providerBackupEnabled, results/items/providerSettings, results/items/replicationFactor,
+      results/items/replicationSpec, results/items/replicationSpecs/items/regionsConfig,
+      results/items/srvAddress' from the response
+    changeCode: response-optional-property-removed
+  - backwardCompatible: true
+    change: the response optional properties 'results/items/mongoDBVersion, results/items/replicationSpecs/items/id'
+      became read-only
+    changeCode: response-optional-property-became-read-only
+    hideFromChangelog: true
+  httpMethod: GET
+  operationId: listClusters
+  path: /api/atlas/v2/groups/{groupId}/clusters
+  tag: Clusters
+- changes:
+  - backwardCompatible: true
+    change: the 'replicationSpecs/items/numShards' request property's min was set
+      to '1.00'
+    changeCode: request-property-min-set
+  - backwardCompatible: true
+    change: the request optional property 'mongoDBVersion' became read-only
+    changeCode: request-optional-property-became-read-only
+  - backwardCompatible: true
+    change: the request optional property 'replicationSpecs/items/id' became read-only
+    changeCode: request-optional-property-became-read-only
+  - backwardCompatible: true
+    change: the 'backupEnabled' request property default value 'false' was added
+    changeCode: request-property-default-value-added
+  - backwardCompatible: true
+    change: the 'numShards' request property default value '1.00' was removed
+    changeCode: request-property-default-value-removed
+  - backwardCompatible: true
+    change: the 'backupEnabled' response's property default value 'false' was added
+    changeCode: response-property-default-value-added
+  - backwardCompatible: true
+    change: the 'numShards' response's property default value '1.00' was removed
+    changeCode: response-property-default-value-removed
+  - backwardCompatible: true
+    change: added the optional property 'replicationSpecs/items/regionConfigs' to
+      the response
+    changeCode: response-optional-property-added
+  - backwardCompatible: true
+    change: removed the optional properties 'autoScaling, mongoURI, mongoURIUpdated,
+      mongoURIWithOptions, numShards, providerBackupEnabled, providerSettings, replicationFactor,
+      replicationSpec, replicationSpecs/items/regionsConfig, srvAddress' from the
+      response
+    changeCode: response-optional-property-removed
+  - backwardCompatible: true
+    change: removed the request properties 'autoScaling, numShards, providerBackupEnabled,
+      providerSettings, replicationFactor, replicationSpec, replicationSpecs/items/regionsConfig'
+    changeCode: request-property-removed
+  - backwardCompatible: true
+    change: added the new optional request property 'replicationSpecs/items/regionConfigs'
+    changeCode: new-optional-request-property
+  - backwardCompatible: true
+    change: the response optional properties 'mongoDBVersion, replicationSpecs/items/id'
+      became read-only
+    changeCode: response-optional-property-became-read-only
+    hideFromChangelog: true
+  httpMethod: POST
+  operationId: createCluster
+  path: /api/atlas/v2/groups/{groupId}/clusters
+  tag: Clusters
+- changes:
+  - backwardCompatible: true
+    change: the 'backupEnabled' response's property default value 'false' was added
+    changeCode: response-property-default-value-added
+  - backwardCompatible: true
+    change: the 'numShards' response's property default value '1.00' was removed
+    changeCode: response-property-default-value-removed
+  - backwardCompatible: true
+    change: added the optional property 'replicationSpecs/items/regionConfigs' to
+      the response
+    changeCode: response-optional-property-added
+  - backwardCompatible: true
+    change: removed the optional properties 'autoScaling, mongoURI, mongoURIUpdated,
+      mongoURIWithOptions, numShards, providerBackupEnabled, providerSettings, replicationFactor,
+      replicationSpec, replicationSpecs/items/regionsConfig, srvAddress' from the
+      response
+    changeCode: response-optional-property-removed
+  - backwardCompatible: true
+    change: the response optional properties 'mongoDBVersion, replicationSpecs/items/id'
+      became read-only
+    changeCode: response-optional-property-became-read-only
+    hideFromChangelog: true
+  httpMethod: GET
+  operationId: getCluster
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}
+  tag: Clusters
+- changes:
+  - backwardCompatible: true
+    change: the 'replicationSpecs/items/numShards' request property's min was set
+      to '1.00'
+    changeCode: request-property-min-set
+  - backwardCompatible: true
+    change: the request optional property 'mongoDBVersion' became read-only
+    changeCode: request-optional-property-became-read-only
+  - backwardCompatible: true
+    change: the request optional property 'replicationSpecs/items/id' became read-only
+    changeCode: request-optional-property-became-read-only
+  - backwardCompatible: true
+    change: the 'backupEnabled' request property default value 'false' was added
+    changeCode: request-property-default-value-added
+  - backwardCompatible: true
+    change: the 'numShards' request property default value '1.00' was removed
+    changeCode: request-property-default-value-removed
+  - backwardCompatible: true
+    change: the 'backupEnabled' response's property default value 'false' was added
+    changeCode: response-property-default-value-added
+  - backwardCompatible: true
+    change: the 'numShards' response's property default value '1.00' was removed
+    changeCode: response-property-default-value-removed
+  - backwardCompatible: true
+    change: added the optional property 'replicationSpecs/items/regionConfigs' to
+      the response
+    changeCode: response-optional-property-added
+  - backwardCompatible: true
+    change: removed the optional properties 'autoScaling, mongoURI, mongoURIUpdated,
+      mongoURIWithOptions, numShards, providerBackupEnabled, providerSettings, replicationFactor,
+      replicationSpec, replicationSpecs/items/regionsConfig, srvAddress' from the
+      response
+    changeCode: response-optional-property-removed
+  - backwardCompatible: true
+    change: removed the request properties 'autoScaling, numShards, providerBackupEnabled,
+      providerSettings, replicationFactor, replicationSpec, replicationSpecs/items/regionsConfig'
+    changeCode: request-property-removed
+  - backwardCompatible: true
+    change: added the new optional request property 'replicationSpecs/items/regionConfigs'
+    changeCode: new-optional-request-property
+  - backwardCompatible: true
+    change: the response optional properties 'mongoDBVersion, replicationSpecs/items/id'
+      became read-only
+    changeCode: response-optional-property-became-read-only
+    hideFromChangelog: true
+  httpMethod: PATCH
+  operationId: updateCluster
+  path: /api/atlas/v2/groups/{groupId}/clusters/{clusterName}
+  tag: Clusters
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: listStreamInstances
+  path: /api/atlas/v2/groups/{groupId}/streams
+  tag: Streams
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: POST
+  operationId: createStreamInstance
+  path: /api/atlas/v2/groups/{groupId}/streams
+  tag: Streams
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: DELETE
+  operationId: deleteStreamInstance
+  path: /api/atlas/v2/groups/{groupId}/streams/{tenantName}
+  tag: Streams
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: getStreamInstance
+  path: /api/atlas/v2/groups/{groupId}/streams/{tenantName}
+  tag: Streams
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: PATCH
+  operationId: updateStreamInstance
+  path: /api/atlas/v2/groups/{groupId}/streams/{tenantName}
+  tag: Streams
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: downloadStreamTenantAuditLogs
+  path: /api/atlas/v2/groups/{groupId}/streams/{tenantName}/auditLogs
+  tag: Streams
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: listStreamConnections
+  path: /api/atlas/v2/groups/{groupId}/streams/{tenantName}/connections
+  tag: Streams
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: POST
+  operationId: createStreamConnection
+  path: /api/atlas/v2/groups/{groupId}/streams/{tenantName}/connections
+  tag: Streams
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: DELETE
+  operationId: deleteStreamConnection
+  path: /api/atlas/v2/groups/{groupId}/streams/{tenantName}/connections/{connectionName}
+  tag: Streams
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: GET
+  operationId: getStreamConnection
+  path: /api/atlas/v2/groups/{groupId}/streams/{tenantName}/connections/{connectionName}
+  tag: Streams
+- changes:
+  - backwardCompatible: true
+    change: endpoint added
+    changeCode: endpoint-added
+  httpMethod: PATCH
+  operationId: updateStreamConnection
+  path: /api/atlas/v2/groups/{groupId}/streams/{tenantName}/connections/{connectionName}
+  tag: Streams
