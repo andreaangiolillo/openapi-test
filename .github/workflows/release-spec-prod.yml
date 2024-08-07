@@ -78,6 +78,7 @@ jobs:
             body: See https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
             token: ${{ secrets.GITHUB_TOKEN }}
         - name: Create branded_preview.html 
+          working-directory: openapi
           env:
             target_env: "prod"
           run: .github/scripts/branded_preview.sh

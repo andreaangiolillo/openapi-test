@@ -6,7 +6,7 @@ if [[ "$branch_name" == "prod" ]]; then
     branch_name="main"
 fi
 
-foascli versions -s openapi/v2.json --env "${branch_name:?}" -o versions.json
+foascli versions -s v2.json --env "${branch_name:?}" -o versions.json
 # Load versions from versions.json
 versions=()
 
