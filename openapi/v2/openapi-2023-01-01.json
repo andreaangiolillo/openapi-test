@@ -21363,6 +21363,7 @@
           "200": {
             "content": {
               "application/vnd.atlas.2023-01-01+csv": {
+                "example": "Invoice Number,666acb8787ba43606905dcae,\nBilling Period,\"June 1, 2024 - July 1, 2024\",\nOrganization Name,Test 2,\nOrganization ID,666acb8787ba43606905dcac,\n\nDate,Usage Date,Description,Note,Organization Name,Organization ID,Project,Project ID,SKU,Region,Cluster,Replica Set,Config Server,Application,Unit,Unit Price,Quantity,Discount Percent,Amount\n",
                 "schema": {
                   "type": "string"
                 },
@@ -27421,6 +27422,113 @@
             "type": "boolean"
           }
         },
+        "type": "object"
+      },
+      "AzureKeyVaultEARPrivateEndpoint": {
+        "description": "Azure Key Vault Encryption At Rest Private Endpoint.",
+        "properties": {
+          "cloudProvider": {
+            "description": "Human-readable label that identifies the cloud provider for the Encryption At Rest private endpoint.",
+            "enum": [
+              "AZURE"
+            ],
+            "readOnly": true,
+            "type": "string"
+          },
+          "errorMessage": {
+            "description": "Error message for failures associated with the Encryption At Rest private endpoint.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "id": {
+            "description": "Unique 24-hexadecimal digit string that identifies the Private Endpoint Service.",
+            "example": "32b6e34b3d91647abb20e7b8",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^([a-f0-9]{24})$",
+            "readOnly": true,
+            "type": "string"
+          },
+          "privateEndpointConnectionName": {
+            "description": "Connection name of the Azure Private Endpoint.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "regionName": {
+            "description": "Cloud provider region in which the Encryption At Rest private endpoint is located.",
+            "oneOf": [
+              {
+                "description": "Microsoft Azure Regions.",
+                "enum": [
+                  "US_CENTRAL",
+                  "US_EAST",
+                  "US_EAST_2",
+                  "US_NORTH_CENTRAL",
+                  "US_WEST",
+                  "US_SOUTH_CENTRAL",
+                  "EUROPE_NORTH",
+                  "EUROPE_WEST",
+                  "US_WEST_CENTRAL",
+                  "US_WEST_2",
+                  "US_WEST_3",
+                  "CANADA_EAST",
+                  "CANADA_CENTRAL",
+                  "BRAZIL_SOUTH",
+                  "BRAZIL_SOUTHEAST",
+                  "AUSTRALIA_CENTRAL",
+                  "AUSTRALIA_CENTRAL_2",
+                  "AUSTRALIA_EAST",
+                  "AUSTRALIA_SOUTH_EAST",
+                  "GERMANY_CENTRAL",
+                  "GERMANY_NORTH_EAST",
+                  "GERMANY_WEST_CENTRAL",
+                  "GERMANY_NORTH",
+                  "SWEDEN_CENTRAL",
+                  "SWEDEN_SOUTH",
+                  "SWITZERLAND_NORTH",
+                  "SWITZERLAND_WEST",
+                  "UK_SOUTH",
+                  "UK_WEST",
+                  "NORWAY_EAST",
+                  "NORWAY_WEST",
+                  "INDIA_CENTRAL",
+                  "INDIA_SOUTH",
+                  "INDIA_WEST",
+                  "CHINA_EAST",
+                  "CHINA_NORTH",
+                  "ASIA_EAST",
+                  "JAPAN_EAST",
+                  "JAPAN_WEST",
+                  "ASIA_SOUTH_EAST",
+                  "KOREA_CENTRAL",
+                  "KOREA_SOUTH",
+                  "FRANCE_CENTRAL",
+                  "FRANCE_SOUTH",
+                  "SOUTH_AFRICA_NORTH",
+                  "SOUTH_AFRICA_WEST",
+                  "UAE_CENTRAL",
+                  "UAE_NORTH",
+                  "QATAR_CENTRAL"
+                ],
+                "title": "Azure Regions",
+                "type": "string"
+              }
+            ],
+            "type": "object"
+          },
+          "status": {
+            "description": "State of the Encryption At Rest private endpoint.",
+            "enum": [
+              "INITIATING",
+              "PENDING_ACCEPTANCE",
+              "ACTIVE",
+              "FAILED"
+            ],
+            "readOnly": true,
+            "type": "string"
+          }
+        },
+        "title": "Azure Key Vault EAR Private Endpoint",
         "type": "object"
       },
       "AzureNetworkPeeringConnectionSettings": {
@@ -36761,7 +36869,7 @@
           },
           "hostnameSchemaType": {
             "default": "PUBLIC",
-            "description": "The network type to use between the migration host and the target cluster.",
+            "description": "The network type to use between the migration host and the destination cluster.",
             "enum": [
               "PUBLIC",
               "PRIVATE_LINK",
@@ -38118,6 +38226,113 @@
         "readOnly": true,
         "type": "object"
       },
+      "EARPrivateEndpoint": {
+        "description": "Encryption At Rest Private Endpoint.",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/AzureKeyVaultEARPrivateEndpoint"
+          }
+        ],
+        "properties": {
+          "cloudProvider": {
+            "description": "Human-readable label that identifies the cloud provider for the Encryption At Rest private endpoint.",
+            "enum": [
+              "AZURE"
+            ],
+            "readOnly": true,
+            "type": "string"
+          },
+          "errorMessage": {
+            "description": "Error message for failures associated with the Encryption At Rest private endpoint.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "id": {
+            "description": "Unique 24-hexadecimal digit string that identifies the Private Endpoint Service.",
+            "example": "32b6e34b3d91647abb20e7b8",
+            "maxLength": 24,
+            "minLength": 24,
+            "pattern": "^([a-f0-9]{24})$",
+            "readOnly": true,
+            "type": "string"
+          },
+          "regionName": {
+            "description": "Cloud provider region in which the Encryption At Rest private endpoint is located.",
+            "oneOf": [
+              {
+                "description": "Microsoft Azure Regions.",
+                "enum": [
+                  "US_CENTRAL",
+                  "US_EAST",
+                  "US_EAST_2",
+                  "US_NORTH_CENTRAL",
+                  "US_WEST",
+                  "US_SOUTH_CENTRAL",
+                  "EUROPE_NORTH",
+                  "EUROPE_WEST",
+                  "US_WEST_CENTRAL",
+                  "US_WEST_2",
+                  "US_WEST_3",
+                  "CANADA_EAST",
+                  "CANADA_CENTRAL",
+                  "BRAZIL_SOUTH",
+                  "BRAZIL_SOUTHEAST",
+                  "AUSTRALIA_CENTRAL",
+                  "AUSTRALIA_CENTRAL_2",
+                  "AUSTRALIA_EAST",
+                  "AUSTRALIA_SOUTH_EAST",
+                  "GERMANY_CENTRAL",
+                  "GERMANY_NORTH_EAST",
+                  "GERMANY_WEST_CENTRAL",
+                  "GERMANY_NORTH",
+                  "SWEDEN_CENTRAL",
+                  "SWEDEN_SOUTH",
+                  "SWITZERLAND_NORTH",
+                  "SWITZERLAND_WEST",
+                  "UK_SOUTH",
+                  "UK_WEST",
+                  "NORWAY_EAST",
+                  "NORWAY_WEST",
+                  "INDIA_CENTRAL",
+                  "INDIA_SOUTH",
+                  "INDIA_WEST",
+                  "CHINA_EAST",
+                  "CHINA_NORTH",
+                  "ASIA_EAST",
+                  "JAPAN_EAST",
+                  "JAPAN_WEST",
+                  "ASIA_SOUTH_EAST",
+                  "KOREA_CENTRAL",
+                  "KOREA_SOUTH",
+                  "FRANCE_CENTRAL",
+                  "FRANCE_SOUTH",
+                  "SOUTH_AFRICA_NORTH",
+                  "SOUTH_AFRICA_WEST",
+                  "UAE_CENTRAL",
+                  "UAE_NORTH",
+                  "QATAR_CENTRAL"
+                ],
+                "title": "Azure Regions",
+                "type": "string"
+              }
+            ],
+            "type": "object"
+          },
+          "status": {
+            "description": "State of the Encryption At Rest private endpoint.",
+            "enum": [
+              "INITIATING",
+              "PENDING_ACCEPTANCE",
+              "ACTIVE",
+              "FAILED"
+            ],
+            "readOnly": true,
+            "type": "string"
+          }
+        },
+        "title": "Encryption At Rest Private Endpoint",
+        "type": "object"
+      },
       "EmailNotification": {
         "description": "Email notification configuration for MongoDB Cloud to send information when an event triggers an alert condition.",
         "properties": {
@@ -38168,6 +38383,31 @@
             "$ref": "#/components/schemas/GoogleCloudKMS"
           }
         },
+        "type": "object"
+      },
+      "EncryptionAtRestPrivateEndpointRequest": {
+        "description": "Create or delete private endpoints from the specified regions list.",
+        "properties": {
+          "cloudProvider": {
+            "description": "Cloud service provider name.",
+            "enum": [
+              "AZURE"
+            ],
+            "type": "string"
+          },
+          "regions": {
+            "description": "List of regions.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "cloudProvider"
+        ],
+        "title": "Encryption At Rest Private Endpoints setup.",
         "type": "object"
       },
       "EncryptionKeyAlertConfigViewForNdsGroup": {
@@ -41320,11 +41560,39 @@
         "properties": {
           "customZoneMapping": {
             "additionalProperties": {
-              "description": "List that contains comma-separated key value pairs to map zones to geographic regions. These pairs map an ISO 3166-1a2 location code, with an ISO 3166-2 subdivision code when possible, to a unique 24-hexadecimal string that identifies the custom zone.\n\nThis parameter returns an empty object if no custom zones exist.",
+              "description": "List that contains comma-separated key value pairs to map zones to geographic regions. These pairs map an ISO 3166-1a2 location code, with an ISO 3166-2 subdivision code when possible, to a unique 24-hexadecimal string that identifies the custom zone.\n\n The 24-hexadecimal string corresponds to a `Replication Specifications` `id` property.\n\nThis parameter returns an empty object if no custom zones exist.",
               "readOnly": true,
               "type": "string"
             },
-            "description": "List that contains comma-separated key value pairs to map zones to geographic regions. These pairs map an ISO 3166-1a2 location code, with an ISO 3166-2 subdivision code when possible, to a unique 24-hexadecimal string that identifies the custom zone.\n\nThis parameter returns an empty object if no custom zones exist.",
+            "description": "List that contains comma-separated key value pairs to map zones to geographic regions. These pairs map an ISO 3166-1a2 location code, with an ISO 3166-2 subdivision code when possible, to a unique 24-hexadecimal string that identifies the custom zone.\n\n The 24-hexadecimal string corresponds to a `Replication Specifications` `id` property.\n\nThis parameter returns an empty object if no custom zones exist.",
+            "readOnly": true,
+            "type": "object"
+          },
+          "managedNamespaces": {
+            "description": "List that contains a namespace for a Global Cluster. MongoDB Cloud manages this cluster.",
+            "items": {
+              "$ref": "#/components/schemas/ManagedNamespaces"
+            },
+            "readOnly": true,
+            "type": "array"
+          },
+          "selfManagedSharding": {
+            "description": "Boolean that controls which management mode the Global Cluster is operating under. If this parameter is true Self-Managed Sharding is enabled and users are in control of the zone sharding within the Global Cluster. If this parameter is false Atlas-Managed Sharding is enabled and Atlas is control of zone sharding within the Global Cluster.",
+            "readOnly": true,
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "GeoSharding20250101": {
+        "properties": {
+          "customZoneMapping": {
+            "additionalProperties": {
+              "description": "List that contains comma-separated key value pairs to map zones to geographic regions. These pairs map an ISO 3166-1a2 location code, with an ISO 3166-2 subdivision code when possible, to a unique 24-hexadecimal string that identifies the custom zone.\n\n The 24-hexadecimal string corresponds to a `Replication Specifications` `zoneId` property.\n\nThis parameter returns an empty object if no custom zones exist.",
+              "readOnly": true,
+              "type": "string"
+            },
+            "description": "List that contains comma-separated key value pairs to map zones to geographic regions. These pairs map an ISO 3166-1a2 location code, with an ISO 3166-2 subdivision code when possible, to a unique 24-hexadecimal string that identifies the custom zone.\n\n The 24-hexadecimal string corresponds to a `Replication Specifications` `zoneId` property.\n\nThis parameter returns an empty object if no custom zones exist.",
             "readOnly": true,
             "type": "object"
           },
@@ -45781,9 +46049,9 @@
             "type": "integer"
           },
           "migrationHosts": {
-            "description": "List of hosts running MongoDB Agents. These Agents can transfer your MongoDB data between one source and one target cluster.",
+            "description": "List of hosts running MongoDB Agents. These Agents can transfer your MongoDB data between one source and one destination cluster.",
             "items": {
-              "description": "One host running a MongoDB Agent. This Agent can transfer your MongoDB data between one source and one target cluster.",
+              "description": "One host running a MongoDB Agent. This Agent can transfer your MongoDB data between one source and one destination cluster.",
               "example": "vm001.example.com",
               "pattern": "^([0-9]{1,3}\\.){3}[0-9]{1,3}|([0-9a-f]{1,4}:){7}([0-9a-f]{1,4})|(([a-z0-9]+\\.){1,10}[a-z]+)?$",
               "type": "string"
@@ -45797,7 +46065,7 @@
             "type": "boolean"
           },
           "status": {
-            "description": "Progress made in migrating one cluster to MongoDB Atlas.\n\n| Status   | Explanation |\n|----------|-------------|\n| NEW      | Someone scheduled a local cluster migration to MongoDB Atlas. |\n| FAILED   | The cluster migration to MongoDB Atlas failed.                |\n| COMPLETE | The cluster migration to MongoDB Atlas succeeded.             |\n| EXPIRED  | MongoDB Atlas prepares to begin the cut over of the migrating cluster when source and target clusters have almost synchronized. If `\"readyForCutover\" : true`, this synchronization starts a timer of 120 hours. You can extend this timer. If the timer expires, MongoDB Atlas returns this status. |\n| WORKING  | The cluster migration to MongoDB Atlas is performing one of the following tasks:<ul><li>Preparing connections to source and target clusters</li><li>Replicating data from source to target</li><li>Verifying MongoDB Atlas connection settings</li><li>Stopping replication after the cut over</li></ul> |\n",
+            "description": "Progress made in migrating one cluster to MongoDB Atlas.\n\n| Status   | Explanation |\n|----------|-------------|\n| NEW      | Someone scheduled a local cluster migration to MongoDB Atlas. |\n| FAILED   | The cluster migration to MongoDB Atlas failed.                |\n| COMPLETE | The cluster migration to MongoDB Atlas succeeded.             |\n| EXPIRED  | MongoDB Atlas prepares to begin the cut over of the migrating cluster when source and destination clusters have almost synchronized. If `\"readyForCutover\" : true`, this synchronization starts a timer of 120 hours. You can extend this timer. If the timer expires, MongoDB Atlas returns this status. |\n| WORKING  | The cluster migration to MongoDB Atlas is performing one of the following tasks:<ul><li>Preparing connections to source and destination clusters</li><li>Replicating data from source to destination</li><li>Verifying MongoDB Atlas connection settings</li><li>Stopping replication after the cut over</li></ul> |\n",
             "enum": [
               "NEW",
               "WORKING",
@@ -45807,43 +46075,6 @@
             ],
             "readOnly": true,
             "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "ManagedNamespaceView": {
-        "properties": {
-          "collection": {
-            "description": "Human-readable label of the collection to manage for this Global Cluster.",
-            "type": "string"
-          },
-          "customShardKey": {
-            "description": "Database parameter used to divide the *collection* into shards. Global clusters require a compound shard key. This compound shard key combines the location parameter and the user-selected custom key.",
-            "type": "string"
-          },
-          "db": {
-            "description": "Human-readable label of the database to manage for this Global Cluster.",
-            "type": "string"
-          },
-          "isCustomShardKeyHashed": {
-            "default": false,
-            "description": "Flag that indicates whether someone hashed the custom shard key. If this parameter returns `false`, this cluster uses ranged sharding.",
-            "type": "boolean"
-          },
-          "isShardKeyUnique": {
-            "default": false,
-            "description": "Flag that indicates whether the underlying index enforces unique values.",
-            "type": "boolean"
-          },
-          "numInitialChunks": {
-            "description": "Minimum number of chunks to create initially when sharding an empty collection with a hashed shard key.",
-            "format": "int64",
-            "type": "integer"
-          },
-          "presplitHashedZones": {
-            "default": false,
-            "description": "Flag that indicates whether MongoDB Cloud should create and distribute initial chunks for an empty or non-existing collection. MongoDB Cloud distributes data based on the defined zones and zone ranges for the collection.",
-            "type": "boolean"
           }
         },
         "type": "object"
@@ -49455,6 +49686,38 @@
             "description": "List of returned documents that MongoDB Cloud providers when completing this request.",
             "items": {
               "$ref": "#/components/schemas/DiskBackupExportJob"
+            },
+            "readOnly": true,
+            "type": "array"
+          },
+          "totalCount": {
+            "description": "Total number of documents available. MongoDB Cloud omits this value if `includeCount` is set to `false`.",
+            "format": "int32",
+            "minimum": 0,
+            "readOnly": true,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "PaginatedApiAtlasEARPrivateEndpointView": {
+        "properties": {
+          "links": {
+            "description": "List of one or more Uniform Resource Locators (URLs) that point to API sub-resources, related API resources, or both. RFC 5988 outlines these relationships.",
+            "externalDocs": {
+              "description": "Web Linking Specification (RFC 5988)",
+              "url": "https://datatracker.ietf.org/doc/html/rfc5988"
+            },
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            },
+            "readOnly": true,
+            "type": "array"
+          },
+          "results": {
+            "description": "List of returned documents that MongoDB Cloud providers when completing this request.",
+            "items": {
+              "$ref": "#/components/schemas/EARPrivateEndpoint"
             },
             "readOnly": true,
             "type": "array"
