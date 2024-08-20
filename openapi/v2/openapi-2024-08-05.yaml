@@ -31194,7 +31194,7 @@ info:
         ```
         curl --user "{PUBLIC-KEY}:{PRIVATE-KEY}" \
           --digest \
-          --header "Accept: application/vnd.atlas.2024-05-30+json" \
+          --header "Accept: application/vnd.atlas.2024-08-05+json" \
           -X GET "https://cloud.mongodb.com/api/atlas/v2/groups/{groupId}/dbAccessHistory/clusters/{clusterName}?pretty=true"
         ```
 
@@ -33540,8 +33540,7 @@ paths:
                 - Cloud Provider Access
     /api/atlas/v2/groups/{groupId}/clusters:
         get:
-            deprecated: true
-            description: 'Returns the details for all clusters in the specific project to which you have access. Clusters contain a group of hosts that maintain the same data set. The response includes clusters with asymmetrically-sized shards. To use this resource, the requesting API Key must have the Project Read Only role. This feature is not  available for serverless clusters. Deprecated versions: v2-{2023-01-01}'
+            description: 'Returns the details for all clusters in the specific project to which you have access. Clusters contain a group of hosts that maintain the same data set. The response includes clusters with asymmetrically-sized shards. To use this resource, the requesting API Key must have the Project Read Only role. This feature is not  available for serverless clusters. Deprecated versions: v2-{2023-02-01}, v2-{2023-01-01}'
             operationId: listClusters
             parameters:
                 - $ref: '#/components/parameters/envelope'
@@ -33559,10 +33558,10 @@ paths:
             responses:
                 "200":
                     content:
-                        application/vnd.atlas.2023-02-01+json:
+                        application/vnd.atlas.2024-08-05+json:
                             schema:
-                                $ref: '#/components/schemas/PaginatedAdvancedClusterDescriptionView'
-                            x-xgen-version: "2023-02-01"
+                                $ref: '#/components/schemas/PaginatedClusterDescription20240805'
+                            x-xgen-version: "2024-08-05"
                     description: OK
                 "401":
                     $ref: '#/components/responses/unauthorized'
@@ -33573,10 +33572,8 @@ paths:
             summary: Return All Clusters in One Project
             tags:
                 - Clusters
-            x-sunset: "2026-03-01"
         post:
-            deprecated: true
-            description: 'Creates one cluster in the specified project. Clusters contain a group of hosts that maintain the same data set. This resource can create clusters with asymmetrically-sized shards. Each project supports up to 25 database deployments. To use this resource, the requesting API Key must have the Project Owner role. This feature is not available for serverless clusters. Deprecated versions: v2-{2023-01-01}'
+            description: 'Creates one cluster in the specified project. Clusters contain a group of hosts that maintain the same data set. This resource can create clusters with asymmetrically-sized shards. Each project supports up to 25 database deployments. To use this resource, the requesting API Key must have the Project Owner role. This feature is not available for serverless clusters. Deprecated versions: v2-{2023-02-01}, v2-{2023-01-01}'
             operationId: createCluster
             parameters:
                 - $ref: '#/components/parameters/envelope'
@@ -33584,18 +33581,146 @@ paths:
                 - $ref: '#/components/parameters/pretty'
             requestBody:
                 content:
-                    application/vnd.atlas.2023-02-01+json:
+                    application/vnd.atlas.2024-08-05+json:
+                        examples:
+                            Cluster:
+                                description: Cluster
+                                value: |
+                                    {
+                                      "clusterType": "SHARDED",
+                                      "links": [],
+                                      "name": "myCluster",
+                                      "replicationSpecs": [
+                                        {
+                                          "regionConfigs": [
+                                            {
+                                              "analyticsAutoScaling": {
+                                                "autoIndexing": {
+                                                  "enabled": false
+                                                },
+                                                "compute": {
+                                                  "enabled": true,
+                                                  "maxInstanceSize": "M40",
+                                                  "minInstanceSize": "M30",
+                                                  "scaleDownEnabled": true
+                                                },
+                                                "diskGB": {
+                                                  "enabled": true
+                                                }
+                                              },
+                                              "analyticsSpecs": {
+                                                "instanceSize": "M30",
+                                                "nodeCount": 0,
+                                                "diskSizeGB": 10.0
+                                              },
+                                              "autoScaling": {
+                                                "autoIndexing": {
+                                                  "enabled": false
+                                                },
+                                                "compute": {
+                                                  "enabled": true,
+                                                  "maxInstanceSize": "M40",
+                                                  "minInstanceSize": "M30",
+                                                  "scaleDownEnabled": true
+                                                },
+                                                "diskGB": {
+                                                  "enabled": true
+                                                }
+                                              },
+                                              "electableSpecs": {
+                                                "instanceSize": "M30",
+                                                "nodeCount": 3,
+                                                "diskSizeGB": 10.0
+                                              },
+                                              "hiddenSecondarySpecs": {
+                                                "instanceSize": "M30",
+                                                "nodeCount": 0,
+                                                "diskSizeGB": 10.0
+                                              },
+                                              "priority": 7,
+                                              "providerName": "AWS",
+                                              "readOnlySpecs": {
+                                                "instanceSize": "M30",
+                                                "nodeCount": 0,
+                                                "diskSizeGB": 10.0
+                                              },
+                                              "regionName": "US_EAST_1"
+                                            }
+                                          ],
+                                          "zoneName": "Zone 1"
+                                        },
+                                        {
+                                            "regionConfigs": [
+                                              {
+                                                "analyticsAutoScaling": {
+                                                  "autoIndexing": {
+                                                    "enabled": false
+                                                  },
+                                                  "compute": {
+                                                    "enabled": true,
+                                                    "maxInstanceSize": "M20",
+                                                    "minInstanceSize": "M10",
+                                                    "scaleDownEnabled": true
+                                                  },
+                                                  "diskGB": {
+                                                    "enabled": true
+                                                  }
+                                                },
+                                                "analyticsSpecs": {
+                                                  "instanceSize": "M10",
+                                                  "nodeCount": 0,
+                                                  "diskSizeGB": 10.0
+                                                },
+                                                "autoScaling": {
+                                                  "autoIndexing": {
+                                                    "enabled": false
+                                                  },
+                                                  "compute": {
+                                                    "enabled": true,
+                                                    "maxInstanceSize": "M20",
+                                                    "minInstanceSize": "M10",
+                                                    "scaleDownEnabled": true
+                                                  },
+                                                  "diskGB": {
+                                                    "enabled": true
+                                                  }
+                                                },
+                                                "electableSpecs": {
+                                                  "instanceSize": "M10",
+                                                  "nodeCount": 3,
+                                                  "diskSizeGB": 10.0
+                                                },
+                                                "hiddenSecondarySpecs": {
+                                                  "instanceSize": "M10",
+                                                  "nodeCount": 0,
+                                                  "diskSizeGB": 10.0
+                                                },
+                                                "priority": 7,
+                                                "providerName": "AWS",
+                                                "readOnlySpecs": {
+                                                  "instanceSize": "M10",
+                                                  "nodeCount": 0,
+                                                  "diskSizeGB": 10.0
+                                                },
+                                                "regionName": "US_EAST_1"
+                                              }
+                                            ],
+                                            "zoneName": "Zone 1"
+                                          },
+                                      ]
+                                    }
                         schema:
-                            $ref: '#/components/schemas/AdvancedClusterDescription'
+                            $ref: '#/components/schemas/ClusterDescription20240805'
+                        x-xgen-version: "2024-08-05"
                 description: Cluster to create in the specific project.
                 required: true
             responses:
                 "201":
                     content:
-                        application/vnd.atlas.2023-02-01+json:
+                        application/vnd.atlas.2024-08-05+json:
                             schema:
-                                $ref: '#/components/schemas/AdvancedClusterDescription'
-                            x-xgen-version: "2023-02-01"
+                                $ref: '#/components/schemas/ClusterDescription20240805'
+                            x-xgen-version: "2024-08-05"
                     description: Created
                 "400":
                     $ref: '#/components/responses/badRequest'
@@ -33614,7 +33739,6 @@ paths:
             summary: Create One Cluster from One Project
             tags:
                 - Clusters
-            x-sunset: "2026-03-01"
     /api/atlas/v2/groups/{groupId}/clusters/{clusterName}:
         delete:
             description: 'Removes one cluster from the specified project. The cluster must have termination protection disabled in order to be deleted. To use this resource, the requesting API Key must have the Project Owner role. This feature is not available for serverless clusters. Deprecated versions: v2-{2023-01-01}'
@@ -33659,8 +33783,7 @@ paths:
             tags:
                 - Clusters
         get:
-            deprecated: true
-            description: 'Returns the details for one cluster in the specified project. Clusters contain a group of hosts that maintain the same data set. The response includes clusters with asymmetrically-sized shards. To use this resource, the requesting API Key must have the Project Read Only role. This feature is not available for serverless clusters. Deprecated versions: v2-{2023-01-01}'
+            description: 'Returns the details for one cluster in the specified project. Clusters contain a group of hosts that maintain the same data set. The response includes clusters with asymmetrically-sized shards. To use this resource, the requesting API Key must have the Project Read Only role. This feature is not available for serverless clusters. Deprecated versions: v2-{2023-02-01}, v2-{2023-01-01}'
             operationId: getCluster
             parameters:
                 - $ref: '#/components/parameters/envelope'
@@ -33678,10 +33801,10 @@ paths:
             responses:
                 "200":
                     content:
-                        application/vnd.atlas.2023-02-01+json:
+                        application/vnd.atlas.2024-08-05+json:
                             schema:
-                                $ref: '#/components/schemas/AdvancedClusterDescription'
-                            x-xgen-version: "2023-02-01"
+                                $ref: '#/components/schemas/ClusterDescription20240805'
+                            x-xgen-version: "2024-08-05"
                     description: OK
                 "401":
                     $ref: '#/components/responses/unauthorized'
@@ -33696,10 +33819,8 @@ paths:
             summary: Return One Cluster from One Project
             tags:
                 - Clusters
-            x-sunset: "2026-03-01"
         patch:
-            deprecated: true
-            description: 'Updates the details for one cluster in the specified project. Clusters contain a group of hosts that maintain the same data set. This resource can update clusters with asymmetrically-sized shards. To update a cluster''s termination protection, the requesting API Key must have the Project Owner role. For all other updates, the requesting API Key must have the Project Cluster Manager role. You can''t modify a paused cluster (`paused : true`). You must call this endpoint to set `paused : false`. After this endpoint responds with `paused : false`, you can call it again with the changes you want to make to the cluster. This feature is not available for serverless clusters. Deprecated versions: v2-{2023-01-01}'
+            description: 'Updates the details for one cluster in the specified project. Clusters contain a group of hosts that maintain the same data set. This resource can update clusters with asymmetrically-sized shards. To update a cluster''s termination protection, the requesting API Key must have the Project Owner role. For all other updates, the requesting API Key must have the Project Cluster Manager role. You can''t modify a paused cluster (`paused : true`). You must call this endpoint to set `paused : false`. After this endpoint responds with `paused : false`, you can call it again with the changes you want to make to the cluster. This feature is not available for serverless clusters. Deprecated versions: v2-{2023-02-01}, v2-{2023-01-01}'
             operationId: updateCluster
             parameters:
                 - $ref: '#/components/parameters/envelope'
@@ -33716,18 +33837,19 @@ paths:
                     type: string
             requestBody:
                 content:
-                    application/vnd.atlas.2023-02-01+json:
+                    application/vnd.atlas.2024-08-05+json:
                         schema:
-                            $ref: '#/components/schemas/AdvancedClusterDescription'
+                            $ref: '#/components/schemas/ClusterDescription20240805'
+                        x-xgen-version: "2024-08-05"
                 description: Cluster to update in the specified project.
                 required: true
             responses:
                 "200":
                     content:
-                        application/vnd.atlas.2023-02-01+json:
+                        application/vnd.atlas.2024-08-05+json:
                             schema:
-                                $ref: '#/components/schemas/AdvancedClusterDescription'
-                            x-xgen-version: "2023-02-01"
+                                $ref: '#/components/schemas/ClusterDescription20240805'
+                            x-xgen-version: "2024-08-05"
                     description: OK
                 "400":
                     $ref: '#/components/responses/badRequest'
@@ -33744,7 +33866,6 @@ paths:
             summary: Modify One Cluster from One Project
             tags:
                 - Clusters
-            x-sunset: "2026-03-01"
     /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/{clusterView}/{databaseName}/{collectionName}/collStats/measurements:
         get:
             description: Get a list of the Coll Stats Latency cluster-level measurements for the given namespace.
@@ -34175,8 +34296,7 @@ paths:
                 - Cloud Backups
     /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/schedule:
         delete:
-            deprecated: true
-            description: Removes all cloud backup schedules for the specified cluster. This schedule defines when MongoDB Cloud takes scheduled snapshots and how long it stores those snapshots. To use this resource, the requesting API Key must have the Project Atlas Admin role.
+            description: 'Removes all cloud backup schedules for the specified cluster. This schedule defines when MongoDB Cloud takes scheduled snapshots and how long it stores those snapshots. To use this resource, the requesting API Key must have the Project Atlas Admin role. Deprecated versions: v2-{2023-01-01}'
             operationId: deleteAllBackupSchedules
             parameters:
                 - $ref: '#/components/parameters/envelope'
@@ -34193,10 +34313,10 @@ paths:
             responses:
                 "200":
                     content:
-                        application/vnd.atlas.2023-01-01+json:
+                        application/vnd.atlas.2024-08-05+json:
                             schema:
-                                $ref: '#/components/schemas/DiskBackupSnapshotSchedule'
-                            x-xgen-version: "2023-01-01"
+                                $ref: '#/components/schemas/DiskBackupSnapshotSchedule20240805'
+                            x-xgen-version: "2024-08-05"
                     description: OK
                 "400":
                     $ref: '#/components/responses/badRequest'
@@ -34209,10 +34329,8 @@ paths:
             summary: Remove All Cloud Backup Schedules
             tags:
                 - Cloud Backups
-            x-sunset: "2025-08-05"
         get:
-            deprecated: true
-            description: Returns the cloud backup schedule for the specified cluster within the specified project. This schedule defines when MongoDB Cloud takes scheduled snapshots and how long it stores those snapshots. To use this resource, the requesting API Key must have the Project Read Only role.
+            description: 'Returns the cloud backup schedule for the specified cluster within the specified project. This schedule defines when MongoDB Cloud takes scheduled snapshots and how long it stores those snapshots. To use this resource, the requesting API Key must have the Project Read Only role. Deprecated versions: v2-{2023-01-01}'
             operationId: getBackupSchedule
             parameters:
                 - $ref: '#/components/parameters/envelope'
@@ -34230,10 +34348,10 @@ paths:
             responses:
                 "200":
                     content:
-                        application/vnd.atlas.2023-01-01+json:
+                        application/vnd.atlas.2024-08-05+json:
                             schema:
-                                $ref: '#/components/schemas/DiskBackupSnapshotSchedule'
-                            x-xgen-version: "2023-01-01"
+                                $ref: '#/components/schemas/DiskBackupSnapshotSchedule20240805'
+                            x-xgen-version: "2024-08-05"
                     description: OK
                 "404":
                     $ref: '#/components/responses/notFound'
@@ -34244,10 +34362,8 @@ paths:
             summary: Return One Cloud Backup Schedule
             tags:
                 - Cloud Backups
-            x-sunset: "2025-08-05"
         patch:
-            deprecated: true
-            description: Updates the cloud backup schedule for one cluster within the specified project. This schedule defines when MongoDB Cloud takes scheduled snapshots and how long it stores those snapshots. To use this resource, the requesting API Key must have the Project Owner role.
+            description: 'Updates the cloud backup schedule for one cluster within the specified project. This schedule defines when MongoDB Cloud takes scheduled snapshots and how long it stores those snapshots. To use this resource, the requesting API Key must have the Project Owner role. Deprecated versions: v2-{2023-01-01}'
             operationId: updateBackupSchedule
             parameters:
                 - $ref: '#/components/parameters/envelope'
@@ -34264,9 +34380,9 @@ paths:
                     type: string
             requestBody:
                 content:
-                    application/vnd.atlas.2023-01-01+json:
+                    application/vnd.atlas.2024-08-05+json:
                         schema:
-                            $ref: '#/components/schemas/DiskBackupSnapshotSchedule'
+                            $ref: '#/components/schemas/DiskBackupSnapshotSchedule20240805'
                 description: |-
                     Updates the cloud backup schedule for one cluster within the specified project.
 
@@ -34275,10 +34391,10 @@ paths:
             responses:
                 "200":
                     content:
-                        application/vnd.atlas.2023-01-01+json:
+                        application/vnd.atlas.2024-08-05+json:
                             schema:
-                                $ref: '#/components/schemas/DiskBackupSnapshotSchedule'
-                            x-xgen-version: "2023-01-01"
+                                $ref: '#/components/schemas/DiskBackupSnapshotSchedule20240805'
+                            x-xgen-version: "2024-08-05"
                     description: OK
                 "400":
                     $ref: '#/components/responses/badRequest'
@@ -34291,7 +34407,6 @@ paths:
             summary: Update Cloud Backup Schedule for One Cluster
             tags:
                 - Cloud Backups
-            x-sunset: "2025-08-05"
     /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/snapshots:
         get:
             description: Returns all snapshots of one cluster from the specified project. To use this resource, the requesting API Key must have the Project Read Only role.
@@ -35424,8 +35539,7 @@ paths:
             x-sunset: "2025-06-01"
     /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/globalWrites:
         get:
-            deprecated: true
-            description: 'Returns one managed namespace within the specified global cluster. A managed namespace identifies a collection using the database name, the dot separator, and the collection name. To use this resource, the requesting API Key must have the Project Read Only role. Deprecated versions: v2-{2023-01-01}'
+            description: 'Returns one managed namespace within the specified global cluster. A managed namespace identifies a collection using the database name, the dot separator, and the collection name. To use this resource, the requesting API Key must have the Project Read Only role. Deprecated versions: v2-{2023-02-01}, v2-{2023-01-01}'
             externalDocs:
                 description: Global Clusters
                 url: https://www.mongodb.com/docs/atlas/global-clusters/
@@ -35446,10 +35560,10 @@ paths:
             responses:
                 "200":
                     content:
-                        application/vnd.atlas.2023-02-01+json:
+                        application/vnd.atlas.2024-08-05+json:
                             schema:
-                                $ref: '#/components/schemas/GeoSharding'
-                            x-xgen-version: "2023-02-01"
+                                $ref: '#/components/schemas/GeoSharding20240805'
+                            x-xgen-version: "2024-08-05"
                     description: OK
                 "401":
                     $ref: '#/components/responses/unauthorized'
@@ -35460,11 +35574,9 @@ paths:
             summary: Return One Managed Namespace in One Global Cluster
             tags:
                 - Global Clusters
-            x-sunset: "2026-03-01"
     /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/globalWrites/customZoneMapping:
         delete:
-            deprecated: true
-            description: 'Removes all custom zone mappings for the specified global cluster. A custom zone mapping matches one ISO 3166-2 location code to a zone in your global cluster. Removing the custom zone mappings restores the default mapping. By default, MongoDB Cloud maps each location code to the closest geographical zone. To use this resource, the requesting API Key must have the Project Owner role. Deprecated versions: v2-{2023-01-01}'
+            description: 'Removes all custom zone mappings for the specified global cluster. A custom zone mapping matches one ISO 3166-2 location code to a zone in your global cluster. Removing the custom zone mappings restores the default mapping. By default, MongoDB Cloud maps each location code to the closest geographical zone. To use this resource, the requesting API Key must have the Project Owner role. Deprecated versions: v2-{2023-02-01}, v2-{2023-01-01}'
             externalDocs:
                 description: Global Clusters
                 url: https://www.mongodb.com/docs/atlas/global-clusters/
@@ -35485,10 +35597,10 @@ paths:
             responses:
                 "200":
                     content:
-                        application/vnd.atlas.2023-02-01+json:
+                        application/vnd.atlas.2024-08-05+json:
                             schema:
-                                $ref: '#/components/schemas/GeoSharding'
-                            x-xgen-version: "2023-02-01"
+                                $ref: '#/components/schemas/GeoSharding20240805'
+                            x-xgen-version: "2024-08-05"
                     description: OK
                 "401":
                     $ref: '#/components/responses/unauthorized'
@@ -35499,10 +35611,8 @@ paths:
             summary: Remove All Custom Zone Mappings from One Global Cluster
             tags:
                 - Global Clusters
-            x-sunset: "2026-03-01"
         post:
-            deprecated: true
-            description: 'Creates one custom zone mapping for the specified global cluster. A custom zone mapping matches one ISO 3166-2 location code to a zone in your global cluster. By default, MongoDB Cloud maps each location code to the closest geographical zone. To use this resource, the requesting API Key must have the Project Owner role. Deprecated versions: v2-{2023-01-01}'
+            description: 'Creates one custom zone mapping for the specified global cluster. A custom zone mapping matches one ISO 3166-2 location code to a zone in your global cluster. By default, MongoDB Cloud maps each location code to the closest geographical zone. To use this resource, the requesting API Key must have the Project Owner role. Deprecated versions: v2-{2023-02-01}, v2-{2023-01-01}'
             externalDocs:
                 description: Global Clusters
                 url: https://www.mongodb.com/docs/atlas/global-clusters/
@@ -35522,18 +35632,19 @@ paths:
                     type: string
             requestBody:
                 content:
-                    application/vnd.atlas.2023-02-01+json:
+                    application/vnd.atlas.2024-08-05+json:
                         schema:
                             $ref: '#/components/schemas/CustomZoneMappings'
+                        x-xgen-version: "2024-08-05"
                 description: Custom zone mapping to add to the specified global cluster.
                 required: true
             responses:
                 "200":
                     content:
-                        application/vnd.atlas.2023-02-01+json:
+                        application/vnd.atlas.2024-08-05+json:
                             schema:
-                                $ref: '#/components/schemas/GeoSharding'
-                            x-xgen-version: "2023-02-01"
+                                $ref: '#/components/schemas/GeoSharding20240805'
+                            x-xgen-version: "2024-08-05"
                     description: OK
                 "400":
                     $ref: '#/components/responses/badRequest'
@@ -35546,11 +35657,9 @@ paths:
             summary: Add One Entry to One Custom Zone Mapping
             tags:
                 - Global Clusters
-            x-sunset: "2026-03-01"
     /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/globalWrites/managedNamespaces:
         delete:
-            deprecated: true
-            description: 'Removes one managed namespace within the specified global cluster. A managed namespace identifies a collection using the database name, the dot separator, and the collection name. Deleting a managed namespace does not remove the associated collection or data. To use this resource, the requesting API Key must have the Project Data Access Admin role. Deprecated versions: v2-{2023-01-01}'
+            description: 'Removes one managed namespace within the specified global cluster. A managed namespace identifies a collection using the database name, the dot separator, and the collection name. Deleting a managed namespace does not remove the associated collection or data. To use this resource, the requesting API Key must have the Project Data Access Admin role. Deprecated versions: v2-{2023-02-01}, v2-{2023-01-01}'
             externalDocs:
                 description: Global Clusters
                 url: https://www.mongodb.com/docs/atlas/global-clusters/
@@ -35581,10 +35690,10 @@ paths:
             responses:
                 "200":
                     content:
-                        application/vnd.atlas.2023-02-01+json:
+                        application/vnd.atlas.2024-08-05+json:
                             schema:
-                                $ref: '#/components/schemas/GeoSharding'
-                            x-xgen-version: "2023-02-01"
+                                $ref: '#/components/schemas/GeoSharding20240805'
+                            x-xgen-version: "2024-08-05"
                     description: OK
                 "400":
                     $ref: '#/components/responses/badRequest'
@@ -35597,10 +35706,8 @@ paths:
             summary: Remove One Managed Namespace from One Global Cluster
             tags:
                 - Global Clusters
-            x-sunset: "2026-03-01"
         post:
-            deprecated: true
-            description: 'Creates one managed namespace within the specified global cluster. A managed namespace identifies a collection using the database name, the dot separator, and the collection name. To use this resource, the requesting API Key must have the Project Data Access Admin role. Deprecated versions: v2-{2023-01-01}'
+            description: 'Creates one managed namespace within the specified global cluster. A managed namespace identifies a collection using the database name, the dot separator, and the collection name. To use this resource, the requesting API Key must have the Project Data Access Admin role. Deprecated versions: v2-{2023-02-01}, v2-{2023-01-01}'
             externalDocs:
                 description: Global Clusters
                 url: https://www.mongodb.com/docs/atlas/global-clusters/
@@ -35620,18 +35727,19 @@ paths:
                     type: string
             requestBody:
                 content:
-                    application/vnd.atlas.2023-02-01+json:
+                    application/vnd.atlas.2024-08-05+json:
                         schema:
                             $ref: '#/components/schemas/ManagedNamespaces'
+                        x-xgen-version: "2024-08-05"
                 description: Managed namespace to create within the specified global cluster.
                 required: true
             responses:
                 "200":
                     content:
-                        application/vnd.atlas.2023-02-01+json:
+                        application/vnd.atlas.2024-08-05+json:
                             schema:
-                                $ref: '#/components/schemas/GeoSharding'
-                            x-xgen-version: "2023-02-01"
+                                $ref: '#/components/schemas/GeoSharding20240805'
+                            x-xgen-version: "2024-08-05"
                     description: OK
                 "400":
                     $ref: '#/components/responses/badRequest'
@@ -35646,7 +35754,6 @@ paths:
             summary: Create One Managed Namespace in One Global Cluster
             tags:
                 - Global Clusters
-            x-sunset: "2026-03-01"
     /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/index:
         post:
             description: Creates an index on the cluster identified by its name in a rolling manner. Creating the index in this way allows index builds on one replica set member as a standalone at a time, starting with the secondary members. Creating indexes in this way requires at least one replica set election. To use this resource, the requesting API Key must have the Project Data Access Admin role.
@@ -36194,8 +36301,7 @@ paths:
                 - Cluster Outage Simulation
     /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/processArgs:
         get:
-            deprecated: true
-            description: Returns the advanced configuration details for one cluster in the specified project. Clusters contain a group of hosts that maintain the same data set. Advanced configuration details include the read/write concern, index and oplog limits, and other database settings. This feature isn't available for `M0` free clusters, `M2` and `M5` shared-tier clusters, or serverless clusters. To use this resource, the requesting API Key must have the Project Read Only role.
+            description: 'Returns the advanced configuration details for one cluster in the specified project. Clusters contain a group of hosts that maintain the same data set. Advanced configuration details include the read/write concern, index and oplog limits, and other database settings. This feature isn''t available for `M0` free clusters, `M2` and `M5` shared-tier clusters, or serverless clusters. To use this resource, the requesting API Key must have the Project Read Only role. Deprecated versions: v2-{2023-01-01}'
             externalDocs:
                 description: Global Clusters
                 url: https://www.mongodb.com/docs/atlas/global-clusters/
@@ -36216,10 +36322,10 @@ paths:
             responses:
                 "200":
                     content:
-                        application/vnd.atlas.2023-01-01+json:
+                        application/vnd.atlas.2024-08-05+json:
                             schema:
-                                $ref: '#/components/schemas/ClusterDescriptionProcessArgs'
-                            x-xgen-version: "2023-01-01"
+                                $ref: '#/components/schemas/ClusterDescriptionProcessArgs20240805'
+                            x-xgen-version: "2024-08-05"
                     description: OK
                 "400":
                     $ref: '#/components/responses/badRequest'
@@ -36232,10 +36338,8 @@ paths:
             summary: Return One Advanced Configuration Options for One Cluster
             tags:
                 - Clusters
-            x-sunset: "2026-03-01"
         patch:
-            deprecated: true
-            description: Updates the advanced configuration details for one cluster in the specified project. Clusters contain a group of hosts that maintain the same data set. Advanced configuration details include the read/write concern, index and oplog limits, and other database settings. To use this resource, the requesting API Key must have the Project Cluster Manager role. This feature isn't available for `M0` free clusters, `M2` and `M5` shared-tier clusters, or serverless clusters.
+            description: 'Updates the advanced configuration details for one cluster in the specified project. Clusters contain a group of hosts that maintain the same data set. Advanced configuration details include the read/write concern, index and oplog limits, and other database settings. To use this resource, the requesting API Key must have the Project Cluster Manager role. This feature isn''t available for `M0` free clusters, `M2` and `M5` shared-tier clusters, or serverless clusters. Deprecated versions: v2-{2023-01-01}'
             externalDocs:
                 description: Global Clusters
                 url: https://www.mongodb.com/docs/atlas/global-clusters/
@@ -36255,19 +36359,19 @@ paths:
                     type: string
             requestBody:
                 content:
-                    application/vnd.atlas.2023-01-01+json:
+                    application/vnd.atlas.2024-08-05+json:
                         schema:
-                            $ref: '#/components/schemas/ClusterDescriptionProcessArgs'
-                        x-xgen-version: "2023-01-01"
+                            $ref: '#/components/schemas/ClusterDescriptionProcessArgs20240805'
+                        x-xgen-version: "2024-08-05"
                 description: Advanced configuration details to add for one cluster in the specified project.
                 required: true
             responses:
                 "200":
                     content:
-                        application/vnd.atlas.2023-01-01+json:
+                        application/vnd.atlas.2024-08-05+json:
                             schema:
-                                $ref: '#/components/schemas/ClusterDescriptionProcessArgs'
-                            x-xgen-version: "2023-01-01"
+                                $ref: '#/components/schemas/ClusterDescriptionProcessArgs20240805'
+                            x-xgen-version: "2024-08-05"
                     description: OK
                 "400":
                     $ref: '#/components/responses/badRequest'
@@ -36282,7 +36386,6 @@ paths:
             summary: Update Advanced Configuration Options for One Cluster
             tags:
                 - Clusters
-            x-sunset: "2026-03-01"
     /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/restartPrimaries:
         post:
             description: 'Starts a failover test for the specified cluster in the specified project. Clusters contain a group of hosts that maintain the same data set. A failover test checks how MongoDB Cloud handles the failure of the cluster''s primary node. During the test, MongoDB Cloud shuts down the primary node and elects a new primary. To use this resource, the requesting API Key must have the Project Cluster Manager role. Deprecated versions: v2-{2023-01-01}'
