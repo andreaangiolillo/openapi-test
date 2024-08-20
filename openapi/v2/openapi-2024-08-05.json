@@ -171,6 +171,14 @@
       "name": "Serverless Private Endpoints"
     },
     {
+      "description": "Endpoints for managing Service Accounts and secrets. Service Accounts are used for programmatic access to the Atlas Admin API through the OAuth 2.0 Client Credentials flow. This feature is available as a Preview feature.",
+      "externalDocs": {
+        "description": "Get Started with the Atlas Administration API",
+        "url": "https://www.mongodb.com/docs/atlas/configure-api-access/"
+      },
+      "name": "Service Accounts"
+    },
+    {
       "description": "Returns and adds restore jobs for shared-tier database deployments.",
       "name": "Shared-Tier Restore Jobs"
     },
@@ -207,7 +215,8 @@
     },
     "termsOfService": "https://www.mongodb.com/mongodb-management-service-terms-and-conditions",
     "title": "MongoDB Atlas Administration API",
-    "version": "2.0"
+    "version": "2.0",
+    "x-xgen-sha": "c9b4351a1b2ba8ff5c8d996fd26a6014f4206121"
   },
   "paths": {
     "/api/atlas/v2": {
@@ -13183,6 +13192,15 @@
             "$ref": "#/components/parameters/groupId"
           },
           {
+            "$ref": "#/components/parameters/includeCount"
+          },
+          {
+            "$ref": "#/components/parameters/itemsPerPage"
+          },
+          {
+            "$ref": "#/components/parameters/pageNum"
+          },
+          {
             "description": "Human-readable label that identifies the cloud provider for the private endpoints to return.",
             "in": "path",
             "name": "cloudProvider",
@@ -13330,17 +13348,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/vnd.atlas.2023-01-01+json": {
-              "schema": {
-                "$ref": "#/components/schemas/EncryptionAtRestPrivateEndpointRequest"
-              }
-            }
-          },
-          "description": "Cloud provider of the private endpoints to delete and the list of cloud provider regions in which to delete the private endpoints.",
-          "required": true
-        },
         "responses": {
           "204": {
             "content": {
@@ -13422,6 +13429,9 @@
           },
           "403": {
             "$ref": "#/components/responses/forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/notFound"
           },
           "500": {
             "$ref": "#/components/responses/internalServerError"
@@ -19068,6 +19078,7 @@
                   "OPCOUNTER_REPL_UPDATE",
                   "OPCOUNTER_UPDATE",
                   "OPERATIONS_SCAN_AND_ORDER",
+                  "OPERATIONS_QUERIES_KILLED",
                   "OPLOG_MASTER_LAG_TIME_DIFF",
                   "OPLOG_MASTER_TIME",
                   "OPLOG_RATE_GB_PER_HOUR",
@@ -20685,7 +20696,7 @@
     },
     "/api/atlas/v2/groups/{groupId}/serviceAccounts": {
       "get": {
-        "description": "Returns list of Service Accounts for a project with service account details.",
+        "description": "Returns all Service Accounts for the specified Project.",
         "operationId": "listProjectServiceAccounts",
         "parameters": [
           {
@@ -20731,13 +20742,13 @@
             "DigestAuth": []
           }
         ],
-        "summary": "Return All project Service Accounts",
+        "summary": "List All Project Service Accounts",
         "tags": [
-          "Groups"
+          "Service Accounts"
         ]
       },
       "post": {
-        "description": "Creates and assigns the specified Service Account to the specified Project.",
+        "description": "Creates one Service Account for the specified Project. The Service Account will automatically be added as an Organization Member to the Organization that the specified Project is a part of.",
         "operationId": "createProjectServiceAccount",
         "parameters": [
           {
@@ -20759,7 +20770,7 @@
               "x-xgen-version": "2023-10-01"
             }
           },
-          "description": "Details to create service account and add to the specified project.",
+          "description": "Details of the new Service Account.",
           "required": true
         },
         "responses": {
@@ -20789,23 +20800,25 @@
             "DigestAuth": []
           }
         ],
-        "summary": "Create and Assign one Service Account to one project",
+        "summary": "Create and Assign one Service Account to one Project",
         "tags": [
-          "Groups"
+          "Service Accounts"
         ]
       }
     },
     "/api/atlas/v2/groups/{groupId}/serviceAccounts/{serviceAccountId}": {
       "delete": {
-        "description": "Removes one Service Account from the specified project.",
+        "description": "Removes the specified Service Account from the specified project. The Service Account will still be a part of the Organization it was created in, and the credentials will remain active until expired or manually revoked.",
         "operationId": "deleteProjectServiceAccount",
         "parameters": [
           {
-            "description": "Id of the service account.",
+            "description": "Unique identifier for the service account.",
             "in": "path",
             "name": "serviceAccountId",
             "required": true,
             "schema": {
+              "example": "mdb_sa_id_667066535bc75b03c37b3038",
+              "pattern": "^mdb_sa_id_[a-fA-F\\d]{24}$",
               "type": "string"
             }
           },
@@ -20847,24 +20860,26 @@
             "DigestAuth": []
           }
         ],
-        "summary": "Unassign One Service Account from One Project.",
+        "summary": "Unassign One Service Account from One Project",
         "tags": [
-          "Groups"
+          "Service Accounts"
         ]
       },
       "get": {
-        "description": "Get project Service Account Details.",
+        "description": "Returns one Service Account in the specified Project.",
         "operationId": "getProjectServiceAccount",
         "parameters": [
           {
             "$ref": "#/components/parameters/groupId"
           },
           {
-            "description": "Id of the service account.",
+            "description": "Unique identifier for the service account.",
             "in": "path",
             "name": "serviceAccountId",
             "required": true,
             "schema": {
+              "example": "mdb_sa_id_667066535bc75b03c37b3038",
+              "pattern": "^mdb_sa_id_[a-fA-F\\d]{24}$",
               "type": "string"
             }
           },
@@ -20902,21 +20917,23 @@
             "DigestAuth": []
           }
         ],
-        "summary": "Service Account Fetching",
+        "summary": "Get one Project Service Account",
         "tags": [
-          "Groups"
+          "Service Accounts"
         ]
       },
       "patch": {
-        "description": "Update Service Account in Project.",
+        "description": "Updates one Service Account in the specified Project.",
         "operationId": "updateProjectServiceAccount",
         "parameters": [
           {
-            "description": "Id of the service account.",
+            "description": "Unique identifier for the service account.",
             "in": "path",
             "name": "serviceAccountId",
             "required": true,
             "schema": {
+              "example": "mdb_sa_id_667066535bc75b03c37b3038",
+              "pattern": "^mdb_sa_id_[a-fA-F\\d]{24}$",
               "type": "string"
             }
           },
@@ -20938,7 +20955,7 @@
               }
             }
           },
-          "description": "Details to update service account in the specified Project.",
+          "description": "The new details for the Service Account.",
           "required": true
         },
         "responses": {
@@ -20971,32 +20988,108 @@
             "DigestAuth": []
           }
         ],
-        "summary": "Service Account Update in Project",
+        "summary": "Update one Project Service Account",
         "tags": [
-          "Groups"
+          "Service Accounts"
         ]
-      },
-      "post": {
-        "description": "Assigns the specified organization Service Account to the specified project.",
-        "operationId": "addProjectServiceAccount",
+      }
+    },
+    "/api/atlas/v2/groups/{groupId}/serviceAccounts/{serviceAccountId}/accessList": {
+      "get": {
+        "description": "Returns all access list entries that you configured for the specified Service Account for the project.",
+        "operationId": "listProjectServiceAccountAccessList",
         "parameters": [
           {
-            "description": "Id of the service account.",
-            "in": "path",
-            "name": "serviceAccountId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/envelope"
+          },
+          {
+            "$ref": "#/components/parameters/includeCount"
+          },
+          {
+            "$ref": "#/components/parameters/itemsPerPage"
           },
           {
             "$ref": "#/components/parameters/groupId"
           },
           {
-            "$ref": "#/components/parameters/envelope"
+            "$ref": "#/components/parameters/pageNum"
           },
           {
             "$ref": "#/components/parameters/pretty"
+          },
+          {
+            "description": "Unique identifier for the service account.",
+            "in": "path",
+            "name": "serviceAccountId",
+            "required": true,
+            "schema": {
+              "example": "mdb_sa_id_667066535bc75b03c37b3038",
+              "pattern": "^mdb_sa_id_[a-fA-F\\d]{24}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/vnd.atlas.2023-10-01+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedServiceAccountIPAccessEntryView"
+                },
+                "x-xgen-version": "2023-10-01"
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/internalServerError"
+          }
+        },
+        "security": [
+          {
+            "DigestAuth": []
+          }
+        ],
+        "summary": "Return All Access List entries for one Project Service Account",
+        "tags": [
+          "Service Accounts"
+        ]
+      },
+      "post": {
+        "description": "Add Access List Entries for the specified Service Account for the project. Resources require all API requests to originate from IP addresses on the API access list.",
+        "operationId": "createProjectServiceAccountAccessList",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/envelope"
+          },
+          {
+            "$ref": "#/components/parameters/includeCount"
+          },
+          {
+            "$ref": "#/components/parameters/itemsPerPage"
+          },
+          {
+            "$ref": "#/components/parameters/groupId"
+          },
+          {
+            "$ref": "#/components/parameters/pageNum"
+          },
+          {
+            "$ref": "#/components/parameters/pretty"
+          },
+          {
+            "description": "Unique identifier for the service account.",
+            "in": "path",
+            "name": "serviceAccountId",
+            "required": true,
+            "schema": {
+              "example": "mdb_sa_id_667066535bc75b03c37b3038",
+              "pattern": "^mdb_sa_id_[a-fA-F\\d]{24}$",
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -21004,28 +21097,100 @@
             "application/vnd.atlas.2023-10-01+json": {
               "schema": {
                 "items": {
-                  "$ref": "#/components/schemas/GroupServiceAccountRoleAssignment"
+                  "$ref": "#/components/schemas/ServiceAccountIPAccessListEntry"
                 },
                 "type": "array"
               },
               "x-xgen-version": "2023-10-01"
             }
           },
-          "description": "Service Account Roles to be assigned to the specified project.",
+          "description": "A list of access list entries to add to the access list of the specified Service Account for the project.",
           "required": true
         },
         "responses": {
-          "204": {
+          "200": {
             "content": {
               "application/vnd.atlas.2023-10-01+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NoBody"
+                  "$ref": "#/components/schemas/PaginatedServiceAccountIPAccessEntryView"
                 },
                 "x-xgen-version": "2023-10-01"
               }
             },
-            "description": "This endpoint does not return a response body.",
-            "x-xgen-version": "2023-10-01"
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/badRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "409": {
+            "$ref": "#/components/responses/conflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/internalServerError"
+          }
+        },
+        "security": [
+          {
+            "DigestAuth": []
+          }
+        ],
+        "summary": "Add Access List entries for one Project Service Account",
+        "tags": [
+          "Service Accounts"
+        ]
+      }
+    },
+    "/api/atlas/v2/groups/{groupId}/serviceAccounts/{serviceAccountId}/accessList/{ipAddress}": {
+      "delete": {
+        "description": "Removes the specified access list entry from the specified Service Account for the project. You can't remove the requesting IP address from the access list.",
+        "operationId": "deleteProjectServiceAccountAccessListEntry",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/envelope"
+          },
+          {
+            "$ref": "#/components/parameters/groupId"
+          },
+          {
+            "$ref": "#/components/parameters/pretty"
+          },
+          {
+            "description": "Unique identifier for the service account.",
+            "in": "path",
+            "name": "serviceAccountId",
+            "required": true,
+            "schema": {
+              "example": "mdb_sa_id_667066535bc75b03c37b3038",
+              "pattern": "^mdb_sa_id_[a-fA-F\\d]{24}$",
+              "type": "string"
+            }
+          },
+          {
+            "description": "One IP address or multiple IP addresses represented as one CIDR block. When specifying a CIDR block with a subnet mask, such as 192.0.2.0/24, use the URL-encoded value %2F for the forward slash /.",
+            "in": "path",
+            "name": "ipAddress",
+            "required": true,
+            "schema": {
+              "example": "192.0.2.0%2F24",
+              "pattern": "^([0-9]{1,3}\\.){3}[0-9]{1,3}(%2[fF][0-9]{1,3})?|([0-9a-f]{1,4}\\:){7}[0-9a-f]{1,4}(%2[fF][0-9]{1,3})?|([0-9a-f]{1,4}\\:){1,6}\\:(%2[fF][0-9]{1,3})?$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "content": {
+              "application/vnd.atlas.2023-10-01+json": {
+                "x-xgen-version": "2023-10-01"
+              }
+            },
+            "description": "This endpoint does not return a response body."
+          },
+          "400": {
+            "$ref": "#/components/responses/badRequest"
           },
           "401": {
             "$ref": "#/components/responses/unauthorized"
@@ -21042,9 +21207,9 @@
             "DigestAuth": []
           }
         ],
-        "summary": "Assign One Service Account to One Project",
+        "summary": "Remove One Access List entry from one Project Service Account",
         "tags": [
-          "Groups"
+          "Service Accounts"
         ]
       }
     },
@@ -22328,6 +22493,65 @@
           }
         ],
         "summary": "Return All Stream Processors In The Stream Instance.",
+        "tags": [
+          "Streams"
+        ]
+      }
+    },
+    "/api/atlas/v2/groups/{groupId}/streams:withSampleConnections": {
+      "post": {
+        "description": "Creates one stream instance in the specified project with sample connections. To use this resource the requesting API Key must have the Project Data Access Admin role, Project Owner role or Project Stream Processing Owner role.",
+        "operationId": "createStreamInstanceWithSampleConnections",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/envelope"
+          },
+          {
+            "$ref": "#/components/parameters/pretty"
+          },
+          {
+            "$ref": "#/components/parameters/groupId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/vnd.atlas.2024-08-05+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantWithSampleConnections"
+              }
+            }
+          },
+          "description": "Details to create one streams instance in the specified project.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/vnd.atlas.2024-08-05+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamsTenant"
+                },
+                "x-xgen-version": "2024-08-05"
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/badRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/internalServerError"
+          }
+        },
+        "security": [
+          {
+            "DigestAuth": []
+          }
+        ],
+        "summary": "Create One Stream Instance With Sample Connections",
         "tags": [
           "Streams"
         ]
@@ -25216,6 +25440,80 @@
         ]
       }
     },
+    "/api/atlas/v2/orgs/{orgId}/invoices/{invoiceId}/lineItems/:search": {
+      "get": {
+        "description": "Query the lineItems of the specified invoice and return the result JSON. A unique 24-hexadecimal digit string identifies the invoice.",
+        "operationId": "queryLineItemsFromSingleInvoice",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/envelope"
+          },
+          {
+            "$ref": "#/components/parameters/itemsPerPage"
+          },
+          {
+            "$ref": "#/components/parameters/pageNum"
+          },
+          {
+            "$ref": "#/components/parameters/orgId"
+          },
+          {
+            "description": "Unique 24-hexadecimal digit string that identifies the invoice submitted to the specified organization. Charges typically post the next day.",
+            "in": "path",
+            "name": "invoiceId",
+            "required": true,
+            "schema": {
+              "maxLength": 24,
+              "minLength": 24,
+              "pattern": "^([a-f0-9]{24})$",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/vnd.atlas.2024-08-05+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiPublicUsageDetailsQueryRequest"
+              }
+            }
+          },
+          "description": "Filter parameters for the lineItems query. Send a request with an empty JSON body to retrieve all line items for a given invoiceID without applying any filters.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/vnd.atlas.2024-08-05+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedPublicApiUsageDetailsLineItemView"
+                },
+                "x-xgen-version": "2024-08-05"
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/badRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/internalServerError"
+          }
+        },
+        "security": [
+          {
+            "DigestAuth": []
+          }
+        ],
+        "summary": "Query lineItems of the specified invoiceId",
+        "tags": [
+          "Invoices"
+        ]
+      }
+    },
     "/api/atlas/v2/orgs/{orgId}/liveMigrations/availableProjects": {
       "get": {
         "description": "Return all projects that you can migrate to the specified organization.",
@@ -25371,7 +25669,7 @@
     },
     "/api/atlas/v2/orgs/{orgId}/serviceAccounts": {
       "get": {
-        "description": "Returns list of Service Accounts with service account details.",
+        "description": "Returns all Service Accounts for the specified Organization.",
         "operationId": "listServiceAccounts",
         "parameters": [
           {
@@ -25417,13 +25715,13 @@
             "DigestAuth": []
           }
         ],
-        "summary": "Return All Service Accounts",
+        "summary": "List All Organization Service Accounts",
         "tags": [
-          "Organizations"
+          "Service Accounts"
         ]
       },
       "post": {
-        "description": "Create Service Account containing client id and client secrets.",
+        "description": "Creates one Service Account for the specified Organization.",
         "operationId": "createServiceAccount",
         "parameters": [
           {
@@ -25444,7 +25742,7 @@
               }
             }
           },
-          "description": "Details to create service account in the specified organization.",
+          "description": "Details of the new Service Account.",
           "required": true
         },
         "responses": {
@@ -25474,23 +25772,25 @@
             "DigestAuth": []
           }
         ],
-        "summary": "Service Account Creation",
+        "summary": "Create one Organization Service Account",
         "tags": [
-          "Organizations"
+          "Service Accounts"
         ]
       }
     },
     "/api/atlas/v2/orgs/{orgId}/serviceAccounts/{serviceAccountId}": {
       "delete": {
-        "description": "Delete Service Account.",
+        "description": "Deletes the specified Service Account.",
         "operationId": "deleteServiceAccount",
         "parameters": [
           {
-            "description": "Id of the service account.",
+            "description": "Unique identifier for the service account.",
             "in": "path",
             "name": "serviceAccountId",
             "required": true,
             "schema": {
+              "example": "mdb_sa_id_667066535bc75b03c37b3038",
+              "pattern": "^mdb_sa_id_[a-fA-F\\d]{24}$",
               "type": "string"
             }
           },
@@ -25528,24 +25828,26 @@
             "DigestAuth": []
           }
         ],
-        "summary": "Service Account Deletion.",
+        "summary": "Delete one Organization Service Account",
         "tags": [
-          "Organizations"
+          "Service Accounts"
         ]
       },
       "get": {
-        "description": "Get Service Account Details.",
+        "description": "Returns the specified Service Account.",
         "operationId": "getServiceAccount",
         "parameters": [
           {
             "$ref": "#/components/parameters/orgId"
           },
           {
-            "description": "Id of the service account.",
+            "description": "Unique identifier for the service account.",
             "in": "path",
             "name": "serviceAccountId",
             "required": true,
             "schema": {
+              "example": "mdb_sa_id_667066535bc75b03c37b3038",
+              "pattern": "^mdb_sa_id_[a-fA-F\\d]{24}$",
               "type": "string"
             }
           },
@@ -25583,21 +25885,23 @@
             "DigestAuth": []
           }
         ],
-        "summary": "Service Account Fetching",
+        "summary": "Get one Organization Service Account",
         "tags": [
-          "Organizations"
+          "Service Accounts"
         ]
       },
       "patch": {
-        "description": "Update Service Account.",
+        "description": "Updates the specified Service Account in the specified Organization.",
         "operationId": "updateServiceAccount",
         "parameters": [
           {
-            "description": "Id of the service account.",
+            "description": "Unique identifier for the service account.",
             "in": "path",
             "name": "serviceAccountId",
             "required": true,
             "schema": {
+              "example": "mdb_sa_id_667066535bc75b03c37b3038",
+              "pattern": "^mdb_sa_id_[a-fA-F\\d]{24}$",
               "type": "string"
             }
           },
@@ -25619,7 +25923,7 @@
               }
             }
           },
-          "description": "Details to update service account in the specified organization.",
+          "description": "The new details for the Service Account.",
           "required": true
         },
         "responses": {
@@ -25652,26 +25956,28 @@
             "DigestAuth": []
           }
         ],
-        "summary": "Service Account Update",
+        "summary": "Update one Organization Service Account",
         "tags": [
-          "Organizations"
+          "Service Accounts"
         ]
       }
     },
     "/api/atlas/v2/orgs/{orgId}/serviceAccounts/{serviceAccountId}/groups": {
       "get": {
-        "description": "Returns list of Service Account projects.",
+        "description": "Returns a list of all projects the specified Service Account is a part of.",
         "operationId": "listServiceAccountProjects",
         "parameters": [
           {
             "$ref": "#/components/parameters/orgId"
           },
           {
-            "description": "Id of the service account.",
+            "description": "Unique identifier for the service account.",
             "in": "path",
             "name": "serviceAccountId",
             "required": true,
             "schema": {
+              "example": "mdb_sa_id_667066535bc75b03c37b3038",
+              "pattern": "^mdb_sa_id_[a-fA-F\\d]{24}$",
               "type": "string"
             }
           },
@@ -25715,26 +26021,28 @@
             "DigestAuth": []
           }
         ],
-        "summary": "Return All Service Account projects",
+        "summary": "Return All Service Account Project assignments",
         "tags": [
-          "Organizations"
+          "Service Accounts"
         ]
       }
     },
     "/api/atlas/v2/orgs/{orgId}/serviceAccounts/{serviceAccountId}/secrets": {
       "post": {
-        "description": "Create Service Account secret.",
+        "description": "Create a secret for the specified Service Account.",
         "operationId": "createServiceAccountSecret",
         "parameters": [
           {
             "$ref": "#/components/parameters/orgId"
           },
           {
-            "description": "Id of the service account.",
+            "description": "Unique identifier for the service account.",
             "in": "path",
             "name": "serviceAccountId",
             "required": true,
             "schema": {
+              "example": "mdb_sa_id_667066535bc75b03c37b3038",
+              "pattern": "^mdb_sa_id_[a-fA-F\\d]{24}$",
               "type": "string"
             }
           },
@@ -25753,7 +26061,7 @@
               }
             }
           },
-          "description": "Details to create secret in the specified service account.",
+          "description": "Details for the new secret.",
           "required": true
         },
         "responses": {
@@ -25783,28 +26091,30 @@
             "DigestAuth": []
           }
         ],
-        "summary": "Service Account Secret Creation",
+        "summary": "Create one Organization Service Account Secret",
         "tags": [
-          "Organizations"
+          "Service Accounts"
         ]
       }
     },
     "/api/atlas/v2/orgs/{orgId}/serviceAccounts/{serviceAccountId}/secrets/{secretId}": {
       "delete": {
-        "description": "Delete Service Account Secret.",
+        "description": "Deletes the specified Service Account secret.",
         "operationId": "deleteServiceAccountSecret",
         "parameters": [
           {
-            "description": "Id of the service account.",
+            "description": "Unique identifier for the service account.",
             "in": "path",
             "name": "serviceAccountId",
             "required": true,
             "schema": {
+              "example": "mdb_sa_id_667066535bc75b03c37b3038",
+              "pattern": "^mdb_sa_id_[a-fA-F\\d]{24}$",
               "type": "string"
             }
           },
           {
-            "description": "Id of the secret.",
+            "description": "Unique 24-hexadecimal digit string that identifies the secret.",
             "in": "path",
             "name": "secretId",
             "required": true,
@@ -25846,9 +26156,9 @@
             "DigestAuth": []
           }
         ],
-        "summary": "Service Account Secret Deletion.",
+        "summary": "Delete a Organization Service Account Secret",
         "tags": [
-          "Organizations"
+          "Service Accounts"
         ]
       }
     },
@@ -28297,6 +28607,20 @@
               "url": "https://docs.atlas.mongodb.com/backup/cloud-backup/overview/"
             },
             "type": "boolean"
+          },
+          "replicaSetScalingStrategy": {
+            "default": "WORKLOAD_TYPE",
+            "description": "Set this field to configure the replica set scaling mode for your cluster.\n\nBy default, Atlas scales under WORKLOAD_TYPE. This mode allows Atlas to scale your analytics nodes in parallel to your operational nodes.\n\nWhen configured as SEQUENTIAL, Atlas scales all nodes sequentially. This mode is intended for steady-state workloads and applications performing latency-sensitive secondary reads.\n\nWhen configured as NODE_TYPE, Atlas scales your electable nodes in parallel with your read-only and analytics nodes. This mode is intended for large, dynamic workloads requiring frequent and timely cluster tier scaling. This is the fastest scaling strategy, but it might impact latency of workloads when performing extensive secondary reads.",
+            "enum": [
+              "SEQUENTIAL",
+              "WORKLOAD_TYPE",
+              "NODE_TYPE"
+            ],
+            "externalDocs": {
+              "description": "Modify the Replica Set Scaling Mode",
+              "url": "https://dochub.mongodb.org/core/scale-nodes"
+            },
+            "type": "string"
           },
           "replicationSpecs": {
             "description": "List of settings that configure your cluster regions. For Global Clusters, each object in the array represents a zone where your clusters nodes deploy. For non-Global sharded clusters and replica sets, this array has one object representing where your clusters nodes deploy.",
@@ -34803,14 +35127,6 @@
           },
           "propertyName": "providerName"
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/CloudProviderAccessAWSIAMRole"
-          },
-          {
-            "$ref": "#/components/schemas/CloudProviderAccessAzureServicePrincipal"
-          }
-        ],
         "properties": {
           "providerName": {
             "description": "Human-readable label that identifies the cloud provider of the role.",
@@ -34832,6 +35148,13 @@
             "description": "List that contains the Amazon Web Services (AWS) IAM roles registered and authorized with MongoDB Cloud.",
             "items": {
               "$ref": "#/components/schemas/CloudProviderAccessAWSIAMRole"
+            },
+            "type": "array"
+          },
+          "azureServicePrincipals": {
+            "description": "List that contains the Azure Service Principals registered with MongoDB Cloud.",
+            "items": {
+              "$ref": "#/components/schemas/CloudProviderAccessAzureServicePrincipal"
             },
             "type": "array"
           }
@@ -35916,6 +36239,20 @@
               "url": "https://docs.atlas.mongodb.com/backup/cloud-backup/overview/"
             },
             "type": "boolean"
+          },
+          "replicaSetScalingStrategy": {
+            "default": "WORKLOAD_TYPE",
+            "description": "Set this field to configure the replica set scaling mode for your cluster.\n\nBy default, Atlas scales under WORKLOAD_TYPE. This mode allows Atlas to scale your analytics nodes in parallel to your operational nodes.\n\nWhen configured as SEQUENTIAL, Atlas scales all nodes sequentially. This mode is intended for steady-state workloads and applications performing latency-sensitive secondary reads.\n\nWhen configured as NODE_TYPE, Atlas scales your electable nodes in parallel with your read-only and analytics nodes. This mode is intended for large, dynamic workloads requiring frequent and timely cluster tier scaling. This is the fastest scaling strategy, but it might impact latency of workloads when performing extensive secondary reads.",
+            "enum": [
+              "SEQUENTIAL",
+              "WORKLOAD_TYPE",
+              "NODE_TYPE"
+            ],
+            "externalDocs": {
+              "description": "Modify the Replica Set Scaling Mode",
+              "url": "https://dochub.mongodb.org/core/scale-nodes"
+            },
+            "type": "string"
           },
           "replicationSpecs": {
             "description": "List of settings that configure your cluster regions. This array has one object per shard representing node configurations in each shard. For replica sets there is only one object representing node configurations.",
@@ -37352,7 +37689,8 @@
         "discriminator": {
           "mapping": {
             "AWS": "#/components/schemas/AWSCreateDataProcessRegionView",
-            "AZURE": "#/components/schemas/AzureCreateDataProcessRegionView"
+            "AZURE": "#/components/schemas/AzureCreateDataProcessRegionView",
+            "GCP": "#/components/schemas/GCPCreateDataProcessRegionView"
           },
           "propertyName": "cloudProvider"
         },
@@ -39309,7 +39647,8 @@
         "discriminator": {
           "mapping": {
             "AWS": "#/components/schemas/AWSDataProcessRegionView",
-            "AZURE": "#/components/schemas/AzureDataProcessRegionView"
+            "AZURE": "#/components/schemas/AzureDataProcessRegionView",
+            "GCP": "#/components/schemas/GCPDataProcessRegionView"
           },
           "propertyName": "cloudProvider"
         },
@@ -39318,7 +39657,8 @@
             "description": "Human-readable label that identifies the Cloud service provider where you store your archived data.",
             "enum": [
               "AWS",
-              "AZURE"
+              "AZURE",
+              "GCP"
             ],
             "readOnly": true,
             "type": "string"
@@ -42757,31 +43097,6 @@
         },
         "type": "object"
       },
-      "EncryptionAtRestPrivateEndpointRequest": {
-        "description": "Create or delete private endpoints from the specified regions list.",
-        "properties": {
-          "cloudProvider": {
-            "description": "Cloud service provider name.",
-            "enum": [
-              "AZURE"
-            ],
-            "type": "string"
-          },
-          "regions": {
-            "description": "List of regions.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": true
-          }
-        },
-        "required": [
-          "cloudProvider"
-        ],
-        "title": "Encryption At Rest Private Endpoints setup.",
-        "type": "object"
-      },
       "EncryptionKeyAlertConfigViewForNdsGroup": {
         "description": "Encryption key alert configuration allows to select thresholds  which trigger alerts and how users are notified.",
         "properties": {
@@ -43315,6 +43630,7 @@
               "CLUSTER_IMPORT_CANCELLED",
               "CLUSTER_IMPORT_EXPIRED",
               "CLUSTER_IMPORT_CUTOVER",
+              "CLUSTER_IMPORT_COMPLETED",
               "CLUSTER_IMPORT_RESTART_REQUESTED",
               "PROJECT_LIVE_IMPORT_OVERRIDES_ADDED",
               "PROJECT_LIVE_IMPORT_OVERRIDES_UPDATED",
@@ -45660,6 +45976,49 @@
         },
         "type": "object"
       },
+      "GCPCreateDataProcessRegionView": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateDataProcessRegionView"
+          },
+          {
+            "properties": {
+              "region": {
+                "description": "Human-readable label that identifies the geographic location of the region where you wish to store your archived data.",
+                "enum": [
+                  "CENTRAL_US",
+                  "WESTERN_EUROPE"
+                ],
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      },
+      "GCPDataProcessRegionView": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataProcessRegionView"
+          },
+          {
+            "properties": {
+              "region": {
+                "description": "Human-readable label that identifies the geographic location of the region where you store your archived data.",
+                "enum": [
+                  "CENTRAL_US",
+                  "WESTERN_EUROPE"
+                ],
+                "readOnly": true,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      },
       "GCPEndpointService": {
         "description": "Group of Private Endpoint Service settings.",
         "properties": {
@@ -46661,27 +47020,27 @@
       "GroupServiceAccount": {
         "properties": {
           "createdAt": {
-            "description": "Service account creation time.",
+            "description": "The date that the Service Account was created on.",
             "format": "date-time",
             "type": "string"
           },
           "description": {
-            "description": "Description of the service account.",
+            "description": "Human readable description for the Service Account.",
             "type": "string"
           },
           "id": {
-            "description": "ID for the service account.",
+            "description": "The Client ID of the Service Account.",
             "pattern": "^mdb_sa_id_[a-fA-F\\d]{24}$",
             "type": "string"
           },
           "name": {
-            "description": "Name for service account.",
+            "description": "Human-readable name for the Service Account.",
             "type": "string"
           },
           "roles": {
-            "description": "Roles assigned to the Service Account group.",
+            "description": "A list of Project roles associated with the Service Account.",
             "items": {
-              "description": "Project roles associated with the service account.",
+              "description": "Project roles available for Service Accounts.",
               "enum": [
                 "GROUP_OWNER",
                 "GROUP_READ_ONLY",
@@ -46698,7 +47057,7 @@
             "uniqueItems": true
           },
           "secrets": {
-            "description": "List of secrets.",
+            "description": "A list of secrets associated with the specified Service Account.",
             "items": {
               "$ref": "#/components/schemas/ServiceAccountSecret"
             },
@@ -46711,23 +47070,23 @@
       "GroupServiceAccountRequest": {
         "properties": {
           "description": {
-            "description": "Human readable description for the service account.",
+            "description": "Human readable description for the Service Account.",
             "maxLength": 250,
             "minLength": 1,
             "pattern": "^[\\p{L}\\p{N}\\-_.,' ]*$",
             "type": "string"
           },
           "name": {
-            "description": "Human-readable name for the service account. The name is modifiable and does not have to be unique.",
+            "description": "Human-readable name for the Service Account. The name is modifiable and does not have to be unique.",
             "maxLength": 64,
             "minLength": 1,
             "pattern": "^[\\p{L}\\p{N}\\-_.,' ]*$",
             "type": "string"
           },
           "roles": {
-            "description": "Project roles associated with the service account.",
+            "description": "A list of project-level roles for the Service Account.",
             "items": {
-              "description": "Project roles associated with the service account.",
+              "description": "Project roles available for Service Accounts.",
               "enum": [
                 "GROUP_OWNER",
                 "GROUP_READ_ONLY",
@@ -46743,7 +47102,7 @@
             "type": "array"
           },
           "secretExpiresAfterHours": {
-            "description": "Secret expiration time.",
+            "description": "The expiration time of the new Service Account secret. The expiration is provided in hours.",
             "format": "int32",
             "type": "integer"
           }
@@ -46755,50 +47114,26 @@
         ],
         "type": "object"
       },
-      "GroupServiceAccountRoleAssignment": {
-        "properties": {
-          "roles": {
-            "description": "Group access roles.",
-            "items": {
-              "description": "Project roles associated with the service account.",
-              "enum": [
-                "GROUP_OWNER",
-                "GROUP_READ_ONLY",
-                "GROUP_DATA_ACCESS_ADMIN",
-                "GROUP_DATA_ACCESS_READ_ONLY",
-                "GROUP_DATA_ACCESS_READ_WRITE",
-                "GROUP_CLUSTER_MANAGER",
-                "GROUP_SEARCH_INDEX_EDITOR",
-                "GROUP_STREAM_PROCESSING_OWNER"
-              ],
-              "type": "string"
-            },
-            "type": "array",
-            "uniqueItems": true
-          }
-        },
-        "type": "object"
-      },
       "GroupServiceAccountUpdateRequest": {
         "properties": {
           "description": {
-            "description": "Human readable description for the service account.",
+            "description": "Human readable description for the Service Account.",
             "maxLength": 250,
             "minLength": 1,
             "pattern": "^[\\p{L}\\p{N}\\-_.,' ]*$",
             "type": "string"
           },
           "name": {
-            "description": "Human-readable name for the service account. The name is modifiable and does not have to be unique.",
+            "description": "Human-readable name for the Service Account. The name is modifiable and does not have to be unique.",
             "maxLength": 64,
             "minLength": 1,
             "pattern": "^[\\p{L}\\p{N}\\-_.,' ]*$",
             "type": "string"
           },
           "roles": {
-            "description": "Project roles associated with the service account.",
+            "description": "A list of Project roles associated with the Service Account.",
             "items": {
-              "description": "Project roles associated with the service account.",
+              "description": "Project roles available for Service Accounts.",
               "enum": [
                 "GROUP_OWNER",
                 "GROUP_READ_ONLY",
@@ -47507,6 +47842,7 @@
             "OPCOUNTER_REPL_INSERT": "#/components/schemas/RawMetricAlertView",
             "OPCOUNTER_REPL_UPDATE": "#/components/schemas/RawMetricAlertView",
             "OPCOUNTER_UPDATE": "#/components/schemas/RawMetricAlertView",
+            "OPERATIONS_QUERIES_KILLED": "#/components/schemas/RawMetricAlertView",
             "OPERATIONS_SCAN_AND_ORDER": "#/components/schemas/RawMetricAlertView",
             "OPERATION_THROTTLING_REJECTED_OPERATIONS": "#/components/schemas/RawMetricAlertView",
             "OPLOG_MASTER_LAG_TIME_DIFF": "#/components/schemas/TimeMetricAlertView",
@@ -47900,6 +48236,7 @@
             "OPCOUNTER_REPL_INSERT": "#/components/schemas/RawMetricEventView",
             "OPCOUNTER_REPL_UPDATE": "#/components/schemas/RawMetricEventView",
             "OPCOUNTER_UPDATE": "#/components/schemas/RawMetricEventView",
+            "OPERATIONS_QUERIES_KILLED": "#/components/schemas/RawMetricEventView",
             "OPERATIONS_SCAN_AND_ORDER": "#/components/schemas/RawMetricEventView",
             "OPERATION_THROTTLING_REJECTED_OPERATIONS": "#/components/schemas/RawMetricEventView",
             "OPLOG_MASTER_LAG_TIME_DIFF": "#/components/schemas/TimeMetricEventView",
@@ -48214,6 +48551,7 @@
             "OPCOUNTER_REPL_INSERT": "#/components/schemas/RawMetricThresholdView",
             "OPCOUNTER_REPL_UPDATE": "#/components/schemas/RawMetricThresholdView",
             "OPCOUNTER_UPDATE": "#/components/schemas/RawMetricThresholdView",
+            "OPERATIONS_QUERIES_KILLED": "#/components/schemas/RawMetricThresholdView",
             "OPERATIONS_SCAN_AND_ORDER": "#/components/schemas/RawMetricThresholdView",
             "OPERATION_THROTTLING_REJECTED_OPERATIONS": "#/components/schemas/RawMetricThresholdView",
             "OPLOG_MASTER_LAG_TIME_DIFF": "#/components/schemas/TimeMetricThresholdView",
@@ -49655,6 +49993,20 @@
           "providerSettings": {
             "$ref": "#/components/schemas/ClusterProviderSettings"
           },
+          "replicaSetScalingStrategy": {
+            "default": "WORKLOAD_TYPE",
+            "description": "Set this field to configure the replica set scaling mode for your cluster.\n\nBy default, Atlas scales under WORKLOAD_TYPE. This mode allows Atlas to scale your analytics nodes in parallel to your operational nodes.\n\nWhen configured as SEQUENTIAL, Atlas scales all nodes sequentially. This mode is intended for steady-state workloads and applications performing latency-sensitive secondary reads.\n\nWhen configured as NODE_TYPE, Atlas scales your electable nodes in parallel with your read-only and analytics nodes. This mode is intended for large, dynamic workloads requiring frequent and timely cluster tier scaling. This is the fastest scaling strategy, but it might impact latency of workloads when performing extensive secondary reads.",
+            "enum": [
+              "SEQUENTIAL",
+              "WORKLOAD_TYPE",
+              "NODE_TYPE"
+            ],
+            "externalDocs": {
+              "description": "Modify the Replica Set Scaling Mode",
+              "url": "https://dochub.mongodb.org/core/scale-nodes"
+            },
+            "type": "string"
+          },
           "replicationFactor": {
             "default": 3,
             "deprecated": true,
@@ -49934,6 +50286,20 @@
           },
           "providerSettings": {
             "$ref": "#/components/schemas/ClusterProviderSettings"
+          },
+          "replicaSetScalingStrategy": {
+            "default": "WORKLOAD_TYPE",
+            "description": "Set this field to configure the replica set scaling mode for your cluster.\n\nBy default, Atlas scales under WORKLOAD_TYPE. This mode allows Atlas to scale your analytics nodes in parallel to your operational nodes.\n\nWhen configured as SEQUENTIAL, Atlas scales all nodes sequentially. This mode is intended for steady-state workloads and applications performing latency-sensitive secondary reads.\n\nWhen configured as NODE_TYPE, Atlas scales your electable nodes in parallel with your read-only and analytics nodes. This mode is intended for large, dynamic workloads requiring frequent and timely cluster tier scaling. This is the fastest scaling strategy, but it might impact latency of workloads when performing extensive secondary reads.",
+            "enum": [
+              "SEQUENTIAL",
+              "WORKLOAD_TYPE",
+              "NODE_TYPE"
+            ],
+            "externalDocs": {
+              "description": "Modify the Replica Set Scaling Mode",
+              "url": "https://dochub.mongodb.org/core/scale-nodes"
+            },
+            "type": "string"
           },
           "replicationFactor": {
             "default": 3,
@@ -51311,6 +51677,7 @@
           "CLUSTER_IMPORT_CANCELLED",
           "CLUSTER_IMPORT_EXPIRED",
           "CLUSTER_IMPORT_CUTOVER",
+          "CLUSTER_IMPORT_COMPLETED",
           "CLUSTER_IMPORT_RESTART_REQUESTED",
           "PROJECT_LIVE_IMPORT_OVERRIDES_ADDED",
           "PROJECT_LIVE_IMPORT_OVERRIDES_UPDATED",
@@ -53324,27 +53691,27 @@
       "OrgServiceAccount": {
         "properties": {
           "createdAt": {
-            "description": "Service account creation time.",
+            "description": "The date that the Service Account was created on.",
             "format": "date-time",
             "type": "string"
           },
           "description": {
-            "description": "Description of the service account.",
+            "description": "Human readable description for the Service Account.",
             "type": "string"
           },
           "id": {
-            "description": "ID for the service account.",
+            "description": "The Client ID of the Service Account.",
             "pattern": "^mdb_sa_id_[a-fA-F\\d]{24}$",
             "type": "string"
           },
           "name": {
-            "description": "Name for service account.",
+            "description": "Human-readable name for the Service Account.",
             "type": "string"
           },
           "roles": {
-            "description": "Organization roles assigned to the Service Account.",
+            "description": "A list of Organization roles associated with the Service Account.",
             "items": {
-              "description": "Organization roles associated with the service account.",
+              "description": "Organization roles available for Service Accounts.",
               "enum": [
                 "ORG_MEMBER",
                 "ORG_READ_ONLY",
@@ -53359,7 +53726,7 @@
             "uniqueItems": true
           },
           "secrets": {
-            "description": "List of secrets.",
+            "description": "A list of secrets associated with the specified Service Account.",
             "items": {
               "$ref": "#/components/schemas/ServiceAccountSecret"
             },
@@ -53372,23 +53739,23 @@
       "OrgServiceAccountRequest": {
         "properties": {
           "description": {
-            "description": "Human readable description for the service account.",
+            "description": "Human readable description for the Service Account.",
             "maxLength": 250,
             "minLength": 1,
             "pattern": "^[\\p{L}\\p{N}\\-_.,' ]*$",
             "type": "string"
           },
           "name": {
-            "description": "Human-readable name for the service account. The name is modifiable and does not have to be unique.",
+            "description": "Human-readable name for the Service Account. The name is modifiable and does not have to be unique.",
             "maxLength": 64,
             "minLength": 1,
             "pattern": "^[\\p{L}\\p{N}\\-_.,' ]*$",
             "type": "string"
           },
           "roles": {
-            "description": "Organization roles associated with the service account.",
+            "description": "A list of organization-level roles for the Service Account.",
             "items": {
-              "description": "Organization roles associated with the service account.",
+              "description": "Organization roles available for Service Accounts.",
               "enum": [
                 "ORG_MEMBER",
                 "ORG_READ_ONLY",
@@ -53402,7 +53769,7 @@
             "type": "array"
           },
           "secretExpiresAfterHours": {
-            "description": "Secret expiration time.",
+            "description": "The expiration time of the new Service Account secret. The expiration is provided in hours.",
             "format": "int32",
             "type": "integer"
           }
@@ -53417,23 +53784,23 @@
       "OrgServiceAccountUpdateRequest": {
         "properties": {
           "description": {
-            "description": "Human readable description for the service account.",
+            "description": "Human readable description for the Service Account.",
             "maxLength": 250,
             "minLength": 1,
             "pattern": "^[\\p{L}\\p{N}\\-_.,' ]*$",
             "type": "string"
           },
           "name": {
-            "description": "Human-readable name for the service account. The name is modifiable and does not have to be unique.",
+            "description": "Human-readable name for the Service Account. The name is modifiable and does not have to be unique.",
             "maxLength": 64,
             "minLength": 1,
             "pattern": "^[\\p{L}\\p{N}\\-_.,' ]*$",
             "type": "string"
           },
           "roles": {
-            "description": "Organization roles associated with the Service account.",
+            "description": "A list of organization-level roles for the Service Account.",
             "items": {
-              "description": "Organization roles associated with the service account.",
+              "description": "Organization roles available for Service Accounts.",
               "enum": [
                 "ORG_MEMBER",
                 "ORG_READ_ONLY",
@@ -55019,7 +55386,7 @@
         "type": "object"
       },
       "PaginatedGroupServiceAccounts": {
-        "description": "List of Service Accounts",
+        "description": "A list of Project Service Accounts.",
         "properties": {
           "links": {
             "description": "List of one or more Uniform Resource Locators (URLs) that point to API sub-resources, related API resources, or both. RFC 5988 outlines these relationships.",
@@ -55244,7 +55611,7 @@
         "type": "object"
       },
       "PaginatedOrgServiceAccounts": {
-        "description": "List of Service Accounts",
+        "description": "A list of Organization Service Accounts.",
         "properties": {
           "links": {
             "description": "List of one or more Uniform Resource Locators (URLs) that point to API sub-resources, related API resources, or both. RFC 5988 outlines these relationships.",
@@ -55502,7 +55869,7 @@
         "type": "object"
       },
       "PaginatedServiceAccountGroup": {
-        "description": "List of Service Account projects.",
+        "description": "A list of projects associated with the Service Account.",
         "properties": {
           "links": {
             "description": "List of one or more Uniform Resource Locators (URLs) that point to API sub-resources, related API resources, or both. RFC 5988 outlines these relationships.",
@@ -55520,6 +55887,38 @@
             "description": "List of returned documents that MongoDB Cloud providers when completing this request.",
             "items": {
               "$ref": "#/components/schemas/ServiceAccountGroup"
+            },
+            "readOnly": true,
+            "type": "array"
+          },
+          "totalCount": {
+            "description": "Total number of documents available. MongoDB Cloud omits this value if `includeCount` is set to `false`.",
+            "format": "int32",
+            "minimum": 0,
+            "readOnly": true,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "PaginatedServiceAccountIPAccessEntryView": {
+        "properties": {
+          "links": {
+            "description": "List of one or more Uniform Resource Locators (URLs) that point to API sub-resources, related API resources, or both. RFC 5988 outlines these relationships.",
+            "externalDocs": {
+              "description": "Web Linking Specification (RFC 5988)",
+              "url": "https://datatracker.ietf.org/doc/html/rfc5988"
+            },
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            },
+            "readOnly": true,
+            "type": "array"
+          },
+          "results": {
+            "description": "List of returned documents that MongoDB Cloud providers when completing this request.",
+            "items": {
+              "$ref": "#/components/schemas/ServiceAccountIPAccessListEntry"
             },
             "readOnly": true,
             "type": "array"
@@ -59493,7 +59892,7 @@
       "ServiceAccountGroup": {
         "properties": {
           "groupId": {
-            "description": "Unique 24-hexadecimal digit string that identifies the project.",
+            "description": "Unique 24-hexadecimal digit string that identifies your project. **NOTE**: Groups and projects are synonymous terms. Your group id is the same as your project id. For existing groups, your group/project id remains the same. The resource and corresponding endpoints use the term groups.",
             "example": "32b6e34b3d91647abb20e7b8",
             "maxLength": 24,
             "minLength": 24,
@@ -59612,6 +60011,46 @@
         "title": "ServiceAccount Events",
         "type": "object"
       },
+      "ServiceAccountIPAccessListEntry": {
+        "properties": {
+          "cidrBlock": {
+            "description": "Range of network addresses in the access list for the Service Account. This parameter requires the range to be expressed in Classless Inter-Domain Routing (CIDR) notation of Internet Protocol version 4 or version 6 addresses. You can set a value for this parameter or **ipAddress**, but not for both in the same request.",
+            "example": "203.0.113.0/24",
+            "pattern": "^((([0-9]{1,3}\\.){3}[0-9]{1,3})|(:{0,2}([0-9a-f]{1,4}:){0,7}[0-9a-f]{1,4}[:]{0,2}))((%2[fF]|/)[0-9]{1,3})+$",
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "Date MongoDB Cloud added the entry was added to the Access List.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "ipAddress": {
+            "description": "Network address in the access list for the Service Account. This parameter requires the address to be expressed as one Internet Protocol version 4 or version 6 address. You can set a value for this parameter or **cidrBlock**, but not for both in the same request.",
+            "example": "203.0.113.10",
+            "pattern": "^((25[0-5]|(2[0-4]|1\\d|[1-9]|)\\d)(\\.(?!$)|$)){4}|([0-9a-f]{1,4}:){7}[0-9a-f]{1,4}$",
+            "type": "string"
+          },
+          "lastUsedAddress": {
+            "description": "Network address that issued the most recent request to the API. This parameter requires the address to be expressed as one Internet Protocol version 4 or version 6 address. The resource returns this parameter after this IP address makes at least one request.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "lastUsedAt": {
+            "description": "Date when MongoDB Cloud received the most recent request that originated from this Internet Protocol version 4 or version 6 address. The resource returns this parameter when at least one request originates from this IP address. MongoDB Cloud updates this parameter each time a client accesses the permitted resource, with a delay of up to 5 minutes.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "requestCount": {
+            "description": "The number of requests that has originated from this network address.",
+            "format": "int32",
+            "readOnly": true,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
       "ServiceAccountOrgEvents": {
         "description": "Service Account event identifies different activities around user api keys.",
         "properties": {
@@ -59723,39 +60162,39 @@
       "ServiceAccountSecret": {
         "properties": {
           "createdAt": {
-            "description": "Timestamp representing creation time.",
+            "description": "The date that the secret was created on.",
             "format": "date-time",
             "readOnly": true,
             "type": "string"
           },
           "expiresAt": {
-            "description": "Timestamp representing secret expiration time.",
+            "description": "The date for the expiration of the secret.",
             "format": "date-time",
             "readOnly": true,
             "type": "string"
           },
           "id": {
-            "description": "Unique 24-hexadecimal character string that identifies the secret.",
+            "description": "Unique 24-hexadecimal digit string that identifies the secret.",
             "example": "32b6e34b3d91647abb20e7b8",
             "pattern": "^([a-f0-9]{24})$",
             "readOnly": true,
             "type": "string"
           },
           "lastUsedAt": {
-            "description": "Timestamp representing last secret usage.",
+            "description": "The last time the secret was used.",
             "format": "date-time",
             "readOnly": true,
             "type": "string"
           },
           "maskedSecretValue": {
-            "description": "Service Account secret with masked values of the first 20 characters.",
-            "example": "mdb_ic_sk_xxxxxxxx-xxxx-xxxx-xxxxxxxx12ce",
+            "description": "The masked Service Account secret.",
+            "example": "mdb_ic_sk_...12ce",
             "readOnly": true,
             "type": "string"
           },
           "secret": {
-            "description": "Secret for the service account. It will be returned only the first time after service account creation.",
-            "pattern": "^mdb_sa_sk_[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$",
+            "description": "The secret for the Service Account. It will be returned only the first time after creation.",
+            "pattern": "^mdb_sa_sk_[0-9a-zA-Z_-]{40}$",
             "readOnly": true,
             "type": "string"
           }
@@ -59770,7 +60209,7 @@
       "ServiceAccountSecretRequest": {
         "properties": {
           "secretExpiresAfterHours": {
-            "description": "Number of hours representing validity duration for secret.",
+            "description": "The expiration time of the new Service Account secret. The expiration is provided in hours.",
             "format": "int32",
             "type": "integer"
           }
@@ -60899,6 +61338,29 @@
         ],
         "type": "object"
       },
+      "StreamsSampleConnections": {
+        "description": "Sample connections to add to SPI.",
+        "properties": {
+          "links": {
+            "description": "List of one or more Uniform Resource Locators (URLs) that point to API sub-resources, related API resources, or both. RFC 5988 outlines these relationships.",
+            "externalDocs": {
+              "description": "Web Linking Specification (RFC 5988)",
+              "url": "https://datatracker.ietf.org/doc/html/rfc5988"
+            },
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            },
+            "readOnly": true,
+            "type": "array"
+          },
+          "solar": {
+            "default": false,
+            "description": "Flag that indicates whether to add a 'sample_stream_solar' connection.",
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
       "StreamsTenant": {
         "properties": {
           "_id": {
@@ -60955,6 +61417,9 @@
           "name": {
             "description": "Human-readable label that identifies the stream instance.",
             "type": "string"
+          },
+          "sampleConnections": {
+            "$ref": "#/components/schemas/StreamsSampleConnections"
           },
           "streamConfig": {
             "$ref": "#/components/schemas/StreamConfig"
@@ -61770,6 +62235,9 @@
           "snapshotId",
           "targetDeploymentItemName"
         ],
+        "type": "object"
+      },
+      "TenantWithSampleConnections": {
         "type": "object"
       },
       "TextSearchHostStatusDetail": {
