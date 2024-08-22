@@ -1,6 +1,6 @@
 [
   {
-    "date": "2024-08-20",
+    "date": "2024-08-08",
     "paths": [
       {
         "path": "/api/atlas/v2/groups/{groupId}/clusters",
@@ -493,12 +493,6 @@
                 "change": "removed the optional properties 'defaultReadConcern, failIndexKeyTooLong' from the response",
                 "changeCode": "response-optional-property-removed",
                 "backwardCompatible": true
-              },
-              {
-                "change": "removed the request properties 'defaultReadConcern, failIndexKeyTooLong'",
-                "changeCode": "request-property-removed",
-                "backwardCompatible": true,
-                "hideFromChangelog": true
               }
             ],
             "stabilityLevel": "stable",
@@ -516,33 +510,9 @@
             "version": "2024-08-05",
             "changes": [
               {
-                "change": "the 'pipeline' request property type/format changed from 'string'/'' to 'array'/''",
-                "changeCode": "request-property-type-changed",
-                "backwardCompatible": false,
-                "hideFromChangelog": true
-              },
-              {
-                "change": "the 'pipeline' response's property type/format changed from 'string'/'' to 'array'/'' for status '200'",
-                "changeCode": "response-property-type-changed",
-                "backwardCompatible": false,
-                "hideFromChangelog": true
-              },
-              {
                 "change": "added the optional property 'options' to the response",
                 "changeCode": "response-optional-property-added",
                 "backwardCompatible": true
-              },
-              {
-                "change": "removed the optional property 'dlq' from the response",
-                "changeCode": "response-optional-property-removed",
-                "backwardCompatible": true,
-                "hideFromChangelog": true
-              },
-              {
-                "change": "removed the request property 'dlq'",
-                "changeCode": "request-property-removed",
-                "backwardCompatible": true,
-                "hideFromChangelog": true
               },
               {
                 "change": "added the new optional request property 'options'",
@@ -555,48 +525,6 @@
           }
         ],
         "operationId": "createStreamProcessor",
-        "tag": "Streams"
-      },
-      {
-        "path": "/api/atlas/v2/groups/{groupId}/streams/{tenantName}/processor/{processorName}",
-        "httpMethod": "GET",
-        "versions": [
-          {
-            "version": "2024-08-05",
-            "changes": [
-              {
-                "change": "the 'pipeline' response's property type/format changed from 'string'/'' to 'array'/'' for status '200'",
-                "changeCode": "response-property-type-changed",
-                "backwardCompatible": false,
-                "hideFromChangelog": true
-              }
-            ],
-            "stabilityLevel": "stable",
-            "changeType": "release"
-          }
-        ],
-        "operationId": "getStreamProcessor",
-        "tag": "Streams"
-      },
-      {
-        "path": "/api/atlas/v2/groups/{groupId}/streams/{tenantName}/processors",
-        "httpMethod": "GET",
-        "versions": [
-          {
-            "version": "2024-08-05",
-            "changes": [
-              {
-                "change": "the 'results/items/pipeline' response's property type/format changed from 'string'/'' to 'array'/'' for status '200'",
-                "changeCode": "response-property-type-changed",
-                "backwardCompatible": false,
-                "hideFromChangelog": true
-              }
-            ],
-            "stabilityLevel": "stable",
-            "changeType": "release"
-          }
-        ],
-        "operationId": "listStreamProcessors",
         "tag": "Streams"
       }
     ]
