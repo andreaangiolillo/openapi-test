@@ -1005,6 +1005,8 @@ components:
                         description: Reduce Secondary Disk Warming Impact
                         url: https://docs.atlas.mongodb.com/reference/replica-set-tags/#reduce-secondary-disk-warming-impact
                     type: string
+                employeeAccessGrant:
+                    $ref: '#/components/schemas/EmployeeAccessGrantView'
                 encryptionAtRestProvider:
                     description: 'Cloud service provider that manages your customer keys to provide an additional layer of encryption at rest for the cluster. To enable customer key management for encryption at rest, the cluster **replicationSpecs[n].regionConfigs[m].{type}Specs.instanceSize** setting must be `M10` or higher and `"backupEnabled" : false` or omitted entirely.'
                     enum:
@@ -1015,6 +1017,15 @@ components:
                     externalDocs:
                         description: Encryption at Rest using Customer Key Management
                         url: https://www.mongodb.com/docs/atlas/security-kms-encryption/
+                    type: string
+                featureCompatibilityVersion:
+                    description: Feature compatibility version of the cluster.
+                    readOnly: true
+                    type: string
+                featureCompatibilityVersionExpirationDate:
+                    description: Feature compatibility version expiration date.
+                    format: date-time
+                    readOnly: true
                     type: string
                 globalClusterSelfManagedSharding:
                     description: |-
@@ -2294,6 +2305,20 @@ components:
                     readOnly: true
                     type: string
             type: object
+        ApiPrivateDownloadDeliveryUrl:
+            description: One Uniform Resource Locator (URL) that points to the compressed snapshot files for manual download and the corresponding private endpoint.
+            properties:
+                deliveryUrl:
+                    description: One Uniform Resource Locator that points to the compressed snapshot files for manual download.
+                    type: string
+                endpointId:
+                    description: Unique 22-character alphanumeric string that identifies the private endpoint.
+                    example: vpce-3bf78b0ddee411ba1
+                    maxLength: 22
+                    minLength: 22
+                    pattern: ^vpce-[0-9a-f]{17}$
+                    type: string
+            type: object
         ApiPublicUsageDetailsQueryRequest:
             description: Request body for an Invoice Usage Details query with filtering, pagination, and sort.
             properties:
@@ -2406,6 +2431,8 @@ components:
                 - VIRGINIA_USA
                 - OREGON_USA
                 - SAOPAULO_BRA
+                - MONTREAL_CAN
+                - TOKYO_JPN
                 - SINGAPORE_SGP
             type: string
         ApiUserEventTypeViewForNdsGroup:
@@ -3144,6 +3171,110 @@ components:
                     type: string
             required:
                 - name
+            type: object
+        AtlasResourcePolicyAuditForOrg:
+            description: Atlas resource policy audits indicate org level changes to resource policies
+            properties:
+                apiKeyId:
+                    description: Unique 24-hexadecimal digit string that identifies the [API Key](https://dochub.mongodb.org/core/atlas-create-prog-api-key) that triggered the event. If this resource returns this parameter, it doesn't return the **userId** parameter.
+                    example: 32b6e34b3d91647abb20e7b8
+                    maxLength: 24
+                    minLength: 24
+                    pattern: ^([a-f0-9]{24})$
+                    readOnly: true
+                    type: string
+                created:
+                    description: Date and time when this event occurred. This parameter expresses its value in the <a href="https://en.wikipedia.org/wiki/ISO_8601" target="_blank" rel="noopener noreferrer">ISO 8601</a> timestamp format in UTC.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                eventTypeName:
+                    description: Unique identifier of event type.
+                    enum:
+                        - RESOURCE_POLICY_CREATED
+                        - RESOURCE_POLICY_MODIFIED
+                        - RESOURCE_POLICY_DELETED
+                    example: RESOURCE_POLICY_CREATED
+                    title: Atlas Resource Policy Audit Types
+                    type: string
+                groupId:
+                    description: Unique 24-hexadecimal digit string that identifies the project in which the event occurred. The **eventId** identifies the specific event.
+                    example: 32b6e34b3d91647abb20e7b8
+                    maxLength: 24
+                    minLength: 24
+                    pattern: ^([a-f0-9]{24})$
+                    readOnly: true
+                    type: string
+                id:
+                    description: Unique 24-hexadecimal digit string that identifies the event.
+                    example: 32b6e34b3d91647abb20e7b8
+                    maxLength: 24
+                    minLength: 24
+                    pattern: ^([a-f0-9]{24})$
+                    readOnly: true
+                    type: string
+                isGlobalAdmin:
+                    default: false
+                    description: Flag that indicates whether a MongoDB employee triggered the specified event.
+                    readOnly: true
+                    type: boolean
+                links:
+                    description: List of one or more Uniform Resource Locators (URLs) that point to API sub-resources, related API resources, or both. RFC 5988 outlines these relationships.
+                    externalDocs:
+                        description: Web Linking Specification (RFC 5988)
+                        url: https://datatracker.ietf.org/doc/html/rfc5988
+                    items:
+                        $ref: '#/components/schemas/Link'
+                    readOnly: true
+                    type: array
+                orgId:
+                    description: Unique 24-hexadecimal digit string that identifies the organization to which these events apply.
+                    example: 32b6e34b3d91647abb20e7b8
+                    maxLength: 24
+                    minLength: 24
+                    pattern: ^([a-f0-9]{24})$
+                    readOnly: true
+                    type: string
+                publicKey:
+                    description: Public part of the [API Key](https://dochub.mongodb.org/core/atlas-create-prog-api-key) that triggered the event. If this resource returns this parameter, it doesn't return the **username** parameter.
+                    format: email
+                    readOnly: true
+                    type: string
+                raw:
+                    $ref: '#/components/schemas/raw'
+                remoteAddress:
+                    description: IPv4 or IPv6 address from which the user triggered this event.
+                    example: 216.172.40.186
+                    pattern: ^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)(\.(?!$)|$)){4}|([0-9a-f]{1,4}:){7}[0-9a-f]{1,4}$
+                    readOnly: true
+                    type: string
+                resourcePolicyId:
+                    description: Unique 24-hexadecimal character string that identifies the resource policy.
+                    example: 32b6e34b3d91647abb20e7b8
+                    maxLength: 24
+                    minLength: 24
+                    pattern: ^([a-f0-9]{24})$
+                    readOnly: true
+                    type: string
+                userId:
+                    description: Unique 24-hexadecimal digit string that identifies the console user who triggered the event. If this resource returns this parameter, it doesn't return the **apiKeyId** parameter.
+                    example: 32b6e34b3d91647abb20e7b8
+                    maxLength: 24
+                    minLength: 24
+                    pattern: ^([a-f0-9]{24})$
+                    readOnly: true
+                    type: string
+                username:
+                    description: Email address for the user who triggered this event. If this resource returns this parameter, it doesn't return the **publicApiKey** parameter.
+                    example: test.user@mongodb.com
+                    format: email
+                    readOnly: true
+                    type: string
+            required:
+                - created
+                - eventTypeName
+                - id
+            title: Atlas Resource Policy Audits
             type: object
         AtlasSearchAnalyzer:
             properties:
@@ -4042,6 +4173,7 @@ components:
                         - ACTIVE
                         - FAILED
                         - PENDING_RECREATION
+                        - DELETING
                     readOnly: true
                     type: string
             title: Azure Key Vault EAR Private Endpoint
@@ -7622,6 +7754,8 @@ components:
                         description: Reduce Secondary Disk Warming Impact
                         url: https://docs.atlas.mongodb.com/reference/replica-set-tags/#reduce-secondary-disk-warming-impact
                     type: string
+                employeeAccessGrant:
+                    $ref: '#/components/schemas/EmployeeAccessGrantView'
                 encryptionAtRestProvider:
                     description: 'Cloud service provider that manages your customer keys to provide an additional layer of encryption at rest for the cluster. To enable customer key management for encryption at rest, the cluster **replicationSpecs[n].regionConfigs[m].{type}Specs.instanceSize** setting must be `M10` or higher and `"backupEnabled" : false` or omitted entirely.'
                     enum:
@@ -7632,6 +7766,15 @@ components:
                     externalDocs:
                         description: Encryption at Rest using Customer Key Management
                         url: https://www.mongodb.com/docs/atlas/security-kms-encryption/
+                    type: string
+                featureCompatibilityVersion:
+                    description: Feature compatibility version of the cluster.
+                    readOnly: true
+                    type: string
+                featureCompatibilityVersionExpirationDate:
+                    description: Feature compatibility version expiration date.
+                    format: date-time
+                    readOnly: true
                     type: string
                 globalClusterSelfManagedSharding:
                     description: |-
@@ -11661,6 +11804,7 @@ components:
                             - FIXED_VERSION_UPDATED
                             - FIXED_AGENT_VERSION_UPDATED
                             - CLUSTER_FCV_DOWNGRADED
+                            - CLUSTER_BINARY_VERSION_DOWNGRADED
                           title: Version Audit Types
                           type: string
                     type: object
@@ -12185,7 +12329,7 @@ components:
                 deliveryUrl:
                     description: 'One or more Uniform Resource Locators (URLs) that point to the compressed snapshot files for manual download. MongoDB Cloud returns this parameter when `"deliveryType" : "download"`.'
                     items:
-                        description: One Uniform Resource Locator that point to the compressed snapshot files for manual download.
+                        description: One Uniform Resource Locator that points to the compressed snapshot files for manual download.
                         type: string
                     readOnly: true
                     type: array
@@ -12433,9 +12577,15 @@ components:
         DiskBackupRestoreMember:
             properties:
                 downloadUrl:
-                    description: 'One Uniform Resource Locator that point to the compressed snapshot files for manual download. MongoDB Cloud returns this parameter when `"deliveryType" : "download"`.'
+                    description: 'One Uniform Resource Locator that points to the compressed snapshot files for manual download. MongoDB Cloud returns this parameter when `"deliveryType" : "download"`.'
                     readOnly: true
                     type: string
+                privateDownloadDeliveryUrls:
+                    description: 'One or more Uniform Resource Locators (URLs) that point to the compressed snapshot files for manual download and the corresponding private endpoint(s). MongoDB Cloud returns this parameter when `"deliveryType" : "download"` and the download can be performed privately.'
+                    items:
+                        $ref: '#/components/schemas/ApiPrivateDownloadDeliveryUrl'
+                    readOnly: true
+                    type: array
                 replicaSetName:
                     description: Human-readable label that identifies the replica set on the sharded cluster.
                     readOnly: true
@@ -12827,7 +12977,7 @@ components:
                 deliveryUrl:
                     description: 'One or more Uniform Resource Locators (URLs) that point to the compressed snapshot files for manual download. MongoDB Cloud returns this parameter when `"deliveryType" : "download"`.'
                     items:
-                        description: One Uniform Resource Locator that point to the compressed snapshot files for manual download.
+                        description: One Uniform Resource Locator that points to the compressed snapshot files for manual download.
                         type: string
                     readOnly: true
                     type: array
@@ -12884,6 +13034,12 @@ components:
                     format: int32
                     minimum: 1.1991456e+09
                     type: integer
+                privateDownloadDeliveryUrls:
+                    description: 'One or more Uniform Resource Locators (URLs) that point to the compressed snapshot files for manual download and the corresponding private endpoint(s). MongoDB Cloud returns this parameter when `"deliveryType" : "download"` and the download can be performed privately.'
+                    items:
+                        $ref: '#/components/schemas/ApiPrivateDownloadDeliveryUrl'
+                    readOnly: true
+                    type: array
                 snapshotId:
                     description: Unique 24-hexadecimal character string that identifies the snapshot.
                     example: 32b6e34b3d91647abb20e7b8
@@ -13171,6 +13327,7 @@ components:
                         - ACTIVE
                         - FAILED
                         - PENDING_RECREATION
+                        - DELETING
                     readOnly: true
                     type: string
             title: Encryption At Rest Private Endpoint
@@ -13214,6 +13371,33 @@ components:
             required:
                 - typeName
             title: Email Notification
+            type: object
+        EmployeeAccessGrantView:
+            description: MongoDB employee granted access level and expiration for a cluster.
+            properties:
+                expiration:
+                    description: Expiration date for the employee access grant.
+                    format: date-time
+                    type: string
+                grantType:
+                    description: Level of access to grant to MongoDB Employees.
+                    enum:
+                        - CLUSTER_INFRASTRUCTURE
+                        - CLUSTER_INFRASTRUCTURE_AND_APP_SERVICES_SYNC_DATA
+                    type: string
+                links:
+                    description: List of one or more Uniform Resource Locators (URLs) that point to API sub-resources, related API resources, or both. RFC 5988 outlines these relationships.
+                    externalDocs:
+                        description: Web Linking Specification (RFC 5988)
+                        url: https://datatracker.ietf.org/doc/html/rfc5988
+                    items:
+                        $ref: '#/components/schemas/Link'
+                    readOnly: true
+                    type: array
+            readOnly: true
+            required:
+                - expiration
+                - grantType
             type: object
         EncryptionAtRest:
             properties:
@@ -14011,6 +14195,7 @@ components:
                     - FIXED_VERSION_UPDATED
                     - FIXED_AGENT_VERSION_UPDATED
                     - CLUSTER_FCV_DOWNGRADED
+                    - CLUSTER_BINARY_VERSION_DOWNGRADED
                   title: Version Audit Types
                   type: string
                 - enum:
@@ -14287,6 +14472,12 @@ components:
                     - GROUP_TAGS_MODIFIED
                   title: Resource Event Types
                   type: string
+                - enum:
+                    - RESOURCE_POLICY_CREATED
+                    - RESOURCE_POLICY_MODIFIED
+                    - RESOURCE_POLICY_DELETED
+                  title: Atlas Resource Policy Audit Types
+                  type: string
             type: object
         EventViewForNdsGroup:
             oneOf:
@@ -14328,6 +14519,7 @@ components:
                 - $ref: '#/components/schemas/TeamEvent'
                 - $ref: '#/components/schemas/UserEventViewForOrg'
                 - $ref: '#/components/schemas/ResourceEventViewForOrg'
+                - $ref: '#/components/schemas/AtlasResourcePolicyAuditForOrg'
             type: object
         ExampleResourceResponse20230101:
             properties:
@@ -18845,6 +19037,8 @@ components:
                         description: Reduce Secondary Disk Warming Impact
                         url: https://docs.atlas.mongodb.com/reference/replica-set-tags/#reduce-secondary-disk-warming-impact
                     type: string
+                employeeAccessGrant:
+                    $ref: '#/components/schemas/EmployeeAccessGrantView'
                 encryptionAtRestProvider:
                     description: Cloud service provider that manages your customer keys to provide an additional layer of Encryption at Rest for the cluster.
                     enum:
@@ -18855,6 +19049,15 @@ components:
                     externalDocs:
                         description: Encryption at Rest using Customer Key Management
                         url: https://www.mongodb.com/docs/atlas/security-kms-encryption/
+                    type: string
+                featureCompatibilityVersion:
+                    description: Feature compatibility version of the cluster.
+                    readOnly: true
+                    type: string
+                featureCompatibilityVersionExpirationDate:
+                    description: Feature compatibility version expiration date.
+                    format: date-time
+                    readOnly: true
                     type: string
                 globalClusterSelfManagedSharding:
                     description: |-
@@ -19101,6 +19304,8 @@ components:
                         description: Reduce Secondary Disk Warming Impact
                         url: https://docs.atlas.mongodb.com/reference/replica-set-tags/#reduce-secondary-disk-warming-impact
                     type: string
+                employeeAccessGrant:
+                    $ref: '#/components/schemas/EmployeeAccessGrantView'
                 encryptionAtRestProvider:
                     description: Cloud service provider that manages your customer keys to provide an additional layer of Encryption at Rest for the cluster.
                     enum:
@@ -19111,6 +19316,15 @@ components:
                     externalDocs:
                         description: Encryption at Rest using Customer Key Management
                         url: https://www.mongodb.com/docs/atlas/security-kms-encryption/
+                    type: string
+                featureCompatibilityVersion:
+                    description: Feature compatibility version of the cluster.
+                    readOnly: true
+                    type: string
+                featureCompatibilityVersionExpirationDate:
+                    description: Feature compatibility version expiration date.
+                    format: date-time
+                    readOnly: true
                     type: string
                 globalClusterSelfManagedSharding:
                     description: |-
@@ -22229,6 +22443,30 @@ components:
                             - ORG_OWNER
                         type: string
                     type: array
+            type: object
+        OrgUserRequest:
+            properties:
+                roles:
+                    $ref: '#/components/schemas/OrgUserRolesRequest'
+                teamIds:
+                    description: List of unique 24-hexadecimal digit strings that identifies the teams to which this MongoDB Cloud user belongs.
+                    items:
+                        example: 32b6e34b3d91647abb20e7b8
+                        maxLength: 24
+                        minLength: 24
+                        pattern: ^([a-f0-9]{24})$
+                        type: string
+                    type: array
+                    uniqueItems: true
+                    writeOnly: true
+                username:
+                    description: Email address that represents the username of the MongoDB Cloud user.
+                    format: email
+                    type: string
+                    writeOnly: true
+            required:
+                - roles
+                - username
             type: object
         OrgUserResponse:
             discriminator:
@@ -26582,7 +26820,7 @@ components:
                 deliveryUrl:
                     description: 'One or more Uniform Resource Locators (URLs) that point to the compressed snapshot files for manual download. MongoDB Cloud returns this parameter when `"deliveryType" : "download"`.'
                     items:
-                        description: One Uniform Resource Locator that point to the compressed snapshot files for manual download.
+                        description: One Uniform Resource Locator that points to the compressed snapshot files for manual download.
                         type: string
                     readOnly: true
                     type: array
@@ -28339,6 +28577,8 @@ components:
                     description: Human-readable name of the stream processor.
                     readOnly: true
                     type: string
+                options:
+                    $ref: '#/components/schemas/StreamsOptions'
                 pipeline:
                     description: Stream aggregation pipeline you want to apply to your streaming data.
                     items:
@@ -32032,13 +32272,15 @@ info:
         ```
 
         To learn more, see [Get Started with the Atlas Administration API](https://www.mongodb.com/docs/atlas/configure-api-access/). For support, see [MongoDB Support](https://www.mongodb.com/support/get-started).
+
+        You can also explore the various endpoints available through the Atlas Administration API in MongoDB's [Postman workspace](https://www.postman.com/mongodb-devrel/workspace/mongodb-atlas-administration-apis/).
     license:
         name: CC BY-NC-SA 3.0 US
         url: https://creativecommons.org/licenses/by-nc-sa/3.0/us/
     termsOfService: https://www.mongodb.com/mongodb-management-service-terms-and-conditions
     title: MongoDB Atlas Administration API
     version: "2.0"
-    x-xgen-sha: 5e2c1e14c4f63918e7cd6a5bb76584b2822bb477
+    x-xgen-sha: f8fe4bbad8eef8d216cb39b7282289f0d5fb83f3
 openapi: 3.0.1
 paths:
     /api/atlas/v2:
@@ -42453,6 +42695,8 @@ paths:
                             - MAX_DISK_PARTITION_SPACE_PERCENT_FREE
                             - DISK_PARTITION_SPACE_PERCENT_USED
                             - MAX_DISK_PARTITION_SPACE_PERCENT_USED
+                            - DISK_PARTITION_THROUGHPUT_READ
+                            - DISK_PARTITION_THROUGHPUT_WRITE
                         type: string
                     maxItems: 10
                     minItems: 1
@@ -42526,6 +42770,8 @@ paths:
                             - CACHE_BYTES_WRITTEN_FROM
                             - CACHE_DIRTY_BYTES
                             - CACHE_USED_BYTES
+                            - CACHE_FILL_RATIO
+                            - DIRTY_FILL_RATIO
                             - COMPUTED_MEMORY
                             - CONNECTIONS
                             - CURSORS_TOTAL_OPEN
