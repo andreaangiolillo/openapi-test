@@ -10,7 +10,7 @@ on:
         description: 'End date for the changelog report. Example: 2024-01-10'
         required: true
   schedule:
-    - cron: '0 9 * * 1'  # Run every Monday at 09:00 UTC
+    - cron: '*/5 * * * *'
 
 jobs:
   send-changelog-report:
@@ -40,15 +40,15 @@ jobs:
           start_date="${START_DATE}"
           if [[ -z "${START_DATE}" ]]; then
             echo "Start date not provided"
-            start_date=$(date -j -v-7d "+%Y-%m-%d")
+            start_date=$(date -d "-7 day" "+%Y-%m-%d")
             echo "Using 7 days ago as start date: ${start_date}"
           fi
 
           end_date="${END_DATE}"
           if [[ -z "${END_DATE}" ]]; then
             echo "End date not provided"
-            end_date=$(date -j -v-2d "+%Y-%m-%d")
-            echo "Using last Friday as end date: ${end_date}"
+            end_date=$(date -d "-1 day" "+%Y-%m-%d")
+            echo "Using yesterday as end date: ${end_date}"
           fi
           
           echo start_date="${start_date}" >> "${GITHUB_OUTPUT}"
@@ -86,6 +86,9 @@ jobs:
             breaking_changes=$(jq '[.. | objects | select(has("backwardCompatible") and .backwardCompatible == false)] | length' entries.json)
             echo "breaking_changes=${breaking_changes}"
 
+            spec_corrections=$(jq '[.. | objects | select(has("hideFromChangelog") and .hideFromChangelog == true)] | length' entries.json)
+            echo "spec_corrections=${spec_corrections}"
+            
             if [[ "${compatible_changes}" -eq 0 && "${breaking_changes}" -eq 0 ]]; then
               echo "No changelog entries found"
               exit 0
@@ -93,7 +96,11 @@ jobs:
             
             message_id=$(curl -X POST -H 'Authorization: Bearer '"${SLACK_BEARER_TOKEN}" \
             -H 'Content-type: application/json' \
+<<<<<<< Updated upstream
             --data '{"channel":"'"${SLACK_CHANNEL_ID}"'","text":"List of API changes (*cloud-dev*) from *'"${START_DATE}"'* to *'"${END_DATE}"'*.\n\n*Summary*:\n\n:large_green_circle: Backward Compatible Changes: *'"${compatible_changes}"'*\n:red_circle: Breaking Changes: *'"${breaking_changes}"'*","parse": "full",}' https://slack.com/api/chat.postMessage | jq '.ts')
+=======
+            --data '{"channel":"'"${SLACK_CHANNEL_ID}"'","text":":aileaft: List of API changes (*cloud-dev*) from *'"${START_DATE}"'* to *'"${END_DATE}"'*.\n\n*Summary*:\n\n:large_green_circle: Backward Compatible Changes: *'"${compatible_changes}"'*\n\n:large_orange_circle: Spec Corrections: *'"${spec_corrections}"'*\n\n:red_circle: Breaking Changes: *'"${breaking_changes}"'*","parse": "full",}' https://slack.com/api/chat.postMessage | jq '.ts')
+>>>>>>> Stashed changes
             
             echo "message_id=${message_id}"
             echo "message_id=${message_id}" >> "${GITHUB_OUTPUT}"
