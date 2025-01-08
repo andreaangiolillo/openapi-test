@@ -19,7 +19,7 @@ jobs:
     - name: Checkout CLI
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
     - name: Install Go
-      uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
+      uses: actions/setup-go@3041bf56c941b39c61721a86cd11f3bb1338122a
       with:
         go-version-file: 'tools/cli/go.mod'
     - name: Build CLI
@@ -40,12 +40,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
       - name: Install Go
-        uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
+        uses: actions/setup-go@3041bf56c941b39c61721a86cd11f3bb1338122a
         with:
           go-version-file: 'tools/cli/go.mod'
       - name: Run unit tests
         working-directory: tools/cli
         run: make unit-test
+  js-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
+        with:
+          sparse-checkout: |
+            .github
+            tools/spectral/ipa
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      - name: Install npm dependencies
+        run: npm install
+      - name: Run Jest tests
+        run: |
+          npm run test
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -69,7 +88,7 @@ jobs:
         run: |
           npm run lint-js
       - name: Install Go
-        uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
+        uses: actions/setup-go@3041bf56c941b39c61721a86cd11f3bb1338122a
         with:
           go-version-file: 'tools/cli/go.mod'
           cache: false # see https://github.com/golangci/golangci-lint-action/issues/807
@@ -99,7 +118,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
       - name: Install Go
-        uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed
+        uses: actions/setup-go@3041bf56c941b39c61721a86cd11f3bb1338122a
         with:
           go-version-file: 'tools/cli/go.mod'
       - name: Run e2e tests
