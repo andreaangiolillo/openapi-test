@@ -27,13 +27,14 @@ found_issue=$(curl --request GET \
                 --header 'Accept: application/json' \
                 --header 'Content-Type: application/json' | jq .total)
 
-echo "$found_issue: ${found_issue}"
+echo "found_issue: ${found_issue}"
 if [ "$found_issue" -ne 0 ]; then
     echo "There is already a Jira ticket with the title \"${JIRA_TICKET_TITLE:?}\""
     echo "No new Jira ticket will be created."
     exit 0
 fi
 
+echo "Creating Jira ticket..."
 json_response=$(curl --request POST \
 --url 'https://jira.mongodb.org/rest/api/2/issue' \
 --header 'Authorization: Bearer '"${JIRA_API_TOKEN:?}" \
