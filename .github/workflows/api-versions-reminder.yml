@@ -131,14 +131,14 @@ jobs:
         run: |
           JIRA_TICKET_ID=CLOUDP-293621
           echo "JIRA_TICKET_ID: ${JIRA_TICKET_ID}"
+          message_id=$(curl -X POST -H 'Authorization: Bearer '"${SLACK_BEARER_TOKEN}" \
+          -H 'Content-type: application/json' \
+          --data '{"channel":"'"${SLACK_CHANNEL_ID}"'","text":"The following APIs are scheduled to be sunset in the next 3 weeks: see :thread:. Jira Ticket: https://jira.mongodb.org/browse/'"${JIRA_TICKET_ID}"'","parse": "full",}' https://slack.com/api/chat.postMessage | jq '.ts')
+          echo "message_id=${message_id}"]
+          
+          sleep 2 # wait for 2 seconds to avoid slack rate limit
+          
+          # Add the JSON array as a reply to message thread
           curl -X POST -H 'Authorization: Bearer '"${SLACK_BEARER_TOKEN}" \
           -H 'Content-type: application/json' \
-          --data '{"channel":"'"${SLACK_CHANNEL_ID}"'","text":"The following APIs are scheduled to be sunset in the next 3 weeks: see :thread:. Jira Ticket: https://jira.mongodb.org/browse/'"${JIRA_TICKET_ID}"'","parse": "full",}' https://slack.com/api/chat.postMessage
-#          echo "message_id=${message_id}"]
-#
-#          sleep 2 # wait for 2 seconds to avoid slack rate limit
-#
-#          # Add the JSON array as a reply to message thread
-#          curl -X POST -H 'Authorization: Bearer '"${SLACK_BEARER_TOKEN}" \
-#          -H 'Content-type: application/json' \
-#          --data '{"channel":"'"${SLACK_CHANNEL_ID}"'",{"thread_ts":"'"${message_id}"'","text":"'"${SUNSET_APIS}"'","parse": "full",}' https://slack.com/api/chat.postMessage
+          --data '{"channel":"'"${SLACK_CHANNEL_ID}"'",{"thread_ts":"'"${message_id}"'","text":"'"${SUNSET_APIS}"'","parse": "full",}' https://slack.com/api/chat.postMessage
