@@ -74,24 +74,25 @@ jobs:
       - name: Retrieve Sunset APIs
         id: retrieve-sunset-apis
         env:
-          openapi_spec_url: "https://raw.githubusercontent.com/andreaangiolillo/openapi-test/refs/heads/dev/openapi/v2.json"
+          openapi_spec_url: "https://raw.githubusercontent.com/mongodb/openapi/dev/openapi/v2/versions.json"
         run: |
-          three_weeks_date=""
+          three_months_date=""
+          
           # Determine if the system is macOS or Linux
           if [[ "$(uname)" == "Darwin" ]]; then
-            # macOS date command format
-            three_weeks_date=$(date -v+3w +"%Y-%m-%d")
+          # macOS date command format
+            three_months_date=$(date -v+3m +"%Y-%m-%d")
           else
-            # Linux date command format
-            three_weeks_date=$(date --date="3 weeks" +"%Y-%m-%d")
+          # Linux date command format
+            three_months_date=$(date --date="3 months" +"%Y-%m-%d")
           fi
-         
-          echo "three_weeks_date: ${three_weeks_date}"
-      
+          
+          echo "three_months_date: ${three_months_date}"
+          
           current_date=$(date +"%Y-%m-%d")
           echo "current_date: ${current_date}"
           
-          sunset_apis=$(foascli sunset ls -s "${openapi_spec_url}" --from "${current_date}" --to "${three_weeks_date}")
+          sunset_apis=$(foascli sunset ls -s "${openapi_spec_url}" --from "${current_date}" --to "${three_months_date}")
           if [[ "$(sunset_apis)" != "null" ]]; then
             echo "API Versions that will be sunsets in the next 3 weeks: ${sunset_apis}"
           
@@ -131,5 +132,5 @@ jobs:
           echo "JIRA_TICKET_ID: ${JIRA_TICKET_ID}"
           message_id=$(curl -X POST -H 'Authorization: Bearer '"${SLACK_BEARER_TOKEN}" \
           -H 'Content-type: application/json' \
-          --data '{"channel":"'"${SLACK_CHANNEL_ID}"'","text":"The following APIs are scheduled to be sunset in the next 3 weeks: See Jira Ticket: https://jira.mongodb.org/browse/'"${JIRA_TICKET_ID}"'","parse": "full",}' https://slack.com/api/chat.postMessage | jq '.ts')
+          --data '{"channel":"'"${SLACK_CHANNEL_ID}"'","text":"The following APIs are scheduled to be sunset in the next 3 weeks. See Jira Ticket: https://jira.mongodb.org/browse/'"${JIRA_TICKET_ID}"'","parse": "full",}' https://slack.com/api/chat.postMessage | jq '.ts')
           echo "message_id=${message_id}"]
