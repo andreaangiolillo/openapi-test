@@ -74,7 +74,7 @@ jobs:
       - name: Retrieve Sunset APIs
         id: retrieve-sunset-apis
         env:
-          openapi_spec_url: "https://raw.githubusercontent.com/mongodb/openapi/refs/heads/dev/openapi/v2.json"
+          openapi_spec_url: "https://raw.githubusercontent.com/andreaangiolillo/openapi-test/refs/heads/dev/openapi/v2.json"
         run: |
           three_months_date=""
           
@@ -105,7 +105,7 @@ jobs:
             echo "${sunset_apis}" > sunset_apis.json
           
           else
-            echo "No API Versions will be sunset within the next 3 weeks."
+            echo "No API Versions will be sunset within the next 3 months."
           fi
 
       # Create a JIRA ticket only if the there is not already a ticket with the same title
@@ -114,7 +114,7 @@ jobs:
         if: steps.retrieve-sunset-apis.outputs.hash_code_sunset_apis != null
         env:
           JIRA_API_TOKEN: ${{ secrets.jira_api_token }}
-          JIRA_TICKET_TITLE: "[API Platform] Some APIs are approaching their sunset date. ID: ${{steps.retrieve-sunset-apis.outputs.hash_code_sunset_apis}}"
+          JIRA_TICKET_TITLE: "[API Platform] Some APIs are approaching their sunset date in the next 3 months. ID: ${{steps.retrieve-sunset-apis.outputs.hash_code_sunset_apis}}"
         run: |
           sunset_apis=$(cat sunset_apis.json | sed 's/"/\\"/g')
           JIRA_TICKET_DESCRIPTION="The following APIs will be sunset in the next 3 months. Please follow our [wiki|https://wiki.corp.mongodb.com/display/MMS/API+eXperience+Production+Checklist#APIeXperienceProductionChecklist-APISunsetActionItems]. {code:json}${sunset_apis}{code}"
@@ -132,5 +132,5 @@ jobs:
           echo "JIRA_TICKET_ID: ${JIRA_TICKET_ID}"
           message_id=$(curl -X POST -H 'Authorization: Bearer '"${SLACK_BEARER_TOKEN}" \
           -H 'Content-type: application/json' \
-          --data '{"channel":"'"${SLACK_CHANNEL_ID}"'","text":"The following APIs are scheduled to be sunset in the next 3 weeks. See Jira Ticket: https://jira.mongodb.org/browse/'"${JIRA_TICKET_ID}"'","parse": "full",}' https://slack.com/api/chat.postMessage | jq '.ts')
+          --data '{"channel":"'"${SLACK_CHANNEL_ID}"'","text":"The following APIs are scheduled to be sunset in the next 3 months. See Jira Ticket: https://jira.mongodb.org/browse/'"${JIRA_TICKET_ID}"'","parse": "full",}' https://slack.com/api/chat.postMessage | jq '.ts')
           echo "message_id=${message_id}"]
