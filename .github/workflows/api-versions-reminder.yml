@@ -75,10 +75,6 @@ jobs:
           openapi_spec_url: "https://github.com/andreaangiolillo/openapi-test/blob/dev/openapi/v2.json"
         run: |
           three_weeks_date=""
-          
-          three_weeks_date=$(date --date="3 weeks" +"%Y-%m-%d")
-          echo "three_weeks_date: ${three_weeks_date}"
-          
           # Determine if the system is macOS or Linux
           if [[ "$(uname)" == "Darwin" ]]; then
             # macOS date command format
@@ -90,7 +86,7 @@ jobs:
          
           echo "three_weeks_date: ${three_weeks_date}"
       
-          current_date=$(date +%s)
+          current_date=$(date +"%Y-%m-%d")
           echo "current_date: ${current_date}"
           
           sunset_apis=$(foascli sunset ls -s "${openapi_spec_url}" --from "${current_date}" --to "${three_weeks_date}")
