@@ -126,7 +126,6 @@ jobs:
         env:
           SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID_APIX_2 }}
           SLACK_BEARER_TOKEN: ${{ secrets.SLACK_BEARER_TOKEN }}
-          SUNSET_APIS: ${{ steps.retrieve-sunset-apis.outputs.sunset_apis }}
 #          JIRA_TICKET_ID: ${{ steps.create-jira-ticket.outputs.jira-ticket-id }}
         run: |
           JIRA_TICKET_ID=CLOUDP-293621
@@ -137,8 +136,8 @@ jobs:
           echo "message_id=${message_id}"]
           
           sleep 2 # wait for 2 seconds to avoid slack rate limit
-          
+          sunset_apis=$(cat sunset_apis.json | sed 's/"/\\"/g')
           # Add the JSON array as a reply to message thread
           curl -X POST -H 'Authorization: Bearer '"${SLACK_BEARER_TOKEN}" \
           -H 'Content-type: application/json' \
-          --data '{"channel":"'"${SLACK_CHANNEL_ID}"'",{"thread_ts":"'"${message_id}"'","text":"'"${SUNSET_APIS}"'","parse": "full",}' https://slack.com/api/chat.postMessage
+          --data '{"channel":"'"${SLACK_CHANNEL_ID}"'",{"thread_ts":"'"${message_id}"'","text":```json"'"${sunset_apis}"'"```,"parse": "full",}' https://slack.com/api/chat.postMessage
