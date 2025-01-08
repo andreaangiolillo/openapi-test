@@ -108,36 +108,28 @@ jobs:
           fi
 
       # Create a JIRA ticket only if the there is not already a ticket with the same title
-#      - name: Create JIRA Ticket
-#        id: create-jira-ticket
-#        if: steps.retrieve-sunset-apis.outputs.hash_code_sunset_apis != null
-#        env:
-#          JIRA_API_TOKEN: ${{ secrets.jira_api_token }}
-#          JIRA_TICKET_TITLE: "[API Platform] Some APIs are approaching their sunset date. ID: ${{steps.retrieve-sunset-apis.outputs.hash_code_sunset_apis}}"
-#        run: |
-#          sunset_apis=$(cat sunset_apis.json | sed 's/"/\\"/g')
-#          JIRA_TICKET_DESCRIPTION="The following APIs will be sunset in the next 3 weeks. Please follow our [wiki|https://wiki.corp.mongodb.com/display/MMS/API+eXperience+Production+Checklist#APIeXperienceProductionChecklist-APISunsetActionItems]. {code:json}${sunset_apis}{code}"
-#          export JIRA_TICKET_DESCRIPTION
-#          .github/scripts/create_jira_ticket.sh
+      - name: Create JIRA Ticket
+        id: create-jira-ticket
+        if: steps.retrieve-sunset-apis.outputs.hash_code_sunset_apis != null
+        env:
+          JIRA_API_TOKEN: ${{ secrets.jira_api_token }}
+          JIRA_TICKET_TITLE: "[API Platform] Some APIs are approaching their sunset date. ID: ${{steps.retrieve-sunset-apis.outputs.hash_code_sunset_apis}}"
+        run: |
+          sunset_apis=$(cat sunset_apis.json | sed 's/"/\\"/g')
+          JIRA_TICKET_DESCRIPTION="The following APIs will be sunset in the next 3 weeks. Please follow our [wiki|https://wiki.corp.mongodb.com/display/MMS/API+eXperience+Production+Checklist#APIeXperienceProductionChecklist-APISunsetActionItems]. {code:json}${sunset_apis}{code}"
+          export JIRA_TICKET_DESCRIPTION
+          .github/scripts/create_jira_ticket.sh
 
       # Send Slack notification only if the Jira ticket was created
       - name: Send Slack Notification
-#        if: steps.create-jira-ticket.outputs.jira-ticket-id != null
+        if: steps.create-jira-ticket.outputs.jira-ticket-id != null
         env:
           SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID_APIX_2 }}
           SLACK_BEARER_TOKEN: ${{ secrets.SLACK_BEARER_TOKEN }}
-#          JIRA_TICKET_ID: ${{ steps.create-jira-ticket.outputs.jira-ticket-id }}
+          JIRA_TICKET_ID: ${{ steps.create-jira-ticket.outputs.jira-ticket-id }}
         run: |
-          JIRA_TICKET_ID=CLOUDP-293621
           echo "JIRA_TICKET_ID: ${JIRA_TICKET_ID}"
           message_id=$(curl -X POST -H 'Authorization: Bearer '"${SLACK_BEARER_TOKEN}" \
           -H 'Content-type: application/json' \
-          --data '{"channel":"'"${SLACK_CHANNEL_ID}"'","text":"The following APIs are scheduled to be sunset in the next 3 weeks: see :thread:. Jira Ticket: https://jira.mongodb.org/browse/'"${JIRA_TICKET_ID}"'","parse": "full",}' https://slack.com/api/chat.postMessage | jq '.ts')
+          --data '{"channel":"'"${SLACK_CHANNEL_ID}"'","text":"The following APIs are scheduled to be sunset in the next 3 weeks: See Jira Ticket: https://jira.mongodb.org/browse/'"${JIRA_TICKET_ID}"'","parse": "full",}' https://slack.com/api/chat.postMessage | jq '.ts')
           echo "message_id=${message_id}"]
-          
-          sleep 2 # wait for 2 seconds to avoid slack rate limit
-          sunset_apis=$(cat sunset_apis.json | sed 's/"/\\"/g')
-          # Add the JSON array as a reply to message thread
-          curl -X POST -H 'Authorization: Bearer '"${SLACK_BEARER_TOKEN}" \
-          -H 'Content-type: application/json' \
-          --data '{"channel":"'"${SLACK_CHANNEL_ID}"'",{"thread_ts":"'"${message_id}"'","text":```json"'"${sunset_apis}"'"```,"parse": "full",}' https://slack.com/api/chat.postMessage
