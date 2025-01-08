@@ -38,32 +38,37 @@ echo "Creating Jira ticket...."
 echo "JIRA_TICKET_TITLE: ${JIRA_TICKET_TITLE}"
 echo "JIRA_TICKET_DESCRIPTION: ${JIRA_TICKET_DESCRIPTION}"
 
-encoded_jira_ticket_description=$(url_encode "${JIRA_TICKET_DESCRIPTION:?}")
+#encoded_jira_ticket_description=$(url_encode "${JIRA_TICKET_DESCRIPTION:?}")
 json_response=$(curl --request POST \
 --url 'https://jira.mongodb.org/rest/api/2/issue' \
 --header 'Authorization: Bearer '"${JIRA_API_TOKEN:?}" \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
---data '{
-    "fields": {
-        "project": {
-            "id": "10984"
-        },
-        "summary": "'"${JIRA_TICKET_TITLE:?}"'",
-        "issuetype": {
-            "id": "12"
-        },
-        "customfield_12751": [{
-                "id": "22223"
-        }],
-        "description": "'"${encoded_jira_ticket_description:?}"'",
-        "components": [
-            {
-                "id": "35986"
-            }
-        ]
-    }
-}')
+--data @- <<EOF
+{
+  "fields": {
+    "project": {
+      "id": "10984"
+    },
+    "summary": "${JIRA_TICKET_TITLE:?}",
+    "issuetype": {
+      "id": "12"
+    },
+    "customfield_12751": [
+      {
+        "id": "22223"
+      }
+    ],
+    "description": "${JIRA_TICKET_DESCRIPTION:?}",
+    "components": [
+      {
+        "id": "35986"
+      }
+    ]
+  }
+}
+EOF
+)
 
 echo "Response: ${json_response}"
 
