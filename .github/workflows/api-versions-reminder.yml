@@ -115,8 +115,8 @@ jobs:
           JIRA_API_TOKEN: ${{ secrets.jira_api_token }}
           JIRA_TICKET_TITLE: "[API Platform] Some APIs are approaching their sunset date. ID: ${{steps.retrieve-sunset-apis.outputs.hash_code_sunset_apis}}"
         run: |
-          escaped_json=$(jq -c . sunset_apis.json)  # Compact the JSON
-          JIRA_TICKET_DESCRIPTION="The following APIs will be sunset in the next 3 weeks. Please follow our [wiki|https://wiki.corp.mongodb.com/display/MMS/API+eXperience+Production+Checklist#APIeXperienceProductionChecklist-APISunsetActionItems]. {code:json}${escaped_json}{code}"
+          sunset_apis="$(cat sunset_apis.json)"
+          JIRA_TICKET_DESCRIPTION="The following APIs will be sunset in the next 3 weeks. Please follow our [wiki|https://wiki.corp.mongodb.com/display/MMS/API+eXperience+Production+Checklist#APIeXperienceProductionChecklist-APISunsetActionItems]. ${sunset_apis}"
           export JIRA_TICKET_DESCRIPTION
           .github/scripts/create_jira_ticket.sh
 
