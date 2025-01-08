@@ -19,7 +19,7 @@ url_encode() {
 }
 
 encoded_jira_ticket_title=$(url_encode "${JIRA_TICKET_TITLE:?}")
-echo "${encoded_jira_ticket_title}"
+echo "encoded_jira_ticket_title: ${encoded_jira_ticket_title}"
 
 found_issue=$(curl --request GET \
                 --url 'https://jira.mongodb.org/rest/api/2/search?jql=project=10984%20AND%20issuetype=12%20AND%20component=35986%20AND%20summary~"'"${encoded_jira_ticket_title:?}"'"' \
@@ -27,6 +27,7 @@ found_issue=$(curl --request GET \
                 --header 'Accept: application/json' \
                 --header 'Content-Type: application/json' | jq .total)
 
+echo "$found_issue: ${found_issue}"
 if [ "$found_issue" -ne 0 ]; then
     echo "There is already a Jira ticket with the title \"${JIRA_TICKET_TITLE:?}\""
     echo "No new Jira ticket will be created."
