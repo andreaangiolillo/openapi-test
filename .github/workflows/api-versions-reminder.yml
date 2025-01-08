@@ -93,8 +93,8 @@ jobs:
           echo "current_date: ${current_date}"
           
           sunset_apis=$(foascli sunset ls -s "${openapi_spec_url}" --from "${current_date}" --to "${three_months_date}")
-          if [[ "$(sunset_apis)" != "null" ]]; then
-            echo "API Versions that will be sunsets in the next 3 weeks: ${sunset_apis}"
+          if [[ "${sunset_apis}" != "null" ]]; then
+            echo "API Versions that will be sunsets in the next 3 months: ${sunset_apis}"
           
             # We calculate the md5sum of the JSON object which will be included in the Jira ticket title. 
             # This approach ensures we create a new jira ticket only if the there is not already a ticket 
@@ -117,7 +117,7 @@ jobs:
           JIRA_TICKET_TITLE: "[API Platform] Some APIs are approaching their sunset date. ID: ${{steps.retrieve-sunset-apis.outputs.hash_code_sunset_apis}}"
         run: |
           sunset_apis=$(cat sunset_apis.json | sed 's/"/\\"/g')
-          JIRA_TICKET_DESCRIPTION="The following APIs will be sunset in the next 3 weeks. Please follow our [wiki|https://wiki.corp.mongodb.com/display/MMS/API+eXperience+Production+Checklist#APIeXperienceProductionChecklist-APISunsetActionItems]. {code:json}${sunset_apis}{code}"
+          JIRA_TICKET_DESCRIPTION="The following APIs will be sunset in the next 3 months. Please follow our [wiki|https://wiki.corp.mongodb.com/display/MMS/API+eXperience+Production+Checklist#APIeXperienceProductionChecklist-APISunsetActionItems]. {code:json}${sunset_apis}{code}"
           export JIRA_TICKET_DESCRIPTION
           .github/scripts/create_jira_ticket.sh
 
