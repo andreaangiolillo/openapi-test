@@ -91,7 +91,7 @@ jobs:
           current_date=$(date +"%Y-%m-%d")
           echo "current_date: ${current_date}"
           
-          sunset_apis=$(foascli sunset ls -s "${openapi_spec_url}" --from "${current_date}" --to "${three_weeks_date}" | jq -c .)
+          sunset_apis=$(foascli sunset ls -s "${openapi_spec_url}" --from "${current_date}" --to "${three_weeks_date}")
           if [[ "$(sunset_apis)" != "null" ]]; then
             echo "API Versions that will be sunsets in the next 3 weeks: ${sunset_apis}"
           

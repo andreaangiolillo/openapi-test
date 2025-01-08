@@ -37,6 +37,8 @@ fi
 echo "Creating Jira ticket...."
 echo "JIRA_TICKET_TITLE: ${JIRA_TICKET_TITLE}"
 echo "JIRA_TICKET_DESCRIPTION: ${JIRA_TICKET_DESCRIPTION}"
+
+encoded_jira_ticket_description=$(url_encode "${JIRA_TICKET_DESCRIPTION:?}")
 json_response=$(curl --request POST \
 --url 'https://jira.mongodb.org/rest/api/2/issue' \
 --header 'Authorization: Bearer '"${JIRA_API_TOKEN:?}" \
@@ -54,7 +56,7 @@ json_response=$(curl --request POST \
         "customfield_12751": [{
                 "id": "22223"
         }],
-        "description": "'"${JIRA_TICKET_DESCRIPTION:?}"'",
+        "description": "'"${encoded_jira_ticket_description:?}"'",
         "components": [
             {
                 "id": "35986"
@@ -68,4 +70,10 @@ echo "Response: ${json_response}"
 JIRA_TICKET_ID=$(echo "${json_response}" | jq -r '.key')
 
 echo "The following JIRA ticket has been created: ${JIRA_TICKET_ID}"
-echo "jira-ticket-id=${JIRA_TICKET_ID}" >> "${GITHUB_OUTPUT}"
+if [ "$JIRA_TICKET_ID" != "null" ]; then
+    echo "jira-ticket-id=${JIRA_TICKET_ID}" >> "${GITHUB_OUTPUT}"
+    exit 0
+fi
+
+exit 1
+
