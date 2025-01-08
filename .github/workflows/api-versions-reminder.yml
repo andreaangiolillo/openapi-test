@@ -75,13 +75,17 @@ jobs:
           openapi_spec_url: "https://github.com/andreaangiolillo/openapi-test/blob/dev/openapi/v2.json"
         run: |
           three_weeks_date=""
+          
+          three_weeks_date=$(date --date="3 weeks" +"%Y-%m-%d")
+          echo "three_weeks_date: ${three_weeks_date}"
+          
           # Determine if the system is macOS or Linux
           if [[ "$(uname)" == "Darwin" ]]; then
             # macOS date command format
             three_weeks_date=$(date -v+3w +"%Y-%m-%d")
           else
             # Linux date command format
-            three_weeks_date=$(date -d="3 weeks" +"%Y-%m-%d")
+            three_weeks_date=$(date --date="3 weeks" +"%Y-%m-%d")
           fi
          
           echo "three_weeks_date: ${three_weeks_date}"
