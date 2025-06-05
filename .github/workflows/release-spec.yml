@@ -71,6 +71,7 @@ jobs:
   release:
       name: Release OpenAPI Spec for V2 APIs
       runs-on: ubuntu-latest
+      needs: [generate-spec]
       outputs:
         changes_detected: ${{ steps.commit.outputs.changes_detected }}
       steps:
