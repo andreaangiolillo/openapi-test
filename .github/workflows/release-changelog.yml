@@ -91,11 +91,6 @@ jobs:
         - name: Add permissions to execute scripts
           run: |
             chmod +x release-scripts/*.sh
-        - name: aws configure
-          uses: aws-actions/configure-aws-credentials@v4
-          with:
-            role-to-assume: ${{ inputs.aws_s3_role_to_assume }}
-            aws-region: ${{inputs.aws_default_region}}
         - name: Generate Changelog
           env:
             AWS_DEFAULT_REGION: ${{inputs.aws_default_region}}
