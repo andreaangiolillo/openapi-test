@@ -137,22 +137,8 @@ jobs:
             branch: ${{env.target_branch}}
             file_pattern: "openapi/*"
 
-  release-changelog:
-    name: Release API Changelog
-    needs: release
-    uses: ./.github/workflows/release-changelog.yml
-    secrets:
-        api_bot_pat: ${{ secrets.api_bot_pat }}
-    with:
-        aws_default_region: ${{ inputs.aws_default_region}}
-        aws_s3_role_to_assume: ${{ inputs.aws_s3_role_to_assume }}
-        aws_s3_bucket: ${{ inputs.aws_s3_bucket}}
-        env: ${{ inputs.env }}
-        branch: ${{ inputs.branch }}
-        foascli_version: ${{ inputs.foascli_version }}
-
   release-cleanup:
-    needs: [ release, release-changelog]
+    needs: [ release]
     uses: ./.github/workflows/release-cleanup.yml
     with:
       env: ${{ inputs.env }}
@@ -161,7 +147,7 @@ jobs:
       api_bot_pat: ${{ secrets.api_bot_pat }}
 
   retry-handler:
-    needs: [ release, release-changelog]
+    needs: [ release]
     if: ${{ always() && contains(needs.*.result, 'failure') && fromJSON(github.run_attempt) < 3}}
     runs-on: ubuntu-latest
     steps:
@@ -172,7 +158,7 @@ jobs:
 
   failure-handler:
     name: Failure Handler
-    needs: [retry-handler, release, release-changelog]
+    needs: [retry-handler, release]
     if: ${{ always() && contains(needs.*.result, 'failure') && needs.retry-handler.result == 'skipped' }}
     uses: ./.github/workflows/failure-handler.yml
     with:
