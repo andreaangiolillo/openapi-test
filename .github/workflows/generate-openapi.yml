@@ -67,10 +67,7 @@ jobs:
           role-to-assume: ${{ inputs.aws_s3_role_to_assume }}
           aws-region: ${{inputs.aws_default_region}}
       - name: Retrieve Specs
-        env:
-          AWS_DEFAULT_REGION: ${{inputs.aws_default_region}}
-          S3_BUCKET: ${{ inputs.aws_s3_bucket }}
-        run: ./release-scripts/download_specs.sh
+        run: curl https://raw.githubusercontent.com/mongodb/openapi/dev/openapi/v2.json -o openapi-foas-${{ inputs.env }}.json
       - name: Generate Federated Spec
         run: .github/scripts/generate_federated_spec.sh
       - name: Upload artifact
