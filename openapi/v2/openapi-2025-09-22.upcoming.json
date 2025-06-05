@@ -15,12 +15,12 @@
   ],
   "tags": [
     {
-      "description": "Returns, adds, edits, and removes Streams Instances. This resource requires your project ID.",
-      "name": "Streams"
+      "description": "Returns information about the MongoDB Atlas Specification.",
+      "name": "OpenAPI"
     }
   ],
   "info": {
-    "description": "The MongoDB Atlas Administration API allows developers to manage all components in MongoDB Atlas.\n\nThe Atlas Administration API uses OAuth2 Service Accounts or HTTP Digest Authentication to authenticate requests. Provide a programmatic API public key and corresponding private key as the username and password when constructing the HTTP request. For example, to [return database access history](#tag/Access-Tracking/operation/listAccessLogsByClusterName) with [cURL](https://en.wikipedia.org/wiki/CURL), run the following command in the terminal:\n\n```\ncurl --user \"{PUBLIC-KEY}:{PRIVATE-KEY}\" \\\n  --digest \\\n  --header \"Accept: application/vnd.atlas.private-preview-aws-transit-gateway+json\" \\\n  -X GET \"https://cloud.mongodb.com/api/atlas/v2/groups/{groupId}/dbAccessHistory/clusters/{clusterName}?pretty=true\"\n```\n\nTo learn more, see [Get Started with the Atlas Administration API](https://www.mongodb.com/docs/atlas/configure-api-access/). For support, see [MongoDB Support](https://www.mongodb.com/support/get-started).\n\nYou can also explore the various endpoints available through the Atlas Administration API in MongoDB's [Postman workspace](https://www.postman.com/mongodb-devrel/workspace/mongodb-atlas-administration-apis/).",
+    "description": "The MongoDB Atlas Administration API allows developers to manage all components in MongoDB Atlas.\n\nThe Atlas Administration API uses OAuth2 Service Accounts or HTTP Digest Authentication to authenticate requests. Provide a programmatic API public key and corresponding private key as the username and password when constructing the HTTP request. For example, to [return database access history](#tag/Access-Tracking/operation/listAccessLogsByClusterName) with [cURL](https://en.wikipedia.org/wiki/CURL), run the following command in the terminal:\n\n```\ncurl --user \"{PUBLIC-KEY}:{PRIVATE-KEY}\" \\\n  --digest \\\n  --header \"Accept: application/vnd.atlas.2025-09-22.upcoming+json\" \\\n  -X GET \"https://cloud.mongodb.com/api/atlas/v2/groups/{groupId}/dbAccessHistory/clusters/{clusterName}?pretty=true\"\n```\n\nTo learn more, see [Get Started with the Atlas Administration API](https://www.mongodb.com/docs/atlas/configure-api-access/). For support, see [MongoDB Support](https://www.mongodb.com/support/get-started).\n\nYou can also explore the various endpoints available through the Atlas Administration API in MongoDB's [Postman workspace](https://www.postman.com/mongodb-devrel/workspace/mongodb-atlas-administration-apis/).",
     "license": {
       "name": "CC BY-NC-SA 3.0 US",
       "url": "https://creativecommons.org/licenses/by-nc-sa/3.0/us/"
@@ -31,617 +31,54 @@
     "x-xgen-sha": "5343eb099b24b6e942e7ff1992bd6a765b59c270"
   },
   "paths": {
-    "/api/atlas/v2/groups/{groupId}/streams:acceptTgwResourceShareInvitation": {
-      "post": {
-        "description": "This API is in preview. Breaking changes might be introduced before it is released. Don't use preview APIs in production.\n\n Accept AWS RAM Resource Share for a Transit Gateway that has been shared with an Atlas AWS account. This Transit Gateway will be used in Atlas Streams private networking connections.",
-        "operationId": "acceptTransitGatewayResourcesShare",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/groupId"
-          },
-          {
-            "$ref": "#/components/parameters/envelope"
-          }
-        ],
-        "requestBody": {
-          "content": {},
-          "description": "Detailed information on accepting a transit gateway resource share invitation.",
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "content": {
-              "application/vnd.atlas.preview+json": {
-                "x-xgen-preview": {
-                  "name": "aws-transit-gateway"
-                },
-                "x-xgen-version": "private-preview-aws-transit-gateway"
-              }
-            },
-            "description": "This endpoint does not return a response body."
-          },
-          "400": {
-            "$ref": "#/components/responses/badRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/notFound"
-          },
-          "500": {
-            "$ref": "#/components/responses/internalServerError"
-          }
-        },
-        "summary": "Accept AWS RAM Resource Share for a Transit Gateway that has been shared with an Atlas AWS Account. This Transit Gateway will be used in Atlas Streams private networking connections.",
-        "tags": [
-          "Streams"
-        ],
-        "x-beta": true,
-        "x-codeSamples": [
-          {
-            "lang": "cURL",
-            "label": "curl",
-            "source": "curl --user \"{PUBLIC-KEY}:{PRIVATE-KEY}\" \\\n  --digest \\\n  --header \"Accept: application/vnd.atlas.preview+json\" \\\n  --header \"Content-Type: application/vnd.atlas.preview+json\" \\\n  -X POST \"https://cloud.mongodb.com/api/atlas/v2/groups/{groupId}/streams:acceptTgwResourceShareInvitation\" \\\n  -d '{ <Payload> }'"
-          },
-          {
-            "lang": "cURL",
-            "label": "Atlas CLI",
-            "source": "atlas api acceptTransitGatewayResourcesShare --help"
-          }
-        ],
-        "x-state": "PREVIEW",
-        "x-xgen-docs-url": "https://mongodb.com/docs/atlas/reference/api-resources-spec/v2/#tag/Streams/operation/acceptTransitGatewayResourcesShare"
-      }
-    },
-    "/api/atlas/v2/groups/{groupId}/streams:createTgwAttachment": {
-      "post": {
-        "description": "This API is in preview. Breaking changes might be introduced before it is released. Don't use preview APIs in production.\n\n Creates Transit Gateway Attachment with the provided VPC for a Transit Gateway that has been shared with an Atlas AWS Account. This Transit Gateway will be used in Atlas Streams private networking connections.",
-        "operationId": "createTransitGatewayAttachment",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/groupId"
-          },
-          {
-            "$ref": "#/components/parameters/envelope"
-          }
-        ],
-        "requestBody": {
-          "content": {},
-          "description": "Detailed information on creating a transit gateway attachment.",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/vnd.atlas.preview+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StreamsTransitGatewayAttachment"
-                },
-                "x-xgen-preview": {
-                  "name": "aws-transit-gateway"
-                },
-                "x-xgen-version": "private-preview-aws-transit-gateway"
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "$ref": "#/components/responses/badRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/notFound"
-          },
-          "500": {
-            "$ref": "#/components/responses/internalServerError"
-          }
-        },
-        "summary": "Creates Transit Gateway Attachment with the provided VPC for a Transit Gateway that has been shared with an Atlas AWS Account. This Transit Gateway will be used in Atlas Streams private networking connections.",
-        "tags": [
-          "Streams"
-        ],
-        "x-beta": true,
-        "x-codeSamples": [
-          {
-            "lang": "cURL",
-            "label": "curl",
-            "source": "curl --user \"{PUBLIC-KEY}:{PRIVATE-KEY}\" \\\n  --digest \\\n  --header \"Accept: application/vnd.atlas.preview+json\" \\\n  --header \"Content-Type: application/vnd.atlas.preview+json\" \\\n  -X POST \"https://cloud.mongodb.com/api/atlas/v2/groups/{groupId}/streams:createTgwAttachment\" \\\n  -d '{ <Payload> }'"
-          },
-          {
-            "lang": "cURL",
-            "label": "Atlas CLI",
-            "source": "atlas api createTransitGatewayAttachment --help"
-          }
-        ],
-        "x-state": "PREVIEW",
-        "x-xgen-docs-url": "https://mongodb.com/docs/atlas/reference/api-resources-spec/v2/#tag/Streams/operation/createTransitGatewayAttachment"
-      }
-    },
-    "/api/atlas/v2/groups/{groupId}/streams:deleteTgwResourceShare": {
-      "post": {
-        "description": "This API is in preview. Breaking changes might be introduced before it is released. Don't use preview APIs in production.\n\n Deletes an AWS RAM Resource Share for a Transit Gateway that has been shared with an Atlas AWS account. This does not delete the resource share from the sender's AWS account. This only deletes the resource share that's cached for Atlas Streams Processing.",
-        "operationId": "deleteTransitGatewayResourcesShare",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/groupId"
-          },
-          {
-            "$ref": "#/components/parameters/envelope"
-          }
-        ],
-        "requestBody": {
-          "content": {},
-          "description": "Detailed information for deleting the transit gateway resource share.",
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "content": {
-              "application/vnd.atlas.preview+json": {
-                "x-xgen-preview": {
-                  "name": "aws-transit-gateway"
-                },
-                "x-xgen-version": "private-preview-aws-transit-gateway"
-              }
-            },
-            "description": "This endpoint does not return a response body."
-          },
-          "400": {
-            "$ref": "#/components/responses/badRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/notFound"
-          },
-          "500": {
-            "$ref": "#/components/responses/internalServerError"
-          }
-        },
-        "summary": "Deletes an AWS RAM Resource Share for a Transit Gateway that has been shared with an Atlas AWS Account. This does not delete the resource share from the sender's AWS account. This only deletes the resource share that's cached for Atlas Streams Processing.",
-        "tags": [
-          "Streams"
-        ],
-        "x-beta": true,
-        "x-codeSamples": [
-          {
-            "lang": "cURL",
-            "label": "curl",
-            "source": "curl --user \"{PUBLIC-KEY}:{PRIVATE-KEY}\" \\\n  --digest \\\n  --header \"Accept: application/vnd.atlas.preview+json\" \\\n  --header \"Content-Type: application/vnd.atlas.preview+json\" \\\n  -X POST \"https://cloud.mongodb.com/api/atlas/v2/groups/{groupId}/streams:deleteTgwResourceShare\" \\\n  -d '{ <Payload> }'"
-          },
-          {
-            "lang": "cURL",
-            "label": "Atlas CLI",
-            "source": "atlas api deleteTransitGatewayResourcesShare --help"
-          }
-        ],
-        "x-state": "PREVIEW",
-        "x-xgen-docs-url": "https://mongodb.com/docs/atlas/reference/api-resources-spec/v2/#tag/Streams/operation/deleteTransitGatewayResourcesShare"
-      }
-    },
-    "/api/atlas/v2/groups/{groupId}/streams:listTgwResourceShares": {
+    "/api/atlas/v2/openapi/info": {
       "get": {
-        "description": "This API is in preview. Breaking changes might be introduced before it is released. Don't use preview APIs in production.\n\n Returns the AWS RAM Resource Shares and Transit Gateway IDs for a Transit Gateway that has been shared with an Atlas AWS Account. This only returns the resource shares cached for Atlas Streams Processing.",
-        "operationId": "listTransitGatewayResourcesShares",
+        "description": "This resource returns general information about the MongoDB Atlas Administration API OpenAPI Specification. Deprecated versions: v2-{2024-08-05}, v2-{2024-05-30}",
+        "operationId": "getOpenApiInfo",
         "parameters": [
           {
-            "$ref": "#/components/parameters/groupId"
-          },
-          {
-            "$ref": "#/components/parameters/envelope"
+            "$ref": "#/components/parameters/pretty"
           }
         ],
         "responses": {
           "200": {
             "content": {
-              "application/vnd.atlas.preview+json": {
+              "application/vnd.atlas.2025-09-22.upcoming+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StreamsResourceShareList"
+                  "$ref": "#/components/schemas/OpenApiInfo"
                 },
-                "x-xgen-preview": {
-                  "name": "aws-transit-gateway"
-                },
-                "x-xgen-version": "private-preview-aws-transit-gateway"
+                "x-xgen-version": "2025-09-22.upcoming"
               }
             },
             "description": "OK"
           },
-          "400": {
-            "$ref": "#/components/responses/badRequest"
-          },
           "401": {
             "$ref": "#/components/responses/unauthorized"
           },
           "403": {
             "$ref": "#/components/responses/forbidden"
           },
-          "404": {
-            "$ref": "#/components/responses/notFound"
-          },
           "500": {
             "$ref": "#/components/responses/internalServerError"
           }
         },
-        "summary": "Returns the AWS RAM Resource Shares and Transit Gateway IDs for a Transit Gateway that has been shared with an Atlas AWS Account. This only returns the resource shares cached for Atlas Streams Processing.",
+        "summary": "Return general information about the MongoDB Atlas Administration API OpenAPI Specification.",
         "tags": [
-          "Streams"
+          "OpenAPI"
         ],
-        "x-beta": true,
         "x-codeSamples": [
           {
             "lang": "cURL",
             "label": "curl",
-            "source": "curl --user \"{PUBLIC-KEY}:{PRIVATE-KEY}\" \\\n  --digest \\\n  --header \"Accept: application/vnd.atlas.preview+json\" \\\n  -X GET \"https://cloud.mongodb.com/api/atlas/v2/groups/{groupId}/streams:listTgwResourceShares?pretty=true\""
+            "source": "curl --user \"{PUBLIC-KEY}:{PRIVATE-KEY}\" \\\n  --digest \\\n  --header \"Accept: application/vnd.atlas.2025-09-22.upcoming+json\" \\\n  -X GET \"https://cloud.mongodb.com/api/atlas/v2/openapi/info?pretty=true\""
           },
           {
             "lang": "cURL",
             "label": "Atlas CLI",
-            "source": "atlas api listTransitGatewayResourcesShares --help"
+            "source": "atlas api getOpenApiInfo --help"
           }
         ],
-        "x-state": "PREVIEW",
-        "x-xgen-docs-url": "https://mongodb.com/docs/atlas/reference/api-resources-spec/v2/#tag/Streams/operation/listTransitGatewayResourcesShares"
-      }
-    },
-    "/api/atlas/v2/groups/{groupId}/streams:rejectTgwResourceShareInvitation": {
-      "post": {
-        "description": "This API is in preview. Breaking changes might be introduced before it is released. Don't use preview APIs in production.\n\n Rejects AWS RAM Resource Share for a Transit Gateway that has been shared with an Atlas AWS account.",
-        "operationId": "rejectTransitGatewayResourcesShare",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/groupId"
-          },
-          {
-            "$ref": "#/components/parameters/envelope"
-          }
-        ],
-        "requestBody": {
-          "content": {},
-          "description": "Detailed information on rejecting a transit gateway resource share invitation.",
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "content": {
-              "application/vnd.atlas.preview+json": {
-                "x-xgen-preview": {
-                  "name": "aws-transit-gateway"
-                },
-                "x-xgen-version": "private-preview-aws-transit-gateway"
-              }
-            },
-            "description": "This endpoint does not return a response body."
-          },
-          "400": {
-            "$ref": "#/components/responses/badRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/notFound"
-          },
-          "500": {
-            "$ref": "#/components/responses/internalServerError"
-          }
-        },
-        "summary": "Rejects AWS RAM Resource Share for a Transit Gateway that has been shared with an Atlas AWS Account.",
-        "tags": [
-          "Streams"
-        ],
-        "x-beta": true,
-        "x-codeSamples": [
-          {
-            "lang": "cURL",
-            "label": "curl",
-            "source": "curl --user \"{PUBLIC-KEY}:{PRIVATE-KEY}\" \\\n  --digest \\\n  --header \"Accept: application/vnd.atlas.preview+json\" \\\n  --header \"Content-Type: application/vnd.atlas.preview+json\" \\\n  -X POST \"https://cloud.mongodb.com/api/atlas/v2/groups/{groupId}/streams:rejectTgwResourceShareInvitation\" \\\n  -d '{ <Payload> }'"
-          },
-          {
-            "lang": "cURL",
-            "label": "Atlas CLI",
-            "source": "atlas api rejectTransitGatewayResourcesShare --help"
-          }
-        ],
-        "x-state": "PREVIEW",
-        "x-xgen-docs-url": "https://mongodb.com/docs/atlas/reference/api-resources-spec/v2/#tag/Streams/operation/rejectTransitGatewayResourcesShare"
-      }
-    },
-    "/api/atlas/v2/groups/{groupId}/streamsTgwRoutes": {
-      "get": {
-        "description": "This API is in preview. Breaking changes might be introduced before it is released. Don't use preview APIs in production.\n\n List Transit Gateway routes in the default route table associated with Atlas VPC.",
-        "operationId": "listTransitGatewayRoutes",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/groupId"
-          },
-          {
-            "$ref": "#/components/parameters/envelope"
-          },
-          {
-            "$ref": "#/components/parameters/itemsPerPage"
-          },
-          {
-            "$ref": "#/components/parameters/pageNum"
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/vnd.atlas.preview+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaginatedApiStreamsTransitGatewayRouteResponse"
-                },
-                "x-xgen-preview": {
-                  "name": "aws-transit-gateway"
-                },
-                "x-xgen-version": "private-preview-aws-transit-gateway"
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "$ref": "#/components/responses/badRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/notFound"
-          },
-          "500": {
-            "$ref": "#/components/responses/internalServerError"
-          }
-        },
-        "summary": "Return All Transit Gateway Routes in the Default Route Table for One Atlas VPC",
-        "tags": [
-          "Streams"
-        ],
-        "x-beta": true,
-        "x-codeSamples": [
-          {
-            "lang": "cURL",
-            "label": "curl",
-            "source": "curl --user \"{PUBLIC-KEY}:{PRIVATE-KEY}\" \\\n  --digest \\\n  --header \"Accept: application/vnd.atlas.preview+json\" \\\n  -X GET \"https://cloud.mongodb.com/api/atlas/v2/groups/{groupId}/streamsTgwRoutes?pretty=true\""
-          },
-          {
-            "lang": "cURL",
-            "label": "Atlas CLI",
-            "source": "atlas api listTransitGatewayRoutes --help"
-          }
-        ],
-        "x-state": "PREVIEW",
-        "x-xgen-docs-url": "https://mongodb.com/docs/atlas/reference/api-resources-spec/v2/#tag/Streams/operation/listTransitGatewayRoutes"
-      },
-      "post": {
-        "description": "This API is in preview. Breaking changes might be introduced before it is released. Don't use preview APIs in production.\n\n Creates a route in the default route table associated with Atlas VPC to route all traffic destined for provided CIDR to the provided Transit Gateway.",
-        "operationId": "createTransitGatewayRoute",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/groupId"
-          },
-          {
-            "$ref": "#/components/parameters/envelope"
-          }
-        ],
-        "requestBody": {
-          "content": {},
-          "description": "Metadata needed for creating a transit gateway route.",
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "content": {
-              "application/vnd.atlas.preview+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StreamsTransitGatewayRouteResponse"
-                },
-                "x-xgen-preview": {
-                  "name": "aws-transit-gateway"
-                },
-                "x-xgen-version": "private-preview-aws-transit-gateway"
-              }
-            },
-            "description": "Created"
-          },
-          "400": {
-            "$ref": "#/components/responses/badRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/notFound"
-          },
-          "500": {
-            "$ref": "#/components/responses/internalServerError"
-          }
-        },
-        "summary": "Creates a route in the default route table associated with Atlas VPC to route all traffic destined for provided CIDR to the provided Transit Gateway.",
-        "tags": [
-          "Streams"
-        ],
-        "x-beta": true,
-        "x-codeSamples": [
-          {
-            "lang": "cURL",
-            "label": "curl",
-            "source": "curl --user \"{PUBLIC-KEY}:{PRIVATE-KEY}\" \\\n  --digest \\\n  --header \"Accept: application/vnd.atlas.preview+json\" \\\n  --header \"Content-Type: application/vnd.atlas.preview+json\" \\\n  -X POST \"https://cloud.mongodb.com/api/atlas/v2/groups/{groupId}/streamsTgwRoutes\" \\\n  -d '{ <Payload> }'"
-          },
-          {
-            "lang": "cURL",
-            "label": "Atlas CLI",
-            "source": "atlas api createTransitGatewayRoute --help"
-          }
-        ],
-        "x-state": "PREVIEW",
-        "x-xgen-docs-url": "https://mongodb.com/docs/atlas/reference/api-resources-spec/v2/#tag/Streams/operation/createTransitGatewayRoute"
-      }
-    },
-    "/api/atlas/v2/groups/{groupId}/streamsTgwRoutes/{routeId}": {
-      "delete": {
-        "description": "This API is in preview. Breaking changes might be introduced before it is released. Don't use preview APIs in production.\n\n Deletes a transit gateway route in the default route table associated with Atlas VPC.",
-        "operationId": "deleteTransitGatewayRoute",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/groupId"
-          },
-          {
-            "$ref": "#/components/parameters/envelope"
-          },
-          {
-            "description": "The Object ID that uniquely identifies a transit gateway route.",
-            "in": "path",
-            "name": "routeId",
-            "required": true,
-            "schema": {
-              "example": "32b6e34b3d91647abb20e7b8",
-              "pattern": "^([a-f0-9]{24})$",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "content": {
-              "application/vnd.atlas.preview+json": {
-                "x-xgen-preview": {
-                  "name": "aws-transit-gateway"
-                },
-                "x-xgen-version": "private-preview-aws-transit-gateway"
-              }
-            },
-            "description": "No Content"
-          },
-          "400": {
-            "$ref": "#/components/responses/badRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/notFound"
-          },
-          "500": {
-            "$ref": "#/components/responses/internalServerError"
-          }
-        },
-        "summary": "Delete One Transit Gateway Route in the Default Route Table for One Atlas VPC",
-        "tags": [
-          "Streams"
-        ],
-        "x-beta": true,
-        "x-codeSamples": [
-          {
-            "lang": "cURL",
-            "label": "curl",
-            "source": "curl --user \"{PUBLIC-KEY}:{PRIVATE-KEY}\" \\\n  --digest \\\n  --header \"Accept: application/vnd.atlas.preview+json\" \\\n  -X DELETE \"https://cloud.mongodb.com/api/atlas/v2/groups/{groupId}/streamsTgwRoutes/{routeId}\""
-          },
-          {
-            "lang": "cURL",
-            "label": "Atlas CLI",
-            "source": "atlas api deleteTransitGatewayRoute --help"
-          }
-        ],
-        "x-state": "PREVIEW",
-        "x-xgen-docs-url": "https://mongodb.com/docs/atlas/reference/api-resources-spec/v2/#tag/Streams/operation/deleteTransitGatewayRoute"
-      },
-      "get": {
-        "description": "This API is in preview. Breaking changes might be introduced before it is released. Don't use preview APIs in production.\n\n Retrieves a transit gateway route in the default route table associated with Atlas VPC.",
-        "operationId": "getTransitGatewayRoute",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/groupId"
-          },
-          {
-            "description": "The Object ID that uniquely identifies a transit gateway route.",
-            "in": "path",
-            "name": "routeId",
-            "required": true,
-            "schema": {
-              "example": "32b6e34b3d91647abb20e7b8",
-              "pattern": "^([a-f0-9]{24})$",
-              "type": "string"
-            }
-          },
-          {
-            "$ref": "#/components/parameters/envelope"
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/vnd.atlas.preview+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StreamsTransitGatewayRouteResponse"
-                },
-                "x-xgen-preview": {
-                  "name": "aws-transit-gateway"
-                },
-                "x-xgen-version": "private-preview-aws-transit-gateway"
-              }
-            },
-            "description": "OK"
-          },
-          "400": {
-            "$ref": "#/components/responses/badRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/notFound"
-          },
-          "500": {
-            "$ref": "#/components/responses/internalServerError"
-          }
-        },
-        "summary": "Return One Transit Gateway Route in the Default Route Table for One Atlas VPC",
-        "tags": [
-          "Streams"
-        ],
-        "x-beta": true,
-        "x-codeSamples": [
-          {
-            "lang": "cURL",
-            "label": "curl",
-            "source": "curl --user \"{PUBLIC-KEY}:{PRIVATE-KEY}\" \\\n  --digest \\\n  --header \"Accept: application/vnd.atlas.preview+json\" \\\n  -X GET \"https://cloud.mongodb.com/api/atlas/v2/groups/{groupId}/streamsTgwRoutes/{routeId}?pretty=true\""
-          },
-          {
-            "lang": "cURL",
-            "label": "Atlas CLI",
-            "source": "atlas api getTransitGatewayRoute --help"
-          }
-        ],
-        "x-state": "PREVIEW",
-        "x-xgen-docs-url": "https://mongodb.com/docs/atlas/reference/api-resources-spec/v2/#tag/Streams/operation/getTransitGatewayRoute"
+        "x-state": "UPCOMING"
       }
     }
   },
@@ -8693,6 +8130,35 @@
         "readOnly": true,
         "type": "object"
       },
+      "Info": {
+        "description": "Information about the MongoDB Atlas Administration API OpenAPI Specification.",
+        "properties": {
+          "description": {
+            "description": "Description of the MongoDB Atlas Administration API.",
+            "example": "The MongoDB Atlas Administration API allows developers to manage all components in MongoDB Atlas.",
+            "type": "string"
+          },
+          "license": {
+            "$ref": "#/components/schemas/License"
+          },
+          "termsOfService": {
+            "description": "Terms of Service URL.",
+            "example": "https://www.mongodb.com/mongodb-management-service-terms-and-conditions",
+            "type": "string"
+          },
+          "title": {
+            "description": "Title of the MongoDB Atlas Administration API.",
+            "example": "MongoDB Atlas Administration API.",
+            "type": "string"
+          },
+          "version": {
+            "description": "Version of the MongoDB Atlas Administration API.",
+            "example": "2.0",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "IngestionSink": {
         "description": "Ingestion destination of a Data Lake Pipeline.",
         "discriminator": {
@@ -9425,6 +8891,22 @@
         "readOnly": true,
         "type": "object"
       },
+      "License": {
+        "description": "License information of the MongoDB Atlas Administration API.",
+        "properties": {
+          "name": {
+            "description": "Name of the license.",
+            "example": "CC BY-NC-SA 3.0 US",
+            "type": "string"
+          },
+          "url": {
+            "description": "URL of the license.",
+            "example": "https://creativecommons.org/licenses/by-nc-sa/3.0/us/",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "Link": {
         "properties": {
           "href": {
@@ -9751,6 +9233,14 @@
         "title": "Online Archive Schedule",
         "type": "object"
       },
+      "OpenApiInfo": {
+        "properties": {
+          "info": {
+            "$ref": "#/components/schemas/Info"
+          }
+        },
+        "type": "object"
+      },
       "OrgActiveUserResponse": {
         "allOf": [
           {
@@ -9941,38 +9431,6 @@
           }
         },
         "readOnly": true,
-        "type": "object"
-      },
-      "PaginatedApiStreamsTransitGatewayRouteResponse": {
-        "properties": {
-          "links": {
-            "description": "List of one or more Uniform Resource Locators (URLs) that point to API sub-resources, related API resources, or both. RFC 5988 outlines these relationships.",
-            "externalDocs": {
-              "description": "Web Linking Specification (RFC 5988)",
-              "url": "https://datatracker.ietf.org/doc/html/rfc5988"
-            },
-            "items": {
-              "$ref": "#/components/schemas/Link"
-            },
-            "readOnly": true,
-            "type": "array"
-          },
-          "results": {
-            "description": "List of returned documents that MongoDB Cloud provides when completing this request.",
-            "items": {
-              "$ref": "#/components/schemas/StreamsTransitGatewayRouteResponse"
-            },
-            "readOnly": true,
-            "type": "array"
-          },
-          "totalCount": {
-            "description": "Total number of documents available. MongoDB Cloud omits this value if `includeCount` is set to `false`. The total number is an estimate and may not be exact.",
-            "format": "int32",
-            "minimum": 0,
-            "readOnly": true,
-            "type": "integer"
-          }
-        },
         "type": "object"
       },
       "PerformanceAdvisorSlowQuery": {
@@ -11849,57 +11307,6 @@
         },
         "type": "object"
       },
-      "StreamsResourceShare": {
-        "properties": {
-          "links": {
-            "description": "List of one or more Uniform Resource Locators (URLs) that point to API sub-resources, related API resources, or both. RFC 5988 outlines these relationships.",
-            "externalDocs": {
-              "description": "Web Linking Specification (RFC 5988)",
-              "url": "https://datatracker.ietf.org/doc/html/rfc5988"
-            },
-            "items": {
-              "$ref": "#/components/schemas/Link"
-            },
-            "readOnly": true,
-            "type": "array"
-          },
-          "tgwId": {
-            "description": "AWS transit gateway ID.",
-            "pattern": "^(tgw-)[0-9a-zA-Z]+$",
-            "type": "string"
-          },
-          "tgwResourceShareArn": {
-            "description": "AWS Transit Gateway resource share ARN.",
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "StreamsResourceShareList": {
-        "properties": {
-          "links": {
-            "description": "List of one or more Uniform Resource Locators (URLs) that point to API sub-resources, related API resources, or both. RFC 5988 outlines these relationships.",
-            "externalDocs": {
-              "description": "Web Linking Specification (RFC 5988)",
-              "url": "https://datatracker.ietf.org/doc/html/rfc5988"
-            },
-            "items": {
-              "$ref": "#/components/schemas/Link"
-            },
-            "readOnly": true,
-            "type": "array"
-          },
-          "resourceShares": {
-            "description": "Lists of transit gateway IDs and resource share ARNs.",
-            "items": {
-              "$ref": "#/components/schemas/StreamsResourceShare"
-            },
-            "maxItems": 100,
-            "type": "array"
-          }
-        },
-        "type": "object"
-      },
       "StreamsS3Connection": {
         "allOf": [
           {
@@ -11923,72 +11330,6 @@
             "$ref": "#/components/schemas/StreamsConnection"
           }
         ],
-        "type": "object"
-      },
-      "StreamsTransitGatewayAttachment": {
-        "properties": {
-          "cloudProvider": {
-            "description": "Provider for the transit gateway resources.",
-            "type": "string"
-          },
-          "links": {
-            "description": "List of one or more Uniform Resource Locators (URLs) that point to API sub-resources, related API resources, or both. RFC 5988 outlines these relationships.",
-            "externalDocs": {
-              "description": "Web Linking Specification (RFC 5988)",
-              "url": "https://datatracker.ietf.org/doc/html/rfc5988"
-            },
-            "items": {
-              "$ref": "#/components/schemas/Link"
-            },
-            "readOnly": true,
-            "type": "array"
-          },
-          "regionName": {
-            "description": "Region name where the resources are in the cloud provider's format.",
-            "type": "string"
-          },
-          "tgwAttachmentId": {
-            "description": "The AWS Transit Gateway Attachment ID as a result of creating the attachment successfully.",
-            "pattern": "^(tgw-attach-)[0-9a-zA-Z]+$",
-            "readOnly": true,
-            "type": "string"
-          },
-          "tgwId": {
-            "description": "AWS transit gateway ID.",
-            "pattern": "^(tgw-)[0-9a-zA-Z]+$",
-            "type": "string"
-          },
-          "vpcId": {
-            "description": "AWS VPC ID.",
-            "pattern": "^(vpc-)[0-9a-zA-Z]+$",
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "StreamsTransitGatewayRouteResponse": {
-        "description": "Container for metadata associated with a Transit Gateway route.",
-        "properties": {
-          "destinationCidr": {
-            "description": "The route's destination CIDR.",
-            "type": "string"
-          },
-          "region": {
-            "description": "The region of the Atlas VPCs where this route should take effect.",
-            "type": "string"
-          },
-          "tgwId": {
-            "description": "The AWS ID of the Transit Gateway through which traffic will be routed.",
-            "type": "string"
-          },
-          "tgwRouteId": {
-            "description": "The ID of the Transit Gateway route.",
-            "example": "32b6e34b3d91647abb20e7b8",
-            "pattern": "^([a-f0-9]{24})$",
-            "readOnly": true,
-            "type": "string"
-          }
-        },
         "type": "object"
       },
       "SynonymMappingStatusDetail": {
